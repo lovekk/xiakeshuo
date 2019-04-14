@@ -1,14 +1,9 @@
 # xiakeshuo
 《下课说》APP端
-
-
-##技术架构
+## 技术架构
 aui+vue+apicloud，混合APP开发
-
-
-##功能文档
-
-###一、首页
+## 功能文档
+### 一、首页
 0.选择学校
   本APP是面向全国，以学校为单元的APP，师大学生可以进入到矿大查看矿大的学校情况和学生的动态。
   
@@ -40,6 +35,6 @@ aui+vue+apicloud，混合APP开发
   官方以文章形式发布学生投稿或者官方原创的文章，用户可以留言评论。
   
 效果：
-![blockchain](https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/
+ ![blockchain](https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/
 u=702257389,1274025419&fm=27&gp=0.jpg "区块链")
   
