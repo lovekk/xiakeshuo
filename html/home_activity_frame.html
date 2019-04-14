@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>活动列表</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+        <style>
+            html,
+            body {
+                height: 100%;
+                width: 100%;
+                background-color: rgb(240, 240, 240);
+            }
+
+            .hightitem {
+                background-color: #fff;
+            }
+
+            /* 历史活动 */
+
+            .guesstitle {
+                height: 40px;
+                line-height: 40px;
+                padding-left: 10px;
+                vertical-align: top;
+                font-size: 12px;
+                color: #999;
+            }
+
+            .guesstitle img {
+                height: 15px;
+                padding-top: 12px;
+                padding-left: 10px;
+            }
+
+            .home-tuan-list .item {
+                position: relative;
+                display: block;
+                padding-left: 10px;
+                border-bottom: 1px solid #e0e0e0;
+            }
+
+            .home-tuan-list .cnt {
+                padding: 7px 10px 10px 0;
+                display: box;
+                display: -webkit-box;
+                min-height: 78px;
+                background-size: auto 1px;
+            }
+
+            .home-tuan-list .pic {
+                margin-right: 10px;
+                background: center;
+            }
+
+            .home-tuan-list img {
+                width: 90px;
+                height: 66px;
+                margin-top: 7px;
+                margin-bottom: 5px;
+                border-radius: 3px;
+            }
+
+            .home-tuan-list .wrap {
+                -webkit-box-flex: 1;
+            }
+
+            .home-tuan-list .wrap2 {
+                display: table;
+                height: 88px;
+                width: 100%;
+            }
+
+            .home-tuan-list .content {
+                -webkit-box-flex: 1;
+                box-flex: 1;
+                display: table-cell;
+                vertical-align: middle;
+            }
+
+            .home-tuan-list .shopname {
+                color: #333;
+                /*line-height: 16px;*/
+                font-size: 17px;
+                max-width: 11em;
+                white-space: nowrap;
+                word-wrap: normal;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                min-height: 10px;
+                padding-bottom: 2px;
+                padding-top: 3px;
+                display: inline-block;
+            }
+
+            .home-tuan-list .title {
+                color: #666;
+                line-height: 16px;
+                font-size: 13px;
+                max-height: 30px;
+                overflow: hidden;
+                padding-top: 3px;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+            }
+
+            .home-tuan-list .hot-title {
+                margin-bottom: 8px;
+            }
+
+            .home-tuan-list .hot-subtitle {
+                margin-bottom: 9px;
+            }
+
+            .home-tuan-list .info {
+                margin-top: 9px;
+                /*margin-bottom: 11px;*/
+                color: #666;
+                font-size: 12px;
+                position: relative;
+                line-height: 15px;
+                display: box;
+                display: -webkit-box;
+                height: 15px;
+            }
+
+            .home-tuan-list .symbol {
+                font-size: 14px;
+                /*color: #19b4ff;*/
+                display: block;
+                margin-top: 1px;
+            }
+
+            .home-tuan-list .price {
+                color: #457cfa;
+                font-size: 20px;
+                line-height: 15px;
+                margin-right: 5px;
+                margin-top: 1px;
+            }
+
+            .home-tuan-list .o-price {
+                color: #999;
+                margin-top: 5px;
+                line-height: 10px;
+            }
+
+            .home-tuan-list .sale {
+                color: #457cfa;
+                border: solid 1px #457cfa;
+                padding: 3px 2px 2px;
+                font-size: 10px;
+                border-radius: 2px;
+                -webkit-border-radius: 2px;
+                margin-left: 5px;
+                line-height: 10px;
+                height: 10px;
+            }
+
+            .home-tuan-list .distance {
+                -webkit-box-flex: 1;
+                -ms-flex: 1;
+                text-align: right;
+                line-height: 10px;
+                margin-top: 5px;
+                color: #999;
+                float: right;
+                font-size: 12px;
+            }
+
+            .home-tuan-list .price,
+            .index-rec .home-tuan-list .o-price,
+            .index-rec .home-tuan-list .distance,
+            .index-rec .home-tuan-list .sale {
+                display: block;
+                line-height: 15px;
+                font-size: 12px;
+            }
+
+            .Fix:after {
+                display: block;
+                content: '';
+                height: 0;
+                clear: both;
+            }
+            /* 3. */
+
+            .section03 .col img {
+                width: 60px;
+                top: 10px;
+            }
+
+            .section03 .title01 .title {
+                color: #965037;
+            }
+
+            .section03 .title02 .title {
+                color: #ffa001;
+            }
+
+            .section03 .title03 .title {
+                color: #ff558c;
+            }
+
+            .section03 .title04 .title {
+                color: #19b4ff;
+            }
+
+            .section03 .matrixcell .info {
+                color: #666;
+            }
+            /* 2. */
+
+            .section02 .shelfcell .title span {
+                color: #19b4ff;
+            }
+
+            .section02 .shelfcell .subtitel {
+                color: #666;
+                font-size: 14px;
+            }
+
+
+        </style>
+</head>
+
+<body>
+<div class="guesstitle">全部活动<img src="../image/qiansanming.png" alt=""></div>
+<div id="list" class="home-tuan-list">
+    <div class="item Fix hightitem open-win"  tapmode v-on:click="open_activity_content(item.id)"
+         v-for="item in activity_list">
+        <div class="cnt">
+            <img class="pic" :src="media + item.small_img">
+            <div class="wrap">
+                <div class="wrap2">
+                    <div class="content">
+                        <div class="shopname">{{item.title}}</div>
+                        <span class="distance">{{item.publish_date}}</span>
+                        <div class="title">{{item.introduction}}</div>
+                        <div class="info">
+                            <span class="symbol">‍🙋&nbsp;{{item.join_nums}}人‍</span>
+                            <span class="price">&nbsp;</span>
+                            <span class="sale">{{item.host_unit}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript">
+
+    apiready = function () {
+        vm.school_name = api.pageParam.school_name;
+        vm.school_id = api.pageParam.school_id;
+
+        vm.init();
+        initRefresh();  // 下拉刷新
+
+        //下拉监听事件
+        api.addEventListener({
+            name : 'scrolltobottom',
+            extra : {
+                threshold : 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            //分页加10，和后台同步
+            vm.skip += 10;
+            vm.init(false);
+        });
+    };
+
+
+    var vm = new Vue({
+        el: '#list',
+        data: {
+            school_id:'',
+            school_name:'',
+            media: media_url,
+            activity_list:[],
+
+            is_more: true,    //加载更多,默认第一次
+            skip: 0,
+        },
+        methods: {
+            //初始化 ajax数据请求
+            init: function (more_) {
+                api.ajax({
+                    url: activity_list + '?school_id=' + vm.school_id + '&skip=' + vm.skip,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        api.refreshHeaderLoadDone(); //方法恢复组件到默认状态
+                        if (ret.code){
+                            if ( more_ ){
+                                vm.activity_list = ret.activity_data;
+                            } else {
+                                if (ret.activity_data.length > 0){
+                                    //concat() 方法用于连接两个或多个数组。
+                                    vm.activity_list = vm.activity_list.concat(ret.activity_data);
+                                }else {
+                                    api.toast({
+                                        msg: '没有更多了',
+                                        duration: 1000,
+                                        location: 'bottom'
+                                    });
+                                }
+                            }
+                        }
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+
+            // 打开 单个 活动
+            open_activity_content: function (id_) {
+                api.openWin({
+                    name: 'home_activity_content_win',
+                    url: './home_activity_content_win.html',
+                    allowEdit: true,
+                    pageParam: {
+                        school_id: vm.school_id,
+                        activity_id: id_,
+                    }
+                });
+            },
+
+
+        }
+    });
+
+
+    // 实现下拉刷新功能
+    function initRefresh() {
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/fresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '嘤嘤嘤 放开我...'
+        }, function (ret, err) {
+            // 在这里从服务器加载数据，加载完成后调用
+            vm.skip = 0;
+            vm.init(true);//初始化 ajax数据请求
+            api.toast({
+                msg: '已刷新',
+                duration: 1000,
+                location: 'bottom'
+            });
+        });
+    }
+
+
+</script>
+
+</html>

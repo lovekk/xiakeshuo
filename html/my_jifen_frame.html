@@ -1,0 +1,381 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>积分商城</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style type="text/css">
+        header {
+            width: 100%;
+            height: 130px;
+            box-sizing: border-box;
+            padding: 4px 10px;
+        }
+
+        header .banner {
+            width: 100%;
+            height: 100%;
+        }
+
+        section {
+            position: relative;
+            width: 100%;
+            height: auto;
+            box-sizing: border-box;
+            padding: 0 8px;
+        }
+
+        .ware-0 {
+            position: relative;
+            width: 100%;
+            height: 177px;
+            box-sizing: border-box;
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+        }
+
+        .ware-0 .thumbnail {
+            height: 130px;
+            width: 100%;
+        }
+
+        .ware-0 .info {
+            width: 100%;
+            box-sizing: border-box;
+            height: 35px;
+            line-height: 35px;
+            padding-left: 6px;
+            border-bottom: 1px solid #d1d1d1;
+        }
+
+        .ware-0 .info .price {
+            font-size: 14px;
+            color: #457cfa;
+        }
+
+        .ware-0 .info .unit {
+            font-size: 13px;
+            color: #767676;
+        }
+
+        .ware-0 .info .origin-price {
+            font-size: 11px;
+            color: #c0c0c0;
+        }
+
+        .ware-1 {
+            position: relative;
+            width: 100%;
+            height: 160px;
+            box-sizing: border-box;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #d1d1d1;
+        }
+
+        .ware-1 .thumbnail {
+            position: absolute;
+            top: 20px;
+            left: 0px;
+            height: 100px;
+            width: 100px;
+        }
+
+        .ware-1 .info {
+            width: 100%;
+            height: 114px;
+            box-sizing: border-box;
+            padding-left: 112px;
+            padding-right: 28px;
+        }
+
+        .ware-1 .info .name {
+            width: 100%;
+            height: 15px;
+            color: #555555;
+            margin-top: 14px;
+            font-size: 15px;
+        }
+
+        .ware-1 .info .description {
+            margin-top: 10px;
+            width: 100%;
+            height: 13px;
+            font-size: 13px;
+            color: #9d9d9d;
+        }
+
+        .ware-1 .info .price-tag {
+            margin-top: 30px;
+            width: 100%;
+            height: 12px;
+            font-size: 12px;
+            vertical-align: top;
+        }
+
+        .ware-1 .info .price-tag .price {
+            color: #457cfa;
+        }
+
+        .ware-1 .info .price-tag .unit {
+            font-size: 12px;
+            color: #cbcbcb;
+        }
+
+        .ware-1 .info .origin-price {
+            margin-top: 15px;
+            width: 50px;
+            float: right;
+            height: 20px;
+            font-size: 16px;
+            color: #457cfa;
+            border: #457cfa 1px solid;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .ware .control {
+            position: absolute;
+            width: 110px;
+            height: 23px;
+            right: 8px;
+        }
+
+        .ware-0 .control {
+            bottom: 8px;
+        }
+
+        .ware-1 .control {
+            top: 90px;
+        }
+
+        .ware .control .panel {
+            display: none;
+            height: 23px;
+        }
+
+        .ware .control .minus {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 23px;
+            height: 23px;
+            z-index: 2;
+        }
+
+        .ware .control .count {
+            position: relative;
+            top: 0;
+            margin-left: 31px;
+            margin-right: 31px;
+            width: auto;
+            height: 23px;
+            text-align: center;
+            line-height: 23px;
+            color: #444;
+            font-size: 12px;
+            background-image: url(../image/count.png);
+            background-repeat: no-repeat;
+            background-size: 48px 23px;
+        }
+
+        .ware .control .add {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 23px;
+            height: 23px;
+            z-index: 2;
+        }
+
+        .push-status {
+            width: 100%;
+            height: 40px;
+            font-size: 16px;
+            color: #888;
+            line-height: 40px;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .active {
+            opacity: 0.7;
+        }
+    </style>
+</head>
+
+<body>
+<section id="app">
+
+    <div id="list">
+        <div class="ware ware-1" v-for=" item in jifen_list">
+            <div class="content">
+                <img class="thumbnail" :src=" media + item.image ">
+                <div class="info">
+                    <div class="name">{{item.name}}</div>
+                    <div class="description">{{item.desc}}</div>
+                    <div class="price-tag">
+                        <span class="price">{{item.price}}积分</span>
+                        <span class="unit">/1份</span>
+                    </div>
+                    <div class="origin-price" v-on:click="exchange( item.id )">兑换</div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div style="font-size: 14px;color: #9e9e9e">
+            *获取积分：（1）主要是通过参加首页的垃圾分类回收<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            （2）活跃于说说和help等<br>
+            *配送范围：地址只能填写在本校内呦~<br>
+            *配送时间：兑换成功后一周之内，晚上时间送货上门（特殊时间除外）。
+        </div>
+    </div>
+</section>
+</body>
+
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript">
+
+    apiready = function () {
+        vm.init();
+    };
+
+    //vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            media: media_url,
+            jifen_list: [],
+        },
+        methods: {
+            //初始化 ajax数据请求
+            init: function () {
+                api.ajax({
+                    url: user_good,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        if (ret.code === 200) {
+                            vm.jifen_list = ret.goods;
+                        }
+                    }
+                    else {
+                        my_toast();
+                    }
+                });
+            },
+
+            //兑换
+            exchange: function (id_) {
+                var dialogBox = api.require('dialogBox');
+                dialogBox.input({
+                    keyboardType: 'default',
+                    texts: {
+                        title: '积分兑换',
+                        placeholder: '请输入配送详细地址',
+                        leftBtnTitle: '取消',
+                        rightBtnTitle: '确定'
+                    },
+                    styles: {
+                        bg: '#fff',
+                        corner: 2,
+                        w: 300,
+                        h: 240,
+                        title: {
+                            h: 60,
+                            alignment: 'center',
+                            size: 14,
+                            color: '#000',
+                            marginT: 30,
+                        },
+                        input: {
+                            h: 60,
+                            y: 30,
+                            marginT: 15,
+                            marginLeft: 10,
+                            marginRight: 10,
+                            textSize: 14,
+                            textColor: '#000'
+                        },
+                        dividingLine: {
+                            width: 0.5,
+                            color: '#696969'
+                        },
+                        left: {
+                            bg: 'rgba(0,0,0,0)',
+                            color: '#457cfa',
+                            size: 12
+                        },
+                        right: {
+                            bg: 'rgba(0,0,0,0)',
+                            color: '#457cfa',
+                            size: 12
+                        }
+                    }
+                }, function (ret) {
+                    if (ret.eventType === 'left') {
+                        dialogBox.close({
+                            dialogName: 'input'
+                        });
+                    }
+                    if (ret.eventType === 'right') {
+                        //初始化 ajax数据请求
+                        api.ajax({
+                            url: user_order,
+                            method: 'post',
+                            timeout: 30,
+                            dataType: 'json',
+                            returnAll: false,
+                            data: {
+                                //以表单方式提交参数，JSON对象{"field1": "value1"}
+                                values: {
+                                    user_id: $api.getStorage('uid'),
+                                    good_id: id_,
+                                    phone_num: $api.getStorage('phone_num'),
+                                    address: ret.text,
+                                    which_school: $api.getStorage('school_name')
+                                },
+                            }
+                        }, function (ret, err) {
+                            if (ret) {
+                                if (ret.code === 200) {
+                                    alert('兑换成功！')
+                                } else {
+                                    api.toast({
+                                        msg: '您的积分不够兑换！',
+                                        duration: 2000,
+                                        location: 'bottom'
+                                    });
+                                }
+                            } else {
+                                my_toast();
+                            }
+                        });
+                        dialogBox.close({
+                            dialogName: 'input'
+                        });
+                    }
+                });
+            }
+        }
+    });
+
+</script>
+</html>

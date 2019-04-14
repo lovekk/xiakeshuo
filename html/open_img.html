@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>照片查看</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+</head>
+<body>
+<header id="app" class="aui-bar aui-bar-nav my-bgc">
+    <div class="aui-pull-left aui-btn" tapmode onclick="api.closeWin();">
+        <span class="aui-iconfont aui-icon-left"></span>
+    </div>
+    <div class="aui-title">图片查看</div>
+</header>
+</body>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript">
+    var photoBrowser;
+
+    // 准备
+    apiready = function () {
+        $api.fixIos7Bar($api.dom("header"));//padding-top: 20px; 沉浸式状态栏
+
+        vm.img_list = api.pageParam.img_list;
+        vm.img_index = api.pageParam.img_index;
+
+        //js数组追加
+        for (i = 0; i < vm.img_list.length; i++) {
+            vm.one_img_list.push(qiniu_url + vm.img_list[i].qiniu_img);
+        }
+
+        photoBrowser = api.require('photoBrowser');  //照片查看器
+        //打开图片查看器
+        photoBrowser.open({
+            images: vm.one_img_list,
+            activeIndex: vm.img_index,   //索引
+            bgColor: '#000',
+            zoomEnabled: true
+        }, function (ret, err) {
+            if (ret.eventType === 'show') {
+                // vm.one_img_index = ret.index;
+                // alert(ret.index);
+            }
+            if (ret.eventType === 'click') {
+                vm.one_img_list = [];
+                api.closeWin();
+            }
+            if (ret.eventType === 'longPress') {
+                img_choice(qiniu_url + vm.img_list[ret.index].qiniu_img);
+            }
+        });
+
+        // 监听返回
+        api.addEventListener({
+            name: 'keyback'
+        }, function (ret, err) {
+            vm.one_img_list = [];
+            // photoBrowser.close();
+            api.closeWin();
+        });
+    };
+
+
+    // vue对象数据
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            one_img_list: [],
+            img_list: [],
+            img_index: '',
+            one_img_index: '',
+        },
+    });
+
+
+    //长按图片 出现底部选择器
+    //长按保存图片
+    //长按图片事件 保存图片 分享图片
+    function img_choice(img_) {
+        var dialogBox = api.require('dialogBox');    //弹出 actionMenu 样式的对话框
+        dialogBox.actionMenu({   //底部弹出选择框
+            rect: {
+                h: 200
+            },
+            texts: {
+                cancel: '取消'
+            },
+            items: [
+                {
+                    text: '保存图片',
+                    icon: 'widget://image/saveimg.png'
+                },
+            ],
+            styles: {  //对话框样式设置
+                bg: '#FFF',
+                column: 3,
+                itemText: {
+                    color: '#000',
+                    size: 12,
+                    marginT: 8
+                },
+                itemIcon: {
+                    size: 40
+                },
+                cancel: {
+                    color: '#000',
+                    h: 44,
+                    size: 14
+                }
+            }
+        }, function (ret) {
+            //保存
+            if (ret.index === 0) {
+                //先下载到本地
+                api.download({
+                    url: img_,
+                    report: true,
+                    cache: true,
+                    allowResume: true
+                }, function (ret, err) {
+                    //下载成功
+                    if (ret.state === 1) {
+                        //保存到相册
+                        api.saveMediaToAlbum({
+                            path: ret.savePath,
+                            groupName: img_group_name,
+                        }, function (ret, err) {
+                            if (ret && ret.status) {  //保存成功
+                                api.toast({
+                                    msg: '保存成功',
+                                    duration: 1000,
+                                    location: 'bottom'
+                                });
+                            } else {
+                                api.toast({   //保存失败
+                                    msg: '保存失败',
+                                    duration: 1000,
+                                    location: 'bottom'
+                                });
+                            }
+                        });
+                        //关闭选择框
+                        dialogBox.close({
+                            dialogName: 'actionMenu'
+                        });
+
+                    } else if (ret.state === 2) {  //下载失败
+                        api.toast({   //保存失败
+                            msg: '保存失败',
+                            duration: 1000,
+                            location: 'bottom'
+                        });
+                        dialogBox.close({
+                            dialogName: 'actionMenu'
+                        });
+                    }
+                });
+            }
+            //取消
+            if (ret.eventType === 'cancel') {
+                dialogBox.close({
+                    dialogName: 'actionMenu'
+                });
+            }
+        });
+    }
+
+
+</script>
+</html>

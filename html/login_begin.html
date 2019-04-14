@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>开始启动页</title>
+    <link rel="stylesheet" href="../css/begin.css">
+    <style>
+        .left{
+            float: left;
+            padding-left: 10%;
+            width: 30%;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 20px;
+        }
+        .login{
+            color: white;
+            text-align: center;
+            vertical-align: middle;
+            height: 40px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 25px;
+            background-color: rgba(30,144,255, 0.7);
+            font-size: 14px;
+            line-height: 40px;
+        }
+        .right{
+            float: right;
+            padding-right: 10%;
+            width: 30%;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 20px;
+        }
+        .register{
+            color: white;
+            text-align: center;
+            vertical-align: middle;
+            height: 40px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 25px;
+            background-color: rgba(30,144,255, 0.7);
+            font-size: 14px;
+            line-height: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="b-wrap">   <!--最大的空间div-->
+    <div class="cube">   <!--正方体的box-->
+        <!--这个是大的正方体的六面-->
+        <div class="out-front">
+            <img src="../image/1.png" width="100px" height="100px">
+        </div>
+        <div class="out-back">
+            <img src="../image/2.png"
+                 width="100px">
+        </div>
+        <div class="out-left">
+            <img src="../image/3.png"
+                 width="100px">
+        </div>
+        <div class="out-right">
+            <img src="../image/4.png"
+                 width="100px">
+        </div>
+        <div class="out-top">
+            <img src="../image/5.png"
+                 width="100px">
+        </div>
+        <div class="out-bottom">
+            <img src="../image/6.png"
+                 width="100px">
+        </div>
+    </div>
+</div>
+<div style="text-align:center;font-size: 40px;color: white;font-weight: bolder;margin-top: 30%; ">
+    <p>下课说</p>
+</div>
+<div style="margin-top: 30%;">
+    <div style="display: inline">
+        <div class="left" onclick="login()">
+            <div class="login">登录</div>
+        </div>
+        <div class="right" onclick="register()">
+            <div class="register">注册</div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+
+    apiready = function() {
+        ExitApp();
+    };
+
+
+    //进入登录
+    function login() {
+        api.openWin({
+            name: 'login',
+            url: './login.html',
+            allowEdit: true,
+        });
+    }
+
+
+    //进入注册
+    function register() {
+        api.openWin({
+            name: 'register_phone',
+            url: './register_phone.html',
+            allowEdit: true,
+        });
+    }
+
+
+    //监听 退出按钮 禁止退出
+    function ExitApp() {
+        api.addEventListener({
+            name: 'keyback'
+        }, function(ret, err) {
+
+            api.toast({
+                msg: '再按一次返回键退出 ' + api.appName + 'APP',
+                duration: 2000,
+                location: 'bottom'
+            });
+
+            api.addEventListener({
+                name: 'keyback'
+            }, function(ret, err) {
+                api.closeWidget({
+                    id: 'A6097090063092',
+                    retData: {
+                        name: 'closeWidget'
+                    },
+                    animation: {
+                        type: 'flip',
+                        subType: 'from_bottom',
+                        duration: 500
+                    },
+                    silent: true
+                });
+            });
+        });
+    }
+</script>
+</html>

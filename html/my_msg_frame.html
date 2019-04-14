@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我的个人信息</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+</head>
+<body>
+<div id="app" class="aui-content">
+
+    <section class="aui-grid" style="margin:0 auto; padding-top: 35px;padding-bottom: 35px">
+        <img :src="qiniu_url + my_head + qiniu_small"
+             style="margin:0 auto;width:80px;height:80px; border-radius: 80px"
+             onclick="change_head()">
+    </section>
+
+    <section class="aui-content">
+        <br>
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item" onclick="change_nick()">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">
+                        昵称：
+                        <span style="font-size: 14px;color: #616161">{{my_nick}}</span>
+                    </div>
+                    <!--<div class="aui-list-item-right">修改</div>-->
+                </div>
+            </li>
+        </ul>
+
+        <!--<br>-->
+        <!--<ul class="aui-list aui-list-in">-->
+            <!--<li class="aui-list-item">-->
+                <!--<div class="aui-list-item-inner aui-list-item-arrow">-->
+                    <!--<div class="aui-list-item-title" style="padding-right: 40px;">-->
+                        <!--性别：-->
+                        <!--<span style="font-size: 14px;color: #616161">男/女</span>-->
+                    <!--</div>-->
+
+                <!--</div>-->
+            <!--</li>-->
+        <!--</ul>-->
+
+        <br>
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item" onclick="change_school()">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">
+                        我的大学：
+                        <span style="font-size: 14px;color: #616161">{{my_school}}</span>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+
+        <br>
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item" onclick="change_sign()">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title" style="padding-right: 40px;">
+                        签名：
+                        <span style="font-size: 14px;color: #616161">{{my_sign}}</span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <!--<div style="padding-top: 60px;padding-left: 20%;padding-right: 20%">-->
+            <!--<div class="aui-btn aui-btn-block my-bgc" style="border-radius: 20px;">-->
+                <!--暂不可修改个人信息-->
+            <!--</div>-->
+        <!--</div>-->
+
+    </section>
+
+</div>
+</body>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript">
+
+    apiready = function () {
+
+        // 接收个人信息的参数
+        vm.my_head = api.pageParam.my_head;
+        vm.my_nick = api.pageParam.my_nick;
+        vm.my_school = api.pageParam.my_school;
+        vm.my_sign = api.pageParam.my_sign;
+    };
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            qiniu_url:qiniu_url,
+            qiniu_small:qiniu_small,
+
+            my_head: '',
+            my_nick: '',
+            my_school: '',
+            my_sign: '',
+        },
+    });
+
+
+    // 修改个人签名
+    function change_sign() {
+        api.openWin({
+            name: 'my_msg_sign_update',
+            url: './my_msg_sign_update.html',
+            allowEdit: true,
+        });
+    }
+
+
+    // 修改 学校
+    function change_school() {
+        alert('对不起，暂不可修改学校！');
+        // api.openWin({
+        //     name: 'my_msg_school_update',
+        //     url: './my_msg_school_update.html',
+        // });
+    }
+
+
+    // 修改 昵称
+    function change_nick() {
+        alert('对不起，暂不可修改昵称！');
+        // api.openWin({
+        //     name: 'my_msg_nick_update',
+        //     url: './my_msg_nick_update.html',
+        // });
+    }
+
+
+    // 修改 头像
+    function change_head() {
+        api.openWin({
+            name: 'my_msg_head_update',
+            url: './my_msg_head_update.html',
+            pageParam: {
+                my_nick: vm.my_nick,
+            }
+        });
+    }
+
+</script>
+</html>

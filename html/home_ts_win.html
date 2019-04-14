@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>优秀师生</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+</head>
+<body>
+    <header class="aui-bar aui-bar-nav my-bgc">
+        <a class="aui-pull-left aui-btn" v-on:click="close_win()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">优秀师生</div>
+    </header>
+</body>
+</html>
+
+<script src="../script/api.js"></script>
+<script src="../script/common.js"></script>
+<script src="../script/vue.js"></script>
+
+<script>
+    apiready = function () {
+        $api.fixIos7Bar($api.dom("header"));//padding-top: 20px; 沉浸式状态栏
+        vm.school_name = api.pageParam.school_name;
+        // vm.id = api.pageParam.id;
+        api.openFrame({
+            name: 'home_ts_frame',
+            url: './home_ts_frame.html',
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: 'auto',
+                h: api.winHeight - $api.dom('header').offsetHeight
+            },
+            bounces: true,
+            pageParam: {
+                id: vm.id,
+                school_name: vm.school_name
+            }
+        });
+    };
+
+    var vm = new Vue({
+        el: 'header',
+        data: {
+            id: '',
+            school_name: '江苏师范大学'
+        },
+        methods:{
+            close_win:function () {
+                api.closeWin({
+                    name: 'home_ts_win'
+                });
+            }
+        }
+    });
+</script>

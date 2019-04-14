@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>发现-正文</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/alifont/iconfont.css"/>
+
+    <style>
+        .aui-content {
+            background: #fff;
+        }
+
+        .controlimg {
+            word-break: break-all !important; /*支持IE，chrome，FF不支持*/
+            word-wrap: break-word !important; /*支持IE，chrome，FF*/
+        }
+
+        .controlimg img {
+            width: 100% !important;
+        }
+
+        .aui-list .aui-list-item-media {
+            width: 3rem;
+        }
+
+        .delete-btn {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 40px;
+            height: 40px;
+            /*background-color: rgba(0, 0, 0, 0.7);*/
+            margin-left: -20px;
+            margin-top: -20px;
+            color: #ffffff;
+            text-align: center;
+            vertical-align: middle;
+            /*border-radius: 50%;*/
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div id="app" class="aui-content">
+
+    <!--====================================正文=======================================-->
+    <ul class="aui-list aui-media-list">
+        <li class="aui-list-item">
+
+            <!--=======匿名树洞=======-->
+            <div v-if="tag == '匿名树洞'" class="aui-card-list-header aui-card-list-user"
+                 style="padding: 10px 18px 5px 3px; border-bottom: none">
+                <!--===================头部==================-->
+                <div class="aui-card-list-user-avatar">
+                    <img src='../image/bluehead.png' class="aui-img-round my-img-size"/>
+                </div>
+                <div class="aui-card-list-user-name">
+                    <div>匿名用户</div>
+                </div>
+                <div class="aui-card-list-user-info">
+                    00:00
+                </div>
+            </div>
+            <!--=======非匿名树洞=======-->
+            <div v-else class="aui-card-list-header aui-card-list-user"
+                 style="padding: 10px 18px 5px 3px; border-bottom: none">
+                <div class="aui-card-list-user-avatar" v-on:click="open_home( his_id )">
+                    <img :src="qiniu + c_head + qiniu_small" class="aui-img-round" style="width: 40px; height: 40px; border-radius: 40px"/>
+                </div>
+                <div class="aui-card-list-user-name">
+                    <div>{{c_nick}}</div>
+
+                    <div v-if="is_follow == 0" class="aui-btn aui-btn-warning " onclick="to_follow()">关注</div>
+                    <div v-if="is_follow == 1" class="aui-btn aui-btn-default" onclick="off_follow()">已关注</div>
+                    <div v-if="is_follow == 2" ></div>
+                </div>
+                <div class="aui-card-list-user-info">
+                    {{publish_date|filter_d}} {{publish_time|filter_t}}
+                </div>
+
+            </div>
+
+            <!--==============下面是内容=====================-->
+            <div class="aui-media-list-item-inner">
+                <div class="aui-list-item-inner">
+                    <!---==============文本=======================-->
+<!--需要顶头写，不然white-space:pre-wrap;会把前面的空格页当作空格显示出来-->
+<div class="aui-list-item-text" style="color:#333;font-size: 16px;white-space:pre-wrap;">{{ content }}</div>
+                    <!--===================图片=================-->
+                    <div v-if=" img_list.length ">
+                        <div class="aui-list-item-text"
+                             v-if=" img_list.length === 1 || img_list.length === 2 || img_list.length === 4">
+                            <div class="aui-row-padded" style="max-width:100%;">
+                                <div class="aui-col-xs-6" v-for="(img, index) in img_list">
+                                    <img :src="qiniu + img.qiniu_img + qiniu_big"
+                                         v-on:click="open_img_big( img_list, index )"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="aui-list-item-text" v-else>
+                            <div class="aui-row-padded" style="max-width:100%;">
+                                <div class="aui-col-xs-4" v-for="(img, index) in img_list">
+                                    <img :src="qiniu + img.qiniu_img + qiniu_small"
+                                         v-on:click="open_img_big( img_list, index )"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--==============录音================-->
+                    <div class="aui-grid" v-if="voice.length">
+                        <!--如果没有存进到 七牛 就不显示-->
+                        <div class="aui-row" v-if="voice[0].qiniu_voice">
+                            <div class="aui-col-xs-4" style="float: left">
+                                <i style="color: #1E90FF; font-size: 26px" class="aui-iconfont iconfont icon-yuyin"></i>
+                                <span style="font-size: 14px;color: #9e9e9e;padding-top: 4px;">
+                                    &nbsp;&nbsp;{{voice[0].voice_time}}&nbsp;s
+                                </span>
+                            </div>
+
+                            <div class="aui-col-xs-4"
+                                 v-on:click="paly_audio( voice[0].qiniu_voice , voice[0].id)">
+                                <i v-if="true_id_voice ===  voice[0].id"
+                                   style="color: #1E90FF;font-size: 28px"
+                                   class=" aui-iconfont iconfont icon-bofangzhong1"></i>
+                                <i v-else
+                                   style="color: #1E90FF;font-size: 28px" class=" aui-iconfont iconfont icon-2play"></i>
+                            </div>
+
+                            <div class="aui-col-xs-4" v-on:click.stop="stop_voice()"
+                                 v-if=" true_id_voice ===  voice[0].id ">
+                                <i style="color: #df5000;font-size: 28px"
+                                   class="aui-iconfont iconfont icon-tingzhi2"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--==============视频================-->
+                    <div v-if="video.length">
+                        <!--如果没有存进到 七牛 就不显示-->
+                        <div class="aui-list-item-text" v-if="video[0].qiniu_video">
+                            <div class="aui-row-padded" style="max-width:100%;">
+                                <div class="aui-col-xs-6" v-on:click="play_video( video[0].qiniu_video )">
+                                    <img :src="qiniu + video[0].qiniu_video + qiniu_video_img"/>
+                                    <div class="delete-btn">
+                                        <i style="font-size: 25px" class="aui-iconfont iconfont icon-shipin3"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--================标签===========================-->
+                    <div v-if="tag" style="margin-top: 5px;padding-top: 5px;color:#1874CD">
+                        #{{tag}}#
+                    </div>
+
+                    <!--================三大金刚键=========================-->
+                    <div class="aui-card-list-footer" style="margin-top: 12px;padding-top: 12px;font-size: 16px">
+                        <div><i class="aui-iconfont iconfont icon-liulan1"> {{view_num}} </i></div>
+                        <div v-on:click="open_one_c( his_id )"><i class="aui-iconfont iconfont icon-pinglun"></i> {{comment_num}}</div>
+                        <div>
+                            <i v-if="is_good" style="color: #ff558c" class="aui-iconfont iconfont icon-zan1"></i>
+                            <i v-else  class="aui-iconfont iconfont icon-zan" v-on:click="give_good( moment_id,his_id)"></i>
+                            {{good_num}}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <!-- ================================================评论================================ -->
+    <div class="aui-btn aui-btn-info aui-btn-block aui-btn-outlined aui-btn-sm" v-on:click="open_one_c( his_id )"
+         style="width: 200px; margin-left: auto; margin-right: auto;margin-top: 20px;margin-bottom: 20px;">
+        评论
+    </div>
+
+    <section class="aui-content">
+        <ul class="aui-list aui-media-list">
+
+            <li class="aui-list-item" v-for="item in comment_list">
+                <div class="aui-media-list-item-inner">
+                    <!--===========用户头像========================-->
+                    <div class="aui-list-item-media" v-on:click=" open_home( item.c_id ) ">
+                        <img :src="qiniu + item.c_head + qiniu_small" style="width: 40px; height: 40px; border-radius: 40px"/>
+                    </div>
+                    <div class="aui-list-item-inner">
+                        <!--=====用户信息======-->
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title" style="color:#4c5276"
+                                 v-on:click=" open_home( item.c_id ) ">
+                                {{item.c_nick}}
+                            </div>
+                            <div>
+                                <i style="" class="aui-iconfont iconfont icon-pinglun" v-on:click="two_comment(item.id)"></i> {{item.replay_num}}
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <i v-if="item.one_good" style="color: #ff558c" class="aui-iconfont iconfont icon-zan-" ></i>
+                                <i v-else class="aui-iconfont iconfont icon-zan-" v-on:click="give_comment_good(item.id)"></i>
+                                {{item.good_num}}
+                            </div>
+                        </div>
+
+                        <!--=====文本======-->
+<!--需要顶头写，不然white-space:pre-wrap;会把前面的空格页当作空格显示出来-->
+<div class="aui-list-item-text" style="white-space:pre-wrap;">{{item.content}}</div>
+
+                        <!--=====多媒体======-->
+                        <div>
+                            <!--=====图片======-->
+                            <div class="aui-list-item-text" v-if=" item.one_img.length ">
+                                <div class="aui-row-padded" style="max-width:100%;">
+                                    <div class="aui-col-xs-4" v-for="(img,index) in item.one_img">
+                                        <img :src="qiniu + img.qiniu_img + qiniu_big"
+                                             v-on:click="open_img_big( item.one_img, index )"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--==============录音================-->
+                            <div class="aui-grid" v-if=" item.one_voice.length ">
+                                <div class="aui-row">
+
+                                    <div class="aui-col-xs-4" style="float: left">
+                                        <i style="color: #1E90FF; font-size: 26px" class="aui-iconfont iconfont icon-yuyin"></i>
+                                        <span style="font-size: 14px;color: #9e9e9e;padding-top: 4px;">
+                                            &nbsp;&nbsp;{{item.one_voice[0].voice_time}}&nbsp;s
+                                        </span>
+                                    </div>
+
+                                    <div class="aui-col-xs-4"
+                                         v-on:click="paly_audio( item.one_voice[0].qiniu_voice , item.one_voice[0].id)">
+                                        <i v-if="true_id_voice === item.one_voice[0].id"
+                                           style="color: #1E90FF;font-size: 28px"
+                                           class=" aui-iconfont iconfont icon-bofangzhong1"></i>
+                                        <i v-else
+                                           style="color: #1E90FF;font-size: 28px" class=" aui-iconfont iconfont icon-2play"></i>
+                                    </div>
+
+                                    <div class="aui-col-xs-4" v-on:click.stop="stop_voice()"
+                                         v-if=" true_id_voice === item.one_voice[0].id ">
+                                        <i style="color: #df5000;font-size: 28px"
+                                           class="aui-iconfont iconfont icon-tingzhi2"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--==============视频================-->
+                            <div v-if="item.one_video.length">
+                                <div class="aui-list-item-text">
+                                    <div class="aui-row-padded" style="max-width:100%;">
+                                        <div class="aui-col-xs-6" v-on:click="play_video( item.one_video[0].qiniu_video )">
+                                            <img :src="qiniu + item.one_video[0].qiniu_video + qiniu_video_img"/>
+                                            <div class="delete-btn">
+                                                <i style="font-size: 25px" class="aui-iconfont iconfont icon-shipin3"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="padding-top: 8px"></div>
+                        <!--=========回复================-->
+                        <div style="background-color: rgba(30,144,255,0.1);font-size: 15px;" v-if="item.replycomment.length">
+                            <div v-for="re in item.replycomment">
+                                <span style="color:#4682B4"  v-on:click=" open_home( re.u_id );">
+                                    {{re.c_nick}}
+                                </span>
+                                <!--如果有自关联回复-->
+                                <span v-if=" re.p_nick !== null ">
+                                    回复<span style="color:#4682B4">@{{re.p_nick}}</span>
+                                </span>
+                                <span style="color:#757575" v-on:click="fn_long(item.id,re.id)">: {{re.content}}</span>
+                            </div>
+                        </div>
+                        <div v-if=" item.replay_num > 5 " class="aui-list-item-text" style="padding-top: 5px" v-on:click="open_content_comment( item.id )">
+                            更多回复>
+                        </div>
+                        <div class="aui-info aui-font-size-12 aui-padded-t-5 aui-padded-b-0">
+                            <div class="aui-info-item">{{item.comment_time|filter_t}}</div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </section>
+
+</div>
+</body>
+
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+
+<script type="text/javascript">
+
+
+    //测试 分享 用到了getWebUrl，获取本页面的url
+    // 分享模块只能分享文本和图片 不能分享连接 获取url也只能用文本方式
+    function open_find_share() {
+        var getWebUrl = api.require('getWebUrl');
+        getWebUrl.addListener(function (ret, err) {
+            if (ret.url) {
+                alert(ret.url);
+                alert(ret.title);
+            } else {
+                alert(err.code);
+            }
+        });
+    }
+
+
+    var photoBrowser;
+    var dialogBox;
+    var moviePlayer;
+    var inputField;
+
+    // 准备
+    apiready = function () {
+        vm.moment_id = api.pageParam.moment_id;
+        vm.his_id = api.pageParam.his_id;
+
+        vm.init();
+
+        photoBrowser = api.require('photoBrowser');  //照片查看器
+        dialogBox = api.require('dialogBox');    //弹出 actionMenu 样式的对话框
+        moviePlayer = api.require('moviePlayer');   //视频播放器
+        inputField = api.require('inputField');  //二级评论框
+    };
+
+
+    //vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            qiniu: qiniu_url,
+            qiniu_small: qiniu_small,
+            qiniu_big: qiniu_big,
+            qiniu_video_img: qiniu_video_img,
+
+            moment_id: '',
+            his_id: '',
+            my_id: $api.getStorage('uid'),
+
+            is_follow: '',  //关注
+
+            content: '',  //详情文本
+            publish_date: '',
+            publish_time: '',
+            tag: '',
+            good_num: '',
+            comment_num: '',
+            view_num: '',
+            c_nick: '',
+            c_head: '',
+            is_good: '',
+
+            video: '',  //详情多媒体
+            voice: '',
+            voice_time: '',
+            img_list: [],
+            one_img_list: [],
+
+            comment_list: [],  //评论
+            p_id: '',  //评论 父id
+
+            play_s: '播放',
+            true_id_voice: 0,//真实id 显示标识
+        },
+        methods: {
+            //初始化 ajax数据请求
+            init: function () {
+                api.ajax({
+                    url: moment_detail + '?moment_id=' + vm.moment_id + '&u_id=' + $api.getStorage('uid') + '&his_id=' + vm.his_id,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        if (ret.code === 200) {
+                            vm.his_id = ret.moment_data[0].c_id;
+                            vm.content = ret.moment_data[0].content;
+                            vm.publish_date = ret.moment_data[0].publish_date;
+                            vm.publish_time = ret.moment_data[0].publish_time;
+                            vm.good_num = ret.moment_data[0].good_num;
+                            vm.comment_num = ret.moment_data[0].comment_num;
+                            vm.view_num = ret.moment_data[0].view_num;
+                            vm.c_nick = ret.moment_data[0].c_nick;
+                            vm.c_head = ret.moment_data[0].c_head;
+                            vm.tag = ret.moment_data[0].tag;
+                            vm.is_follow = ret.follow;
+
+                            if (ret.video) {
+                                vm.video = ret.video;
+                            }
+                            if (ret.voice) {
+                                vm.voice = ret.voice;
+                                vm.voice_time = ret.moment_data;
+                            }
+                            if (ret.img) {
+                                vm.img_list = ret.img;
+                            }
+                            if (ret.is_good) {
+                                vm.is_good = ret.is_good;
+                            }
+                            if (ret.comment_data) {
+                                vm.comment_list = ret.comment_data;
+                            }
+                        }
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+
+            //打开个人主页
+            open_home: function(his_id_){
+                open_his_home(his_id_);
+            },
+
+            //查看图片
+            open_img_big: function (list_, index_) {
+                 api.openWin({
+                    name: 'open_img',
+                    url: './open_img.html',
+                    pageParam: {
+                        img_list: list_,
+                        img_index:index_,
+                    }
+                });
+            },
+
+            //播放录音
+            paly_audio: function (voice_, id_) {
+                vm.is_stop = true;
+                vm.play_s = '播放中...';
+                vm.true_id_voice = id_;
+                //先下载
+                api.download({
+                    url: qiniu_url + voice_,
+                    report: true,
+                    cache: true,
+                    allowResume: true
+                }, function (ret, err) {
+                    if (ret.state === 1) {
+                        //下载成功 再播放
+                        api.startPlay({
+                            path: ret.savePath
+                        }, function (ret, err) {
+                            if (ret) {
+                                vm.true_id_voice = 0;
+                                api.toast({
+                                    msg: '播放完毕',
+                                    duration: 1000,
+                                    location: 'bottom'
+                                });
+                            } else {
+                                api.toast({
+                                    msg: '播放出错',
+                                    duration: 1000,
+                                    location: 'bottom'
+                                });
+                            }
+                        });
+                    }
+                });
+            },
+
+            //停止播放录音
+            stop_voice: function () {
+                api.stopPlay();
+                vm.true_id_voice = 0;
+                api.toast({
+                    msg: '已停止播放',
+                    duration: 1000,
+                    location: 'bottom'
+                });
+            },
+
+            //视频播放
+            //封装到了common.js中
+            play_video: function (video_) {
+                api.openWin({
+                    name: 'open_video',
+                    url: './open_video.html',
+                    pageParam: {
+                        video_url: video_,
+                        qiniu_url: qiniu_url,
+                    }
+                });
+            },
+
+            //二级评论,只会评论文字
+            two_comment:function (cid_,rid_) {
+                inputField.open({
+                    bgColor: '#ffffff',
+                    lineColor: '#757575',
+                    fileBgColor: '#fff',
+                    borderColor: '#757575',
+                    sendImg: 'widget://image/sendcomment.png',
+                    fixedOn: api.frameName,
+                    limitedWordsNumber: 100,
+                    placeholder: '回复',
+                    autoFocus: true,
+                }, function(ret, err) {
+                    if (ret) {
+                        if (ret.msg) {
+                            //提交二级评论
+                            api.ajax({
+                                url: add_reply_comment,
+                                method: 'post',
+                                timeout: 30,
+                                dataType: 'json',
+                                returnAll: false,
+                                data: {
+                                    //以表单方式提交参数，JSON对象{"field1": "value1"}
+                                    values: {
+                                        comment_id: cid_,
+                                        user_id:  $api.getStorage('uid'),
+                                        moment_id: vm.moment_id,
+                                        reply_id: rid_,
+                                        reply_content: ret.msg,
+                                        his_id: vm.his_id,
+                                    },
+                                }
+                            }, function (ret, err) {
+                                if (ret) {
+                                    vm.init();
+                                } else {
+                                }
+                            });
+                            //关闭弹窗
+                            inputField.close();
+                        }
+                    } else {
+                        my_toast();
+                        inputField.close();
+                    }
+                });
+                //延迟1秒 监听输入框下边缘距离屏幕底边的高度
+                //根据高度判断是否要关闭
+                setTimeout(function () {
+                    inputField.setInputFieldListener(function (ret, err) {
+                        if (ret.chatViewH < 200) {
+                            inputField.close();
+                        } else {
+                            my_toast();
+                        }
+                    });
+                }, 1000);
+            },
+
+            // 发现 点赞
+            give_good:function(mom_,his_id_){
+                api.ajax({
+                    url: moment_good + '?moment_id=' + mom_ + '&u_id=' + $api.getStorage('uid') + '&his_id=' + his_id_,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        vm.init();
+
+                        //更新
+                        api.execScript({
+                            name: 'root',
+                            frameName: 'frame1',
+                            script: 'good_come('+mom_+');'
+                        });
+
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+
+            //添加一级评论
+            open_one_c:function (his_id_) {
+                api.openWin({
+                    name: 'find_comment_add',
+                    url: './find_comment_add.html',
+                    allowEdit: true,
+                    pageParam: {
+                        moment_id: vm.moment_id,
+                        his_id:his_id_
+                    }
+                });
+            },
+
+            // 评论 点赞
+            give_comment_good:function(com_){
+                api.ajax({
+                    url: comment_good + '?comment_id=' + com_ + '&u_id=' + $api.getStorage('uid'),
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        vm.init();
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+
+            // 打开评论详情页
+            open_content_comment:function (cid_) {
+                api.openWin({
+                    name: 'find_content_comment',
+                    url: './find_content_comment.html',
+                    pageParam: {
+                        comment_id: cid_,
+                    }
+                });
+            },
+
+
+            fn_long: function (cid_, pid_) {
+                api.actionSheet({
+                    title: '选择',
+                    cancelTitle: '取消',
+                    buttons: ['回复',]
+                }, function(ret, err) {
+                    // 回复
+                    if (ret.buttonIndex === 1) {
+                        vm.two_comment( cid_, pid_ );
+                    }
+                });
+            },
+
+        },
+
+        //时间过滤器
+        filters: {
+            filter_t: function (t_) {
+                if (t_ && t_.length > 5) {
+                    value = t_.substring(0, 5);
+                }
+                return value;
+            },
+
+            filter_d: function (d_) {
+                value = d_.substring(5, 10);
+                return value;
+            },
+
+            zan_add: function (num_) {
+                return num_ + 1;
+            },
+        },
+    });
+
+
+    // 实现下拉刷新功能
+    function initRefresh() {
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/fresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '嘤嘤嘤 放开我...'
+        }, function (ret, err) {
+            vm.init();//初始化 ajax数据请求
+            api.toast({
+                msg: '已刷新',
+                duration: 1000,
+                location: 'bottom'
+            });
+        });
+    }
+
+
+    //评论后跨页更新
+    function come_on() {
+        vm.init();
+    }
+
+
+    //关注
+    function to_follow() {
+        api.ajax({
+            url: follow_me + '?user_id=' + $api.getStorage('uid') + '&his_id=' + vm.his_id,
+            method: 'get',
+            cache: 'true',
+            timeout: 30,
+            dataType: 'json',
+            returnAll: false,
+        }, function (ret, err) {
+            if (ret) {
+                if (ret.code === 200){
+                    api.toast({
+                        msg: '关注成功！',
+                        duration: 1000,
+                        location: 'bottom'
+                    });
+                    vm.init(); //刷新页面
+                }
+
+
+            } else {
+                my_toast();
+            }
+        });
+    }
+
+    //取消关注
+    function off_follow() {
+        api.confirm({
+            title: '别介呀~',
+            msg: '您确定要取消关注吗？',
+            buttons: ['确定', '取消']
+        }, function(ret, err) {
+            if (ret.buttonIndex === 1){
+                api.ajax({
+                    url: cancel_follow + '?user_id=' + $api.getStorage('uid') + '&his_id=' + vm.his_id,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        if (ret.code === 200){
+                            api.toast({
+                                msg: '已取消关注！',
+                                duration: 1000,
+                                location: 'bottom'
+                            });
+                            vm.init(); //刷新页面
+                        }
+                    } else {
+                        my_toast();
+                    }
+                });
+
+            }
+        });
+    }
+
+</script>
+</html>

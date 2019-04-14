@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>用户信息</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            height: 50px;
+            color: #FFFFFF;
+            background-color: #457cfa;
+            line-height: 50px;
+            padding-right: 10px;
+        }
+
+        header img {
+            position: absolute;
+            height: 30px;
+            left: 0;
+            margin: 10px;
+        }
+
+        .login {
+            position: absolute;
+            height: 30px;
+            line-height: 30px;
+            right: 0;
+            margin: 10px;
+        }
+
+        .text-view {
+            width: 100%;
+            text-align: center;
+            color: #666666;
+        }
+
+        #title1 {
+            font-size: 18px;
+            margin-top: 60px;
+        }
+
+        #title2 {
+            font-size: 12px;
+            margin-top: 20px;
+        }
+
+        .sex {
+            width: auto;
+            margin-left: 50px;
+            margin-right: 50px;
+            margin-top: 50px;
+        }
+
+        .sex-img-div {
+            text-align: center;
+        }
+
+        .sex img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .confirm {
+            margin-top: 40px;
+            width: 300px;
+            height: 50px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 25px;
+            background-color: #D9D9D9;
+            color: #FFFFFF;
+            font-size: 14px;
+            text-align: center;
+            line-height: 50px;
+        }
+
+        .edit_layout {
+            width: 70%;
+            height: 50px;
+            margin-left: 15%;
+            margin-top: 20px;
+        }
+
+        .edit_text {
+            width: 60%;
+            height: 50px;
+            line-height: 50px;
+            outline: none;
+            float: left;
+        }
+
+        .border-bottom {
+            position: relative;
+        }
+
+        .border-bottom:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+            top: auto;
+            bottom: 0;
+            background: #D9D9D9;
+        }
+
+        /*按钮样式*/
+        .aui-btn {
+            position: relative;
+            display: inline-block;
+            font-size: 0.9rem;
+            font-weight: 400;
+            font-family: inherit;
+            text-decoration: none;
+            text-align: center;
+            margin: 0;
+            background: #dddddd;
+            padding: 0 0.6rem;
+            height: 2.1rem;
+            line-height: 2.1rem;
+            border-radius: 0.2rem;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .aui-btn-primary {
+            color: #ffffff;
+            background-color: #00acc1;
+        }
+
+        .upload_img_div {
+            width: 100%;
+            height: 180px;
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .head_img {
+            display: inline-block;
+            box-sizing: border-box;
+            width: 160px;
+            height: 160px;
+            border: 3px solid #FFFFFF;
+            border-radius: 160px;
+            background-image: url(../image/upload_img_add.png);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 100% 100%;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <header class="aui-bar aui-bar-nav my-bgc">
+        <a class="aui-pull-left aui-btn" tapmode onclick="api.closeWin();">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">修改头像</div>
+    </header>
+    <div class="text-view" id="title2"></div>
+
+    <!--头像-->
+    <div class="upload_img_div">
+        <div class="head_img" id="head_img" onclick="getPicture()" tapmode></div>
+    </div>
+    <br><br>
+    <div class="confirm" style="background-color: #1E90FF;"
+         v-if="head_img_url" v-on:click="change_msg()">
+        确定
+    </div>
+    <div v-else class="confirm">
+        确定
+    </div>
+
+    <br><br><br><br><br>
+</div>
+</body>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/sha1.js"></script>
+<script type="text/javascript">
+
+    //准备
+    apiready = function () {
+        var header = document.getElementsByTagName("header");
+        $api.fixStatusBar(header[0]);
+
+    };
+
+
+    //vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            my_nick:'',
+            head_img_url: '',
+        },
+        methods: {
+
+            //提交用户信息
+            change_msg: function () {
+
+                // 提交数据
+                api.ajax({
+                    url: update_my_head,
+                    method: 'post',
+                    timeout: 10,
+                    dataType: 'json',
+                    returnAll: false,
+                    data: {
+                        values: {
+                            user_id: $api.getStorage('uid'),
+                        },
+                        files: {
+                            head_image: vm.head_img_url
+                        }
+                    }
+                }, function (ret, err) {
+                    if (ret) {
+                        //返回的数据库中的数据
+                        if (ret.code === 200) {
+                            vm.my_nick = ret.my_msg[0].nick;
+                            vm.re_head_qn_url = qiniu_url + ret.my_msg[0].head_qn_url + qiniu_small;
+
+                            getToken();
+
+                            alert('修改成功！');
+                            api.closeToWin({
+                                name: 'root'
+                            });
+                        }
+                    } else {
+                        my_toast();
+                    }
+                });
+            }
+        }
+    });
+
+    //融云获取 token
+    //token用户令牌，在APP应用中的唯一标识
+    function getToken() {
+        var noce = parseInt(Math.random() * 10000);
+        var now = Date.now();
+        var signature = SHA1("mTQXepjUr1W" + noce + now);  //APP secret 融云提供AeIXcrhRvjpCrM
+        api.ajax({
+            url: 'http://api-cn.ronghub.com/user/refresh.json',
+            method: 'post',
+            headers: {
+                "App-Key": "pvxdm17jp3mvr",   ////APP key 融云提供
+                "Nonce": noce,
+                "Timestamp": now,
+                "Signature": signature,
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            data: {
+                values: {
+                    userId: $api.getStorage('uid'),    //本人的账号信息
+                    name: vm.my_nick,
+                    portraitUri: vm.re_head_qn_url
+                }
+            }
+        }, function (ret, err) {
+            if (ret) {
+
+            } else {
+                my_toast();
+            }
+        });
+    }
+
+
+    //获取头像
+    function getPicture() {
+        api.actionSheet({
+            title: "选择",
+            cancelTitle: "取消",
+            buttons: ["拍照", "相册"]
+        }, function (ret, err) {
+            if (ret) {
+                var sourceTypes = ['camera', 'album'];
+                api.getPicture({
+                    sourceType: sourceTypes[ret.buttonIndex - 1],
+                    allowEdit: true,
+                    targetWidth: 400,
+                    targetHeight: 400,
+                    saveToPhotoAlbum: false
+                }, function (ret, err) {
+                    if (ret) {
+                        vm.head_img_url = ret.data;
+                        setAvatar(vm.head_img_url);
+                    } else {
+                        my_toast();
+                    }
+                });
+            } else {
+                my_toast();
+            }
+        });
+    }
+
+    //头像图片替代
+    function setAvatar(imgUrl) {
+        var icon = $api.byId('head_img');
+        icon.style.backgroundImage = 'url(' + imgUrl + ')';
+    }
+
+</script>
+</html>

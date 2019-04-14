@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>更多模块</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+</head>
+<body>
+    <header class="aui-bar aui-bar-nav my-bgc">
+        <a class="aui-pull-left aui-btn" onclick="api.closeWin()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">更多功能</div>
+    </header>
+</body>
+</html>
+
+<script src="../script/api.js"></script>
+<script>
+    apiready = function () {
+        $api.fixIos7Bar($api.dom("header"));//padding-top: 20px; 沉浸式状态栏
+
+        api.openFrame({
+            name: 'home_more_frame',
+            url: './home_more_frame.html',
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: 'auto',
+                h: api.winHeight - $api.dom('header').offsetHeight
+            },
+            bounces: true,
+        });
+    };
+</script>

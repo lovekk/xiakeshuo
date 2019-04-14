@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>垃圾分类回收订单</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style type="text/css">
+        .goods-title {
+            color: #757575 !important;
+        }
+        .goods-price {
+            color: #666666 !important;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="aui-tips aui-bg-warning aui-margin-b-15" id="tips-1">
+        <i class="aui-iconfont aui-icon-paper"></i>
+        <div class="aui-tips-title">以下是您的所有订单：</div>
+        <i class="aui-iconfont aui-icon-laud"></i>
+    </div>
+    <section class="aui-content" id="app">
+
+        <div class="aui-card-list aui-border-t aui-border-b" v-for="item in back_order_list">
+            <div class="aui-card-list-header aui-card-list-user">
+                <div class="aui-card-list-user-avatar">
+                    <img src="../image/huanbao.jpg">
+                </div>
+                <div class="aui-card-list-user-name">
+                    <div class="aui-font-size-16">{{item.thing_type}}</div>
+                </div>
+                <div class="aui-card-list-user-info">{{item.create_date}}</div>
+            </div>
+            <div class="aui-card-list-content aui-border-t" style="margin-left: 3.5rem;">
+                <div class="aui-list aui-list-noborder">
+                    <div class="aui-list-item aui-padded-l-0">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-title aui-font-size-14 goods-title">{{item.address}}</div>
+                            <div class="aui-list-item-right goods-price">{{item.money}}积分</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="aui-card-list-footer aui-border-t">
+                <div></div>
+                <div v-if="item.status == 2" class="aui-btn aui-btn aui-btn-outlined aui-btn-default">已完成</div>
+                <div v-else-if="item.status == 0"  class="aui-btn aui-btn aui-btn-outlined aui-btn-warning">已预约</div>
+                <div v-else class="aui-btn aui-btn aui-btn-outlined aui-btn-info">已绑袋</div>
+            </div>
+        </div>
+
+    </section>
+</body>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript">
+
+    apiready = function () {
+        vm.init();
+    };
+
+    //vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+
+            back_order_list:[],
+        },
+        methods: {
+            //初始化 ajax数据请求
+            init: function () {
+                api.ajax({
+                    url: back_order + '?my_id=' + $api.getStorage('uid'),
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        if (ret.code === 200){
+                            vm.back_order_list = ret.my_back_order;
+                        }
+                    }
+                    else {
+                        my_toast();
+                    }
+                });
+            },
+        }
+    });
+
+
+</script>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>发布失物招领</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+
+    <style type="text/css">
+
+        html {
+            height: 100%;
+            background-color: transparent;
+        }
+
+        .desp {
+            margin: 10px;
+        }
+
+        textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            color: #000;
+            font-size: 16px;
+            height: 250px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            margin: 3px 10px;
+            background: #457cfa;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            font-size: 20px;
+            margin-top: 20px;
+            border-radius: 20px;
+            color: #fff;
+        }
+
+        .aui-list .aui-list-item-media {
+            width: 3rem;
+        }
+
+        .notes-add {
+            position: fixed;
+            left: 0.5rem;
+            bottom: 0.5rem;
+            width: 3rem;
+            z-index: 99;
+        }
+
+        textarea {
+            height: 8rem;
+            background-color: #ffffff;
+            padding: 0.5rem;
+        }
+
+        .photos img {
+            display: block;
+            width: 100%;
+        }
+
+        .add-photos > div {
+            width: 100%;
+            height: 5.15rem;
+            line-height: 5.15rem;
+        }
+
+        .add-photos > div .aui-iconfont {
+            font-size: 2rem;
+            color: #ccc;
+        }
+
+        .image-item {
+            position: relative;
+            height: 5.3rem;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+
+        .image-item img {
+            display: block;
+            margin: 0 auto;
+            width: auto;
+            height: 100%;
+        }
+
+        .image-item .delete-btn {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 28px;
+            height: 28px;
+            background-color: rgba(0, 0, 0, 0.7);
+            margin-left: -14px;
+            margin-top: -14px;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="app" class="aui-content">
+
+    <!-- ==================== 头部 ============================-->
+    <header class="aui-bar aui-bar-nav my-bgc">
+        <div class="aui-pull-left aui-btn" tapmode onclick="api.closeWin();">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </div>
+        <div class="aui-title">失物招领</div>
+    </header>
+
+    <!-- ===================== 文本 ============================-->
+    <section class="aui-content-padded">
+        <textarea placeholder="请在这里输入内容...(120字以内)" v-model="content"></textarea>
+    </section>
+
+    <section class="aui-list-item aui-content-padded">
+        <div class="aui-list-item-inner">
+            <label><input class="aui-radio" type="radio" name="radio2" value="1" v-model="is_type" checked>捡到 &nbsp;&nbsp;&nbsp;</label>
+            <label><input class="aui-radio" type="radio" name="radio2" value="0" v-model="is_type"/>丢失</label>
+
+        </div>
+    </section>
+
+    <!-- ==================== 配图 ============================-->
+    <section class="aui-content-padded">
+        <div style="font-size: 14px;color: #9e9e9e">*最多上传3张图片，我们有的图片会旋转哦~</div>
+        <div class="aui-row aui-row-padded">
+            <div v-if="img_list">
+                <div class="aui-col-xs-4 image-item" v-for="item in img_list">
+                    <img :src=" item " class="notes-image">
+                    <div class="delete-btn">
+                        <i class="aui-iconfont aui-icon-trash" v-on:click="del_img( item )"></i>
+                    </div>
+                </div>
+            </div>
+            <div v-if=" list_len < 3 ">
+                <div class="aui-col-xs-4 add-photos" style="border: #c7c7c7 1px solid" onclick="UIAlbumBrowser_open()">
+                    <div class="aui-border aui-text-center">
+                        <i class="aui-iconfont aui-icon-camera "></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="btn" tapmode v-on:click="add_lose();">完成</div>
+    <br><br><br>
+</div>
+</body>
+
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript">
+
+    var UIAlbumBrowser; //上传图片模块实例
+    apiready = function () {
+
+        $api.fixIos7Bar($api.dom("header"));//padding-top: 20px; 沉浸式状态栏
+        UIAlbumBrowser = api.require('UIAlbumBrowser'); //上传图片模块实例
+
+        //接收参数
+        vm.school_id = api.pageParam.school_id;
+    };
+
+
+    //vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            school_id: '',
+            content: '',
+            img_list: [],
+            is_type: 1,  //默认1 捡到
+            list_len: 0,  //控制图片上传 张数
+            list_radio: [{value: 1, msg: '捡到'}, {value: 0, msg: '丢失'}]
+        },
+        methods: {
+            //初始化 ajax数据请求
+            add_lose: function () {
+                if ($api.trimAll(vm.content) === '') {
+                    alert('小可爱，请先填写内容。');
+                    return false;
+                }
+                if (vm.content.length >= 120) {
+                    alert('小可爱，内容要在120字以内。');
+                    return false;
+                }
+                if (vm.is_type === '') {
+                    alert('小可爱，请先选择类型。');
+                    return false;
+                }
+                api.showProgress({
+                    title: '正在审核中...',
+                    text: '先学会习...',
+                    modal: false
+                });
+
+                api.ajax({
+                    url: lose_add,
+                    method: 'post',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                    data: {
+                        //以表单方式提交参数，JSON对象{"field1": "value1"}
+                        values: {
+                            school_id: vm.school_id,
+                            content: vm.content,
+                            creator_id: $api.getStorage('uid'),
+                            is_type: vm.is_type,
+                        },
+                        //以表单方式提交文件，JSON对象{"file": "path"}
+                        files: {
+                            img_list: vm.img_list,
+                        }
+                    }
+                }, function (ret, err) {
+                    if (ret) {
+                        if (ret.code === 200) {
+                            api.hideProgress();
+                            alert('已完成');
+                            api.closeWin();
+                        }
+                    } else {
+                        api.toast({
+                            msg: '网络波动，请退出重新发布！',
+                            duration: 2000,
+                            location: 'bottom'
+                        });
+                    }
+                });
+            },
+            del_img: function (ele_) {
+                del_ele(ele_, vm.img_list);
+                vm.list_len = vm.img_list.length;
+            }
+
+        }
+    });
+
+
+    //打开图片选择器
+    function UIAlbumBrowser_open() {
+        var len;
+        if (vm.img_list.length < 3) {
+            len = 3 - vm.img_list.length;
+        }
+        UIAlbumBrowser.open({
+            max: len,
+            type: 'image',   //纯图片
+            isOpenPreview: true,
+            classify: true,
+            styles: {
+                bg: '#000000',
+                mark: {
+                    position: 'bottom_left',
+                    size: 20
+                },
+                nav: {
+                    bg: '#000000',
+                    titleColor: '#ffffff',
+                    titleSize: 18,
+                    cancelColor: '#457cfa',
+                    cancelSize: 16,
+                    finishColor: '#457cfa',
+                    finishSize: 16
+                }
+            },
+            rotation: false  //横屏无效
+        }, function (ret) {
+            if (ret) {
+                if (ret.eventType === 'confirm') {
+                    vm.list_len += ret.list.length;
+
+                    for (i = 0; i < ret.list.length; i++) {
+                        if (0 <= ret.list[i].size <= 524288) {                //0.5M 原图
+                            trans_path(ret.list[i].path, 1.0);
+                        } else if (524288 <= ret.list[i].size <= 2097152) {  //0.5M-2M 压缩2/3
+                            trans_path(ret.list[i].path, 0.3);
+                        } else {                                             //2M以上 压缩至1/10
+                            trans_path(ret.list[i].path, 0.1);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+     var l_img;
+    // 将相册图片地址转换为可以直接使用的本地路径地址（临时文件夹的绝对路径），
+    // 相册图片会被拷贝到临时文件夹，调用 api.clearCache 接口可清除该临时图片文件
+    // 主要是控制图片的质量
+    function trans_path(img_, scale_) {
+        UIAlbumBrowser.transPath({
+            path: img_,
+            scale: scale_
+        }, function(ret, err) {
+            if (ret) {
+                // return ret.path
+                l_img = ret.path;
+                vm.img_list.push(l_img);
+            } else {
+                alert('小可爱，你上传的图片过大了！');
+            }
+        });
+    }
+
+</script>
+
+</html>

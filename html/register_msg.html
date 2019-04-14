@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>用户信息</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            height: 50px;
+            color: #FFFFFF;
+            background-color: #457cfa;
+            line-height: 50px;
+            padding-right: 10px;
+        }
+
+        header img {
+            position: absolute;
+            height: 30px;
+            left: 0;
+            margin: 10px;
+        }
+
+        .login {
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            padding-top: 10px;
+        }
+
+        .text-view {
+            width: 100%;
+            text-align: center;
+            color: #666666;
+        }
+
+        #title1 {
+            font-size: 18px;
+            margin-top: 60px;
+        }
+
+        #title2 {
+            font-size: 12px;
+            margin-top: 20px;
+        }
+
+        .sex {
+            width: auto;
+            margin-left: 50px;
+            margin-right: 50px;
+            margin-top: 50px;
+        }
+
+        .sex-img-div {
+            text-align: center;
+        }
+
+        .sex img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .confirm {
+            margin-top: 40px;
+            width: 300px;
+            height: 50px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 25px;
+            background-color: #D9D9D9;
+            color: #FFFFFF;
+            font-size: 14px;
+            text-align: center;
+            line-height: 50px;
+        }
+
+        .edit_layout {
+            width: 70%;
+            height: 50px;
+            margin-left: 15%;
+            margin-top: 20px;
+        }
+
+        .edit_text {
+            width: 60%;
+            height: 50px;
+            line-height: 50px;
+            outline: none;
+            float: left;
+        }
+
+        .border-bottom {
+            position: relative;
+        }
+
+        .border-bottom:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+            top: auto;
+            bottom: 0;
+            background: #D9D9D9;
+        }
+
+        /*按钮样式*/
+        .aui-btn {
+            position: relative;
+            display: inline-block;
+            font-size: 0.9rem;
+            font-weight: 400;
+            font-family: inherit;
+            text-decoration: none;
+            text-align: center;
+            margin: 0;
+            background: #dddddd;
+            padding: 0 0.6rem;
+            height: 2.1rem;
+            line-height: 2.1rem;
+            border-radius: 0.2rem;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .aui-btn-primary {
+            color: #ffffff;
+            background-color: #00acc1;
+        }
+
+        .upload_img_div {
+            width: 100%;
+            height: 180px;
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .head_img {
+            display: inline-block;
+            box-sizing: border-box;
+            width: 160px;
+            height: 160px;
+            border: 3px solid #FFFFFF;
+            border-radius: 160px;
+            background-image: url(../image/upload_img_add.png);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 100% 100%;
+        }
+
+    </style>
+</head>
+<body  style="background:linear-gradient(#457cfa 20%, #FFFFFF 50%);">
+<div id="app">
+    <header>
+        <div class="login" id="login">
+            完善信息
+        </div>
+    </header>
+    <!--<div class="text-view" id="title1">-->
+        <!--新用户注册-->
+    <!--</div>-->
+    <div class="text-view" id="title2">
+        一张好看的的头像可以吸引更多异性同学哦!
+    </div>
+
+    <!--头像-->
+    <div class="upload_img_div">
+        <div class="head_img" id="head_img" onclick="getPicture()" tapmode></div>
+    </div>
+
+    <!--昵称-->
+    <div class="edit_layout border-bottom flex-wrap">
+        <input type="text" class="edit_text"
+               placeholder="昵称" v-model="nick"/>
+    </div>
+
+    <!--男 male-->
+    <div v-if="gender === 'male'" class="flex-wrap">
+        <div class="flex-con sex-img-div  sex">
+            <img id="men" src="../image/radio_men_focused_bg.png"
+                 tapmode="tap-active">
+        </div>
+        <div class="flex-con sex-img-div sex">
+            <img id="women" class="flex-con" src="../image/radio_women_default_bg.png"
+                 tapmode="tap-active" v-on:click="select_sex(1)">
+        </div>
+    </div>
+
+    <!--女 female-->
+    <div v-if="gender === 'female'" class="flex-wrap">
+        <div class="flex-con sex-img-div sex">
+            <img src="../image/radio_men_default_bg.png"
+                 tapmode="tap-active" v-on:click="select_sex(0)">
+        </div>
+        <div class="flex-con sex-img-div sex">
+            <img class="flex-con" src="../image/radio_women_focused_bg.png"
+                 tapmode="tap-active">
+        </div>
+    </div>
+
+    <br>
+    <div class="edit_layout flex-wrap">
+        <div class="aui-btn" style="color: #ffffff;background-color: #457cfa;"
+             v-on:click="choose_school">选择学校</div>
+        <span style="color: #666666;line-height: 2.1rem;height: 2.1rem;vertical-align: middle;margin-left: 20px">
+            {{school_name}}
+        </span>
+    </div>
+
+    <div class="confirm" style="background-color: #1E90FF;"
+         v-if=" nick && school_name && head_img_url" v-on:click="regist_msg()">
+        确定
+    </div>
+    <div v-else class="confirm">
+        确定
+    </div>
+
+    <br><br><br><br><br>
+</div>
+</body>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/sha1.js"></script>
+<script type="text/javascript">
+
+    //准备
+    apiready = function () {
+
+        var header = document.getElementsByTagName("header");
+        $api.fixStatusBar(header[0]);
+
+        //接收参数
+        vm.phone_num = api.pageParam.phone_num;
+        vm.password = api.pageParam.password;
+
+        vm.init();
+        ExitApp();  //禁止返回
+
+        //获取ip地址
+        var ipAddress = api.require('ipAddress');
+        ipAddress.getIp(
+            function(ret, err) {
+                vm.ip_addr = ret.ip;
+        });
+    };
+
+
+    //vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            phone_num: '',
+            password: '',
+            ip_addr: '',
+
+            user_token: '',
+            nick: '',
+            gender: 'male',
+            school_id: 0,
+            school_name: '',
+            head_img_url: 'http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/HG*QBZjora3R0Dh5H2mRL5IrrzLFbe.H4OfIIledhS8!/b/dDYBAAAAAAAA&bo=vwG*AQAAAAADByI!&rf=viewer_4',
+
+            school_list: [],
+            ui_list: [],
+
+            //返回的数据库中的数据
+            re_id: '',
+            re_nick: '',
+            re_head_image: '',
+            re_head_qn_url: '',
+            re_school: '',
+            re_school_name: '',
+        },
+        methods: {
+            //初始化 ajax数据请求
+            //获取学校列表
+            init: function () {
+                api.ajax({
+                    url: school_list,
+                    method: 'get',
+                    cache: 'false',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        //获取学校列表
+                        vm.school_list = ret.list;
+                        for (i = 0; i < vm.school_list.length; i++) {
+                            vm.ui_list.push(
+                                {
+                                    id: vm.school_list[i].id,
+                                    name: vm.school_list[i].name,
+                                    customerTypes: vm.school_list[i].province + '-' + vm.school_list[i].city,
+                                }
+                            )
+                        }
+                    } else {
+                        api.toast({
+                            msg: '对不起，学校列表未能获取！',
+                            duration: 1000,
+                            location: 'bottom'
+                        });
+                    }
+                });
+            },
+
+            //选择学校
+            choose_school: function () {
+                //UIListCard 展示了一个列表。开发者只需传入数据源，
+                // 模块会自动排序，展示出来。列表右侧字母导航条会自动随数量调整。
+                var UIListCard = api.require('UIListCard');
+                UIListCard.open({
+                    rect: {            //模块的位置及尺寸
+                        x: 0,
+                        y: api.safeArea.top,
+                        w: api.frameWidth,
+                        h: api.winHeight - api.safeArea.top
+                    },
+                    styles: {
+                        backgroudColor:'rgba(69,124,250,0.6)',
+                    },          //列表样式设置 默认
+                    contacts: vm.ui_list,
+                    indicator: false, //是否显示字母索引
+                }, function (ret) {
+                    if (ret.eventType === 'click') {
+                        vm.school_id = ret.contact.id;
+                        vm.school_name = ret.contact.name;
+                        UIListCard.close();
+                    }
+                });
+            },
+
+            //选择性别
+            select_sex: function (sex_) {
+                if (sex_ === 0) {
+                    vm.gender = 'male';
+                }
+                if (sex_ === 1) {
+                    vm.gender = 'female';
+                }
+            },
+
+            //提交用户信息
+            regist_msg: function () {
+                //昵称校验
+                if (!vm.nick) {
+                    alert('请填写昵称！');
+                    return false;
+                }
+                if (!(/^[a-zA-Z0-9_\u4E00-\u9FA5]{2,10}$/.test(vm.nick))) {
+                    alert('昵称格式不正确(中文、数字、字母、下划线，2-10位！)');
+                    return false;
+                }
+                if (!vm.school_name) {
+                    alert('请选择学校！');
+                    return false;
+                }
+                // 提交数据
+                api.ajax({
+                    url: register_msg,
+                    method: 'post',
+                    timeout: 10,
+                    dataType: 'json',
+                    returnAll: false,
+                    data: {
+                        values: {
+                            phone_num: vm.phone_num,
+                            password: vm.password,
+                            nick: vm.nick,
+                            gender: vm.gender,  //male男 female女
+                            school_id: vm.school_id,
+                            school_name: vm.school_name,
+                            device_num: api.deviceId,
+                            device_model: api.deviceModel,
+                            device_name: api.deviceName,
+                            operator: api.operator,
+                            reg_ip: vm.ip_addr,
+                            system_type: api.systemType,
+                            channel: api.channel,
+                        },
+                        files: {
+                            head_image: vm.head_img_url
+                        }
+                    }
+                }, function (ret, err) {
+                    if (ret) {
+                        if (ret.code === 400) {
+                            alert('用户名已存在！');
+                            return false;
+                        }
+
+                        //返回的数据库中的数据
+                        if (ret.code === 200) {
+                            vm.re_id = ret.user_msg[0].id;
+                            vm.re_nick = ret.user_msg[0].nick;
+                            vm.re_head_image = ret.user_msg[0].head_image;
+                            vm.re_head_qn_url = qiniu_url + ret.user_msg[0].head_qn_url + qiniu_small;
+                            vm.re_school = ret.user_msg[0].school__id;
+                            vm.re_school_name = ret.user_msg[0].school__name;
+
+                            getToken();
+                            $api.setStorage('uid', vm.re_id);
+                            $api.setStorage('nick', vm.re_nick);
+                            $api.setStorage('head_img', vm.re_head_qn_url);
+                            $api.setStorage('school_id', vm.re_school);
+                            $api.setStorage('school_name', vm.re_school_name);
+                            $api.setStorage('phone_num', vm.phone_num);
+
+
+                            //保存用户登录信息
+                            api.ajax({
+                                url: login_save,
+                                method: 'post',
+                                timeout: 30,
+                                dataType: 'json',
+                                returnAll: false,
+                                data: {
+                                    //以表单方式提交参数，JSON对象{"field1": "value1"}
+                                    values: {
+                                        phone_num: vm.phone_num,
+                                        password: vm.password,
+                                        log_ip: vm.ip_addr,
+                                        device_num: api.deviceId,
+                                        device_model: api.deviceModel,
+                                        device_name: api.deviceName,
+                                        operator: api.operator,
+
+                                        system_type: api.systemType,
+                                        system_version: api.systemVersion,
+                                        connection_type: api.connectionType,
+                                        screen_width: api.screenWidth,
+                                        screen_height: api.screenHeight,
+                                        channel: api.channel,
+                                        jail_break: api.jailbreak,
+                                    },
+                                }
+                            }, function (ret, err) {
+                            });
+
+                            //发送用户信息
+                            api.sendEvent({
+                                name: 'send_user_msg',
+                                extra: {
+                                    user_id: vm.re_id,
+                                    user_nick: vm.re_nick,
+                                    head_img: vm.re_head_qn_url,
+                                    school_id: vm.re_school,
+                                    school_name: vm.re_school_name,
+                                    token: vm.user_token,
+                                }
+                            });
+                        }
+                    } else {
+                        api.toast({
+                            msg: '对不起，注册信息未能提交！',
+                            duration: 1000,
+                            location: 'bottom'
+                        });
+                    }
+                });
+            }
+        }
+    });
+
+    //融云获取 token
+    //token用户令牌，在APP应用中的唯一标识
+    function getToken() {
+        var noce = parseInt(Math.random() * 10000);
+        var now = Date.now();
+        var signature = SHA1("mTQXepjUr1W" + noce + now);  //APP secret 融云提供AeIXcrhRvjpCrM
+        api.ajax({
+            url: 'http://api.cn.ronghub.com/user/getToken.json',
+            method: 'post',
+            headers: {
+                "App-Key": "pvxdm17jp3mvr",   ////APP key 融云提供
+                "Nonce": noce,
+                "Timestamp": now,
+                "Signature": signature,
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            data: {
+                values: {
+                    userId: vm.re_id,    //本人的账号信息
+                    name: vm.re_nick,
+                    portraitUri: vm.re_head_qn_url
+                }
+            }
+        }, function (ret, err) {
+            if (ret) {
+                vm.user_token = ret.token;
+                if (vm.user_token) {
+                    //更新token
+                    api.ajax({
+                        url: get_token,
+                        method: 'post',
+                        timeout: 30,
+                        dataType: 'json',
+                        returnAll: false,
+                        data: {
+                            //以表单方式提交参数，JSON对象{"field1": "value1"}
+                            values: {
+                                user_id: vm.re_id,
+                                user_token: vm.user_token
+                            },
+                        }
+                    }, function (ret, err) {
+                        if (ret) {
+                            if (ret.code === 200) {
+                                //到此注册就算结束了
+                                //先用手机号注册，然后上传头像、昵称、学校等信息，
+                                //最后根据数据库中用户信息生成token
+                                $api.setStorage('token', vm.user_token);
+                                api.closeToWin({
+                                    name: 'root'
+                                });
+                            }
+                        } else {
+                            api.toast({
+                                msg: '对不起，token出现错误！',
+                                duration: 1000,
+                                location: 'bottom'
+                            });
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+
+    //获取头像
+    function getPicture() {
+        api.actionSheet({
+            title: "选择",
+            cancelTitle: "取消",
+            buttons: ["拍照", "相册"]
+        }, function (ret, err) {
+            if (ret) {
+                var sourceTypes = ['camera', 'album'];
+                api.getPicture({
+                    sourceType: sourceTypes[ret.buttonIndex - 1],
+                    allowEdit: true,
+                    targetWidth: 400,
+                    targetHeight: 400,
+                    saveToPhotoAlbum: false
+                }, function (ret, err) {
+                    if (ret) {
+                        vm.head_img_url = ret.data;
+                        if (vm.head_img_url) {
+                            setAvatar(vm.head_img_url);
+                        }
+                    } else {
+                        my_toast();
+                    }
+                });
+            } else {
+                my_toast();
+            }
+        });
+    }
+
+
+    //头像图片替代
+    function setAvatar(imgUrl) {
+        var icon = $api.byId('head_img');
+        icon.style.backgroundImage = 'url(' + imgUrl + ')';
+    }
+
+
+    //监听 退出按钮 禁止退出
+    function ExitApp() {
+        api.addEventListener({
+            name: 'keyback'
+        }, function(ret, err) {
+
+            api.toast({
+                msg: '再按一次返回键退出' + api.appName,
+                duration: 2000,
+                location: 'bottom'
+            });
+
+            api.addEventListener({
+                name: 'keyback'
+            }, function(ret, err) {
+                api.closeWidget({
+                    id: 'A6097090063092',
+                    retData: {
+                        name: 'closeWidget'
+                    },
+                    animation: {
+                        type: 'flip',
+                        subType: 'from_bottom',
+                        duration: 500
+                    },
+                    silent: true
+                });
+            });
+        });
+    }
+
+</script>
+</html>

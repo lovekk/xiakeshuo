@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我的地盘</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+</head>
+<body>
+    <header class="aui-bar aui-bar-nav my-bgc">
+        <a class="aui-pull-left aui-btn" onclick="api.closeWin()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">个人信息</div>
+    </header>
+</body>
+</html>
+
+<script src="../script/api.js"></script>
+<script>
+
+    apiready = function () {
+        $api.fixIos7Bar($api.dom("header"));//padding-top: 20px; 沉浸式状态栏
+        var my_head = api.pageParam.my_head;
+        var my_nick = api.pageParam.my_nick;
+        var my_school = api.pageParam.my_school;
+        var my_sign = api.pageParam.my_sign;
+
+        api.openFrame({
+            name: 'my_msg_frame',
+            url: './my_msg_frame.html',
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: 'auto',
+                h: api.winHeight - $api.dom('header').offsetHeight
+            },
+            bounces: true,
+            pageParam: {
+                my_head: my_head,
+                my_nick: my_nick,
+                my_school: my_school,
+                my_sign: my_sign,
+            }
+        });
+    };
+
+</script>

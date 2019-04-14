@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>预约回收</title>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+
+		<style>
+			header {
+				height: 50px;
+				background-color: #6ab494;
+				line-height: 50px;
+			}
+			header {
+				height: 50px;
+				color: #FFFFFF;
+				background-color: #6ab494;
+				line-height: 50px;
+				padding-right: 10px;
+			}
+			header img {
+				position : absolute;
+				height: 30px;
+				left : 0;
+				margin: 10px;
+			}
+
+			.regist{
+				position : absolute;
+				height : 30px;
+				line-height:30px;
+				right: 0;
+				margin: 10px;
+				margin-right: 25px;
+			}
+			.text-view {
+				width: 100%;
+				text-align: center;
+				color: #666666;
+				font-weight: bold;
+			}
+			#title1 {
+				font-size: 18px;
+				margin-top: 60px;
+			}
+			.edit_layout {
+				width: auto;
+				margin-left: 50px;
+				margin-right: 50px;
+				height: 50px;
+				margin-top: 20px;
+			}
+			.edit_text {
+				width: 70%;
+				height: 50px;
+				line-height: 50px;
+				outline: none;
+				float: left;
+			}
+			.border-bottom {
+				position: relative;
+			}
+			.border-bottom:after {
+				content: '';
+				position: absolute;
+				left: 0;
+				right: 0;
+				height: 1px;
+				top: auto;
+				bottom: 0;
+				background: #D9D9D9;
+			}
+			.border-bottom-focus:after {
+				background: #6AB494;
+			}
+			#confirm {
+				width: auto;
+				height: 50px;
+				margin-top: 40px;
+				margin-left: 50px;
+				margin-right: 50px;
+				border-radius: 25px;
+				background-color: #457cfa;
+				color: #FFFFFF;
+				font-size: 14px;
+				text-align: center;
+				line-height: 50px;
+			}
+		</style>
+	</head>
+	<body>
+
+    <div id="app" class="aui-content">
+
+        <header class="aui-bar aui-bar-nav my-bgc">
+            <a class="aui-pull-left aui-btn" onclick="api.closeWin()">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </a>
+            <div class="aui-title">预约回收</div>
+			<div class="aui-pull-right aui-btn">
+                <span v-on:click="open_sao()">绑袋</span>
+            </div>
+        </header>
+
+		<div v-if=" appoint_status == 0 || appoint_status == 1">
+			<br>
+		</div>
+		<div v-else>
+			<div class="text-view" id="title1">
+				请填写预约信息
+			</div>
+
+			<div class="edit_layout border-bottom flex-wrap">
+				<input type="text" id="phone_num" class="edit_text"
+					   placeholder="*主要物品类型(例：纸箱、杂物等)" v-model="thing_type"/>
+			</div>
+
+			<div class="edit_layout border-bottom" >
+				<input type="text"  class="edit_text flex-con"
+					   placeholder="*具体地址(例：15#206-2)" v-model="address" />
+			</div>
+			<div class="edit_layout border-bottom" >
+				<input type="number"  class="edit_text flex-con"
+					   placeholder="联系电话" v-model="phone_num"/>
+			</div>
+			<div class="edit_layout border-bottom" >
+				<input type="text"  class="edit_text flex-con"
+					   placeholder="备注(可空)" v-model="remark"/>
+			</div>
+			<br>
+
+			<div  id="confirm" v-on:click="appoint_msg()">
+				预约
+			</div>
+		</div>
+
+		<div v-if=" appoint_status === 0" class="edit_layout" style="color: green">
+			预约成功，等待工作人员上门回收！<i class="aui-iconfont aui-icon-correct"></i>
+		</div>
+		<div v-if=" appoint_status === 1" class="edit_layout" style="color: green">
+			已绑定回收袋，等待结算！<i class="aui-iconfont aui-icon-correct"></i>
+		</div>
+		<div v-if=" appoint_status === 2" class="edit_layout" style="color: green">
+			回收完成，您可再次预约！<i class="aui-iconfont aui-icon-correct"></i><br>
+			<!--如果预约信息不变，可以直接点击一键预约。<br>-->
+			<!--小按钮《一键预约》-->
+		</div>
+        <br><br><br><br>
+
+        <div style="color: #616161;font-size: 14px;width: 80%;margin-left: 10%;"
+			 v-html="recovery_tips">
+        </div>
+
+	</div>
+
+	</body>
+	<script type="text/javascript" src="../script/common.js"></script>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/vue.js"></script>
+	<script type="text/javascript">
+
+		apiready = function() {
+			var header = document.getElementsByTagName("header");
+			$api.fixStatusBar(header[0]);
+
+		    //接收参数
+			vm.school_id = api.pageParam.school_id;
+        	vm.school_name = api.pageParam.school_name;
+
+        	vm.init();
+		};
+
+		var vm = new Vue({
+		    el: '#app',
+		    data: {
+		        school_id: '',
+				school_name: '',
+
+				appoint_status: 3,
+
+		        thing_type: '',
+		        address: '',
+		        address_v: '',
+		        phone_num: '',
+		        remark: '',
+
+				bag_num:'',
+
+		        recovery_tips: '',  //回收预约提示
+		    },
+		    methods: {
+		        //初始化 ajax数据请求
+				//初始化 ajax数据请求
+                init: function () {
+                    api.ajax({
+                        url: recovery_tips + '?school_id=' + vm.school_id + '&user_id=' + $api.getStorage('uid'),
+                        method: 'get',
+                        cache: 'true',
+                        timeout: 30,
+                        dataType: 'json',
+                        returnAll: false,
+                    }, function (ret, err) {
+                        if (ret) {
+                            vm.recovery_tips = ret.tip_msg[0].tip;
+                            if (ret.first_appoint.length) {
+                                if (ret.first_appoint[0].status === 0){
+                                    vm.appoint_status = 0; //已预约
+								}
+								if (ret.first_appoint[0].status === 1){
+                                    vm.appoint_status = 1; //已绑定袋子
+								}
+								if (ret.first_appoint[0].status === 2) {
+                                    vm.appoint_status = 2; //已完成
+                                }
+							}
+                        } else {
+							api.toast({
+								msg: '预约失败，请重新尝试',
+								duration: 2000,
+								location: 'bottom'
+							});
+                        }
+                    });
+                },
+
+				//提交预约
+		        appoint_msg: function () {
+
+					//物品主要类型
+					if(!vm.thing_type){
+						alert('请填写物品主要类型！');
+						return false;
+					}
+
+					//具体地点
+					if(!vm.address){
+						alert('请填写具体地址！');
+						return false;
+					}
+
+					// //手机号
+					// if (!(/^1[34578]\d{9}$/.test(vm.phone_num))) {
+					//     alert('手机号格式不正确！');
+					// 	return false;
+					// }
+
+		            api.ajax({
+		                url: appoint_add,
+		                method: 'post',
+		                timeout: 5,
+		                dataType: 'json',
+		                returnAll: false,
+		                data: {
+		                    //以表单方式提交参数，JSON对象{"field1": "value1"}
+		                    values: {
+		                        school_id: vm.school_id,
+		                        user_id: $api.getStorage('uid'),
+
+		                        thing_type: vm.thing_type,
+		                        address: vm.address,
+		                        phone_num: vm.phone_num,
+		                        remark: vm.remark,
+		                    },
+		                }
+		            }, function (ret, err) {
+		                if (ret) {
+		                    if (ret.code === 200){
+		                       vm.appoint_status = 0; //已预约
+		                        alert('预约成功！');
+							}
+		                } else {
+		                    my_toast();
+		                }
+		            });
+		        },
+
+				//扫描袋子
+				open_sao: function () {
+					var FNScanner = api.require('FNScanner');
+					FNScanner.open({
+						autorotation: true
+					}, function (ret, err) {
+						if (ret){
+							if (ret.eventType === 'success') {
+								vm.bag_num = ret.content;
+								//确认按钮
+								api.confirm({
+									title: '绑定回收袋',
+									msg: '您绑定的回收袋编号为：' + vm.bag_num,
+									buttons: ['确定', '取消']
+								}, function(ret, err) {
+									if (ret.buttonIndex === 1){
+
+									    api.ajax({
+											url: appoint_scan,
+											method: 'post',
+											timeout: 30,
+											dataType: 'json',
+											returnAll: false,
+											data: {
+												//以表单方式提交参数，JSON对象{"field1": "value1"}
+												values: {
+												    school_id: vm.school_id,
+													user_id: $api.getStorage('uid'),
+													bag_num: vm.bag_num,
+												},
+											}
+										}, function (ret, err) {
+											if (ret) {
+											    vm.init();
+											} else {
+												my_toast();
+											}
+										});
+
+									}
+								});
+							}
+						} else {
+							my_toast();
+						}
+					});
+				},
+
+		    }
+		});
+
+	</script>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>说说-正文</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+</head>
+<body>
+
+<div id="app" class="aui-content">
+    <!--====================================头部=======================================-->
+    <header class="aui-bar aui-bar-nav my-bgc">
+        <a class="aui-pull-left aui-btn" tapmode onclick="api.closeWin()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">正文</div>
+    </header>
+</div>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+
+    // 准备
+    apiready = function () {
+
+        $api.fixIos7Bar($api.dom("header"));//padding-top: 20px; 沉浸式状态栏
+        var moment_id = api.pageParam.moment_id;
+        var his_id = api.pageParam.his_id;
+
+        api.openFrame({
+            name: 'find_content_frame',
+            url: './find_content_frame.html',
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: 'auto',
+                h: api.winHeight - $api.dom('header').offsetHeight
+            },
+            bounces: true,
+            pageParam: {
+                moment_id: moment_id,
+                his_id: his_id,
+            }
+        });
+    };
+
+</script>
+</html>

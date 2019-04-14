@@ -1,0 +1,477 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我的</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <style type="text/css">
+        .text-white {
+            color: #ffffff !important;
+        }
+
+        .text-light {
+            color: #999 !important;
+        }
+
+        .bg-white {
+            background-color: #ffffff;
+        }
+
+        .aui-grid [class*=aui-col-] {
+            padding: 0;
+        }
+
+        .user-info {
+            width: 150%;
+            position: relative;
+            left: -25%;
+            padding-left: 25%;
+            border-bottom-left-radius: 50%;
+            border-bottom-right-radius: 50%;
+            padding-bottom: 1.5rem;
+        }
+
+        .aui-grid .aui-dot {
+            top: 0rem;
+        }
+
+        .label-cont {
+            display: block;
+            height: 1.8rem;
+            line-height: 1.8rem;
+        }
+
+        .label-icon {
+            display: block;
+            width: 1.8rem;
+            height: 1.8rem;
+            border-radius: 50%;
+            margin: 0 auto;
+            line-height: 1.8rem;
+            text-align: center;
+        }
+
+        .label-cont .aui-iconfont {
+            font-size: 1rem;
+        }
+
+        .label-icon .aui-iconfont {
+            color: #ffffff;
+            font-size: 0.8rem;
+        }
+
+        .font-size-26 {
+            font-size: 1.3rem !important;
+        }
+
+        .aui-grid-label {
+            color: #666 !important;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+<!-- 顶部 -->
+<section class="aui-content bg-white aui-margin-b-15">
+    <div class="aui-list aui-media-list aui-list-noborder aui-bg-info user-info"
+         style="background-color: #457cfa !important;">
+        <div class="aui-list-item aui-list-item-middle">
+            <div class="aui-media-list-item-inner ">
+                <div class="aui-list-item-media">
+                    <img :src=" qiniu + head_img + small" class="aui-img-round"
+                         style="width:60px;height:60px; border-radius: 60px">
+                </div>
+                <div class="aui-list-item-inner">
+                    <div v-if=" gender == 'female'" class="aui-list-item-text text-white aui-font-size-18">
+                        {{nick}} 👗👠
+                    </div>
+                    <div v-else class="aui-list-item-text text-white aui-font-size-18">
+                        {{nick}} 👔👖
+                    </div>
+                    <div class="aui-list-item-text text-white">
+                        <div>学校：{{school_name}}</div>
+                    </div>
+
+                    <div v-if=" my_sign " class="aui-list-item-text text-white">
+                        <div>签名：{{my_sign}}</div>
+                    </div>
+                    <div v-else class="aui-list-item-text text-white">
+                        <div>签名：我还没来得及写签名呢~</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="aui-content aui-grid aui-margin-b-15">
+    <div class="aui-row">
+        <div class="aui-col-xs-4 aui-border-r" onclick="open_my_follow()">
+            <div class="aui-text-primary">{{create_total}}
+                <small></small>
+            </div>
+            <div class="aui-gird-lable aui-font-size-12">关注</div>
+        </div>
+        <div class="aui-col-xs-4 aui-border-r" onclick="open_my_fans()">
+            <div class="aui-text-success">{{fans_total}}
+                <small></small>
+            </div>
+            <div class="aui-gird-lable aui-font-size-12">粉丝</div>
+        </div>
+        <div class="aui-col-xs-4 aui-border-r" onclick="open_my_jifen()">
+            <div class="aui-text-info">{{integral}}
+                <small></small>
+            </div>
+            <div class="aui-gird-lable aui-font-size-12">积分</div>
+        </div>
+        <!--<div class="aui-col-xs-4">-->
+        <!--<big class="aui-text-success">000<small> </small></big>-->
+        <!--<div class="aui-gird-lable aui-font-size-12">好友</div>-->
+        <!--</div>-->
+    </div>
+</section>
+<section class="aui-content">
+
+    <ul class="aui-list aui-list-in aui-margin-b-15">
+        <li class="aui-list-item">
+            <div class="aui-list-item-label-icon">
+                <i class="aui-iconfont aui-icon-home aui-text-info"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow" onclick="open_my_homepage()">
+                <div class="aui-list-item-title">我的主页</div>
+            </div>
+        </li>
+        <li class="aui-list-item" onclick="open_my_help()">
+            <div class="aui-list-item-label-icon">
+                <i class="aui-iconfont aui-icon-cert aui-text-warning"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-title">我的help</div>
+                <div class="aui-list-item-right"></div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-label-icon">
+                <i class="aui-iconfont aui-icon-my aui-text-primary"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow" onclick="open_my_msg()">
+                <div class="aui-list-item-title">个人信息</div>
+            </div>
+        </li>
+    </ul>
+
+    <!--<ul class="aui-list aui-list-in aui-margin-b-15">-->
+        <!--<li class="aui-list-item">-->
+            <!--<div class="aui-list-item-label-icon">-->
+                <!--<i class="aui-iconfont aui-icon-my aui-text-primary"></i>-->
+            <!--</div>-->
+            <!--<div class="aui-list-item-inner aui-list-item-arrow" onclick="open_my_msg()">-->
+                <!--<div class="aui-list-item-title">个人信息</div>-->
+            <!--</div>-->
+        <!--</li>-->
+        <!--苹果没有认证-->
+        <!--<li class="aui-list-item">-->
+            <!--<div class="aui-list-item-label-icon">-->
+                <!--<i class="aui-iconfont aui-icon-pencil aui-text-danger"></i>-->
+            <!--</div>-->
+            <!--<div class="aui-list-item-inner aui-list-item-arrow" onclick="open_my_auth()">-->
+                <!--<div class="aui-list-item-title">认证</div>-->
+            <!--</div>-->
+        <!--</li>-->
+        <!--<li class="aui-list-item">-->
+        <!--<div class="aui-list-item-label-icon">-->
+        <!--<i class="aui-iconfont aui-icon-paper aui-text-default"></i>-->
+        <!--</div>-->
+        <!--<div class="aui-list-item-inner aui-list-item-arrow">-->
+        <!--<div class="aui-list-item-title">收藏</div>-->
+        <!--</div>-->
+        <!--</li>-->
+    <!--</ul>-->
+</section>
+
+
+<section class="aui-content">
+    <ul class="aui-list aui-list-in aui-margin-b-15"></ul>
+
+    <ul class="aui-list aui-list-in">
+        <li class="aui-list-item">
+            <div class="aui-list-item-label-icon">
+                <i class="aui-iconfont aui-icon-gear aui-text-primary"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow" onclick="open_my_set()">
+                <div class="aui-list-item-title">设置</div>
+                <div class="aui-list-item-right"></div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-label-icon">
+                <i class="aui-iconfont aui-icon-paper aui-text-warning"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow" onclick="about_us()">
+                <div class="aui-list-item-title">关于我们</div>
+                <div class="aui-list-item-right"></div>
+            </div>
+        </li>
+    </ul>
+</section>
+
+
+<section class="aui-content">
+    <ul class="aui-list aui-list-in aui-margin-b-15"></ul>
+
+    <ul class="aui-list aui-list-in">
+        <li class="aui-list-item">
+            <div class="aui-list-item-label-icon">
+                <i class="aui-iconfont aui-icon-edit aui-text-success"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow" onclick="customer_service()">
+                <div class="aui-list-item-title">在线客服</div>
+                <div class="aui-list-item-right">问题反馈</div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-label-icon">
+                <i class="aui-iconfont aui-icon-forward aui-text-primary"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow"
+                 onclick="quit_out()" >
+                <div class="aui-list-item-title">退出</div>
+                <div class="aui-list-item-right"></div>
+            </div>
+        </li>
+    </ul>
+</section>
+</div>
+</body>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+
+<script type="text/javascript">
+
+    apiready = function () {
+        vm.init();
+        initRefresh();  // 下拉刷新
+    };
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            qiniu: qiniu_url,
+            small: qiniu_small,
+
+            head_img: '',
+            nick: '',
+            gender: '',
+            school_name: '',
+            my_sign:'',
+            integral: '',
+            fans_total: '',
+            create_total: '',
+        },
+        methods: {
+            //初始化 ajax数据请求
+            init: function () {
+                api.ajax({
+                    url: my_num + '?user_id=' + $api.getStorage('uid'),
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        api.refreshHeaderLoadDone(); //方法恢复组件到默认状态
+                        if (ret.code === 200){
+                            vm.head_img = ret.my_num[0].head_qn_url;
+                            vm.nick = ret.my_num[0].nick;
+                            vm.gender = ret.my_num[0].gender;
+                            vm.school_name = ret.my_num[0].school_name;
+                            vm.my_sign = ret.my_num[0].my_sign;
+                            vm.integral = ret.my_num[0].integral;
+                            vm.fans_total = ret.my_num[0].fans_total;
+                            vm.create_total = ret.my_num[0].create_total;
+                        }
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+
+        }
+    });
+
+
+    //打开 我的主页
+    function open_my_homepage(){
+        api.openWin({
+            name: 'my_home_win',
+            url: './my_home_win.html',
+        });
+    }
+
+    //打开 我的help
+    function open_my_help(){
+        api.openWin({
+            name: 'my_help_win',
+            url: './my_help_win.html',
+        });
+    }
+
+    //打开 我的个人信息
+    function open_my_msg(){
+        api.openWin({
+            name: 'my_msg_win',
+            url: './my_msg_win.html',
+            pageParam: {
+                my_head: vm.head_img,
+                my_nick: vm.nick,
+                my_school: vm.school_name,
+                my_sign: vm.my_sign,
+            }
+        });
+    }
+
+
+    //打开 我的认证
+    function open_my_auth(){
+        api.openWin({
+            name: 'my_auth_win',
+            url: './my_auth_win.html',
+        });
+    }
+
+
+    //打开 设置
+    function open_my_set(){
+        api.openWin({
+            name: 'my_set_win',
+            url: './my_set_win.html',
+        });
+    }
+
+
+    //打开 关于我们
+    function about_us(){
+        api.openWin({
+            name: 'my_about_win',
+            url: './my_about_win.html',
+        });
+    }
+
+
+    //打开 我的粉丝与关注
+    //给个参数 区分关注和粉丝 0关注  1粉丝
+    function open_my_follow(){
+        api.openWin({
+            name: 'my_follow_win',
+            url: './my_follow_win.html',
+        });
+    }
+    function open_my_fans(){
+        api.openWin({
+            name: 'my_fans_win',
+            url: './my_fans_win.html',
+        });
+    }
+
+
+    //积分兑换
+    function open_my_jifen(){
+        api.openWin({
+            name: 'my_jifen_win',
+            url: './my_jifen_win.html',
+        });
+    }
+
+
+    //meiQia客服
+    function customer_service() {
+        var mq = api.require('meiQia');
+        mq.initMeiQia({
+            appkey: "f7a850268573bb25acf0eaebf1fc7cad"
+        }, function (ret, err) {
+            if (ret) {
+                var clientIdParam = {
+                    id: ret.clientId
+                };
+                mq.setLoginMQClientId(clientIdParam);
+                mq.setTitleColor({
+                    color: "#FFF"
+                });
+                mq.setTitleBarColor({
+                    color: "#000000"
+                });
+                mq.show();   //弹出聊天界面
+            }
+        });
+        //设置用户信息
+        var infoParam = {
+            avatar: $api.getStorage('head_img'),
+            name: $api.getStorage('nick'),
+            tel: $api.getStorage('phone_num'),
+            source: $api.getStorage('school_name'),
+        };
+        mq.setClientInfo(infoParam);
+    }
+    
+    
+    //退出登录  清空storage
+    function quit_out() {
+        api.confirm({
+            title: '提示',
+            msg: '您确定要退出吗？',
+            buttons: ['确定', '取消']
+        }, function(ret, err) {
+            if (ret.buttonIndex === 1){
+
+                api.clearCache(function() {
+                    api.toast({
+                        msg: '清除完成'
+                    });
+                });
+
+                //清除本地数据
+                // $api.rmStorage('uid');
+                // $api.rmStorage('nick');
+                // $api.rmStorage('head_img');
+                // $api.rmStorage('school_id');
+                // $api.rmStorage('school_name');
+                // $api.rmStorage('token');
+                //清除localStorage的所有数据，慎用
+                $api.clearStorage ();
+
+                //跳转到登录页
+                api.openWin({
+                    name: 'login_begin',
+                    url: './login_begin.html',
+                });
+            }
+        });
+    }
+
+
+    // 实现下拉刷新功能
+    function initRefresh() {
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/fresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '嘤嘤嘤 放开我...'
+        }, function (ret, err) {
+            vm.init();//初始化 ajax数据请求
+            api.toast({
+                msg: '已刷新',
+                duration: 1000,
+                location: 'bottom'
+            });
+        });
+    }
+
+
+</script>
+</html>

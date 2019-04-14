@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>校园失物招领</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+</head>
+<body>
+    <header class="aui-bar aui-bar-nav my-bgc">
+        <a class="aui-pull-left aui-btn" onclick="api.closeWin()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">失物招领</div>
+        <a class="aui-pull-right aui-btn">
+            <img src="../image/add.png" width="26px" height="26px" onclick="open_add_lose()">
+        </a>
+
+    </header>
+</body>
+</html>
+
+<script src="../script/api.js"></script>
+<script>
+    var school_name;
+    var school_id;
+    apiready = function () {
+        $api.fixIos7Bar($api.dom("header"));//padding-top: 20px; 沉浸式状态栏
+        school_name = api.pageParam.school_name;
+        school_id = api.pageParam.school_id;
+        api.openFrame({
+            name: 'home_lose_frame',
+            url: './home_lose_frame.html',
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: 'auto',
+                h: api.winHeight - $api.dom('header').offsetHeight
+            },
+            bounces: true,
+            pageParam: {
+                school_id: school_id,
+                school_name: school_name
+            }
+        });
+    };
+
+
+    //添加
+    function open_add_lose() {
+        api.openWin({
+            name: 'home_lose_add',
+            url: './home_lose_add.html',
+            allowEdit: true,
+            pageParam: {
+                school_id: school_id,
+            }
+        });
+    }
+</script>

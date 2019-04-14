@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>发现-评论</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/alifont/iconfont.css"/>
+
+    <style>
+        .aui-content {
+            background: #fff;
+        }
+
+        .controlimg {
+            word-break: break-all !important; /*支持IE，chrome，FF不支持*/
+            word-wrap: break-word !important; /*支持IE，chrome，FF*/
+        }
+
+        .controlimg img {
+            width: 100% !important;
+        }
+
+        .aui-list .aui-list-item-media {
+            width: 3rem;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div id="app" class="aui-content">
+    <!--====================================头部=======================================-->
+    <header class="aui-bar aui-bar-nav my-bgc">
+        <a class="aui-pull-left aui-btn" tapmode onclick="api.closeWin()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">{{replay_num}}条回复</div>
+    </header>
+
+
+    <!-- ================================================评论================================ -->
+
+    <section class="aui-content">
+        <ul class="aui-list aui-media-list">
+            <li class="aui-list-item" style="background-color: rgba(135,206,250,0.3);font-size: 16px;padding-bottom: 20px">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-media">
+                        <img :src="qiniu + c_head + qiniu_small" style="width: 40px; height: 40px; border-radius: 40px"/>
+                    </div>
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title" style="color:#4c5276">{{c_nick}}</div>
+                            <div><i class="aui-iconfont iconfont icon-zan-"></i>{{good_num}}</div>
+                        </div>
+                        <div class="aui-list-item-text" style="color:#333;">
+                            {{content}}
+                        </div>
+                        <div class="aui-info aui-font-size-12 aui-padded-t-0 aui-padded-b-0">
+                            <div class="aui-info-item">{{comment_date}}</div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </section>
+
+    <!-- ================================================回复================================ -->
+    <section class="aui-content">
+        <ul class="aui-list aui-media-list">
+
+            <li class="aui-list-item" v-for="item in reply_list">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-media">
+                        <img :src="qiniu + item.c_head + qiniu_small" style="width: 40px; height: 40px; border-radius: 40px"/>
+                    </div>
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title" style="color:#4c5276">{{item.c_nick}}</div>
+                            <!--<div><i class="aui-iconfont iconfont icon-zan-"></i> 53</div>-->
+                        </div>
+                        <div class="aui-list-item-text" style="color:#333;">
+                            {{item.content}}
+                        </div>
+                        <div class="aui-info aui-font-size-12 aui-padded-t-0 aui-padded-b-0">
+                            <div class="aui-info-item">{{item.comment_date}}</div>
+
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </section>
+
+
+</div>
+
+</body>
+
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+
+<script type="text/javascript">
+
+    // 准备
+    apiready = function () {
+        vm.comment_id = api.pageParam.comment_id;
+        $api.fixIos7Bar($api.dom("header"));//padding-top: 20px; 沉浸式状态栏
+        vm.init();
+    };
+
+
+    //vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            qiniu: qiniu_url,
+            qiniu_small: qiniu_small,
+
+            comment_id: '',
+
+            content: '',
+            replay_num: '',
+            good_num: '',
+            comment_date: '',
+            c_head: '',
+            c_nick: '',
+
+            comment_one: [],
+            reply_list: [],
+        },
+        methods: {
+            //初始化 ajax数据请求
+            init: function () {
+                api.ajax({
+                    url: reply_comment_detail + '?comment_id=' + vm.comment_id,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        if (ret.code===200){
+                            vm.comment_one = ret.comment_detail;
+
+                            vm.content = ret.comment_detail[0].content;
+                            vm.replay_num = ret.comment_detail[0].replay_num;
+                            vm.good_num = ret.comment_detail[0].good_num;
+                            vm.c_nick = ret.comment_detail[0].c_nick;
+                            vm.c_head = ret.comment_detail[0].c_head;
+                            vm.comment_date = ret.comment_detail[0].comment_date;
+                            vm.reply_list = ret.reply_moment_data;
+                        }
+
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+
+        }
+    });
+
+
+</script>
+
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>文章详情</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style>
+        .aui-content{
+            background: #fff;
+        }
+        .controlimg{
+            word-break:break-all !important; /*支持IE，chrome，FF不支持*/
+            word-wrap:break-word !important;/*支持IE，chrome，FF*/
+        }
+        .controlimg img{
+            width: 100% !important;
+        }
+
+
+        .aui-list .aui-list-item-media {
+            width: 3rem;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="aui-content" id="app">
+        <ul class="aui-list aui-media-list">
+            <li class="aui-list-item">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title aui-font-size-18">{{title}}</div>
+                        </div>
+
+                        <div class="aui-list-item-text aui-padded-t-10 aui-border-b">
+                            <div class="aui-font-size-14 aui-padded-b-5">
+                                <span class="aui-text-success">作者：</span>{{author}}
+                            </div>
+                           <hr>
+                        </div>
+                        <div class="aui-list-item-text aui-padded-t-10 ">
+                            <p class="controlimg" v-html="content">
+                            </p>
+                        </div>
+                        <br>
+                        <div class="aui-info aui-font-size-12" style="padding-top:5px;">
+                            <div class="aui-info-item">
+                                <span class="aui-margin-l-5">编辑：{{editor}}</span>
+                            </div>
+                        </div>
+
+                        <div class="aui-info aui-font-size-12" style="padding-top:5px;">
+                            <div class="aui-info-item">
+                                <span class="aui-margin-l-5">浏览：{{view_num}}</span>
+                            </div>
+                            <div class="aui-info-item">{{publish_date}}</div>
+                        </div>
+                        <div class="aui-info aui-font-size-12" style="padding-top:10px;">
+                            <div class="aui-info-item" onclick="report_it()">
+                                <span class="aui-margin-l-5 aui-btn aui-btn-default aui-btn-block aui-btn-outlined aui-btn-sm" >不喜欢</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </li>
+        </ul>
+
+        <br><br>
+        <div class="aui-btn aui-btn-info aui-btn-block aui-btn-outlined aui-btn-sm"
+             style="width: 200px; margin-left: auto; margin-right: auto;" onclick="open_comment()">
+            留言
+        </div>
+        <br>
+        <section class="aui-content">
+
+            <ul class="aui-list aui-media-list">
+                <li class="aui-list-item" v-for="i in comment_list">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-media" v-on:click="his_home( i.c_id )">
+                            <img :src="qiniu_url + i.c_head +qiniu_small"  style="width: 40px; height: 40px; border-radius: 40px"/>
+                        </div>
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title" v-on:click="his_home( i.c_id )">{{i.c_nick}}</div>
+                            </div>
+<!--需要顶头写，不然white-space:pre-wrap;会把前面的空格页当作空格显示出来-->
+<div class="aui-list-item-text" style="color:#333;white-space:pre-wrap;">{{i.content}}</div>
+                            <div class="aui-info aui-font-size-12 aui-padded-t-5 aui-padded-b-0">
+                                <div class="aui-info-item">{{i.create_date}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </div>
+
+</body>
+</html>
+
+<script src="../script/common.js"></script>
+<script src="../script/vue.js"></script>
+<script>
+
+    apiready = function () {
+        vm.article_id = api.pageParam.article_id;
+        vm.school_id = api.pageParam.school_id;
+
+        initRefresh(); //下拉刷新
+        vm.init(true);
+
+        //下拉监听事件
+        api.addEventListener({
+            name : 'scrolltobottom',
+            extra : {
+                threshold : 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            //分页加20，和后台同步
+            vm.skip += 20;
+            vm.init(false);
+        });
+    };
+
+
+    //vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            school_id: '',
+            article_id: '',
+            media: media_url,
+            qiniu_url:qiniu_url,
+            qiniu_small:qiniu_small,
+
+            title: '',
+            author: '',
+            content: '',
+            editor: '',
+            publish_date: '',
+            view_num: '',
+
+            comment_list: [],
+
+            is_more: true,    //加载更多,默认第一次
+            skip: 0,
+        },
+        methods: {
+            //初始化 ajax数据请求
+            init: function (more_) {
+                api.ajax({
+                    url: article_detail + '?article_id=' + vm.article_id + '&skip=' + vm.skip,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        if (ret.code === 200) {
+                            api.refreshHeaderLoadDone(); //恢复组件到默认状态
+                            vm.title = ret.article_data[0].title;
+                            vm.author = ret.article_data[0].author;
+                            vm.content = ret.article_data[0].content;
+                            vm.editor = ret.article_data[0].editor;
+                            vm.publish_date = ret.article_data[0].publish_date;
+                            vm.view_num = ret.article_data[0].view_num;
+
+                            if ( more_ ){
+                                vm.comment_list = ret.comment_data;
+                            } else {
+                                if (ret.comment_data.length > 0){
+                                    //concat() 方法用于连接两个或多个数组。
+                                    vm.comment_list = vm.comment_list.concat(ret.comment_data);
+                                }
+                            }
+                        }
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+
+            //打开个人主页
+            his_home: function (id_) {
+                open_his_home(id_)
+            }
+        }
+    });
+
+
+    //评论
+    function open_comment() {
+        api.openWin({
+            name: 'home_article_comment',
+            url: './home_article_comment.html',
+            allowEdit: true,
+            pageParam: {
+                article_id: vm.article_id, //文章id
+            }
+        });
+    }
+
+
+    //举报
+    function report_it() {
+        api.toast({
+            msg: '平台已经收到您的反馈！',
+            duration: 1500,
+            location: 'bottom'
+        });
+    }
+
+
+    // 实现下拉刷新功能
+    function initRefresh() {
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/fresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '嘤嘤嘤 放开我...'
+        }, function (ret, err) {
+            //从服务器加载数据后调用
+            vm.skip = 0;
+            vm.init(true);//初始化 ajax数据请求
+            api.toast({
+                msg: '已刷新',
+                duration: 1000,
+                location: 'bottom'
+            });
+        });
+    }
+
+    //评论后跨页更新
+    function come_on() {
+        vm.skip = 0;
+        vm.init(true);
+    }
+
+
+</script>

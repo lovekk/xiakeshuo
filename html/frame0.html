@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>首页</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/auislide.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/alifont/iconfont.css">
+    <style>
+        .empty {
+            text-align: center;
+            padding: 120px 0;
+        }
+
+        .aui-list .aui-list-item-media {
+            width: 5rem;
+        }
+
+        .aui-list:before {
+            background: #fff;
+        }
+
+        .aui-iconfont {
+            border-radius: 10px;
+        }
+        /*插值闪烁*/
+        [v-clock]{
+        	display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app" class="aui-content">
+
+
+    <!-- ====================================小模块========================================== -->
+    <!--<section class="aui-grid" style="background: #ffffff url('../image/bg4.png') no-repeat; background-size: 100% 120px">-->
+    <section class="aui-grid">
+        <!--<div class="aui-row" style="padding-top: 70px">-->
+        <div class="aui-row" style="padding-top: 10px">
+            <div class="aui-col-xs-3" tapmode onclick="open_culture_win()">
+                <!--<div class="aui-dot"></div>-->
+                <i style="color:#CC3428;" class="aui-iconfont iconfont icon-wenhua"></i>
+                <div class="aui-grid-label">校园文化</div>
+            </div>
+
+            <div class="aui-col-xs-3" tapmode onclick="open_notice_win()">
+                <i style="color:#71400b;" class="aui-iconfont iconfont icon-gonggaoxiaoxi"></i>
+                <div class="aui-grid-label">校园公告</div>
+            </div>
+            <div class="aui-col-xs-3" tapmode onclick="open_two_win()">
+                <i style="color: #6AB494;" class="aui-iconfont iconfont icon-ershoushebei "></i>
+                <div class="aui-grid-label">二手市场</div>
+            </div>
+            <div class="aui-col-xs-3" tapmode onclick="open_lose_win()">
+                <i style="color: #8f6adb;" class="aui-iconfont iconfont icon-ershou3 "></i>
+                <div class="aui-grid-label">失物招领</div>
+            </div>
+
+            <!--=============下面模块选做==============-->
+            <div v-if=" module_list['分类回收'] " class="aui-col-xs-3" tapmode onclick="open_rubbish_win()">
+                <i style="color:green;" class="aui-iconfont iconfont icon-tubiao09 "></i>
+                <div class="aui-grid-label">分类回收</div>
+            </div>
+            <div v-if=" module_list['校园云景'] " class="aui-col-xs-3" tapmode onclick="open_yun()">
+                <i style="color:#df5000;" class="aui-iconfont iconfont icon-wenhuayuandi "></i>
+                <div class="aui-grid-label">校园云景</div>
+            </div>
+            <div v-if=" module_list['校园团购'] " class="aui-col-xs-3" tapmode onclick="open_shop_please()">
+                <i style="color:#df5000;" class="aui-iconfont iconfont icon-shop2 "></i>
+                <div class="aui-grid-label">校园团购</div>
+            </div>
+            <div v-if=" module_list['课表查询'] " class="aui-col-xs-3" tapmode onclick="open_card_please()">
+                <i style="color:#fbd54e;" class="aui-iconfont iconfont icon-kebiaoxinxi "></i>
+                <div class="aui-grid-label">课表查询</div>
+            </div>
+            <div v-if=" module_list['成绩查询'] " class="aui-col-xs-3" tapmode onclick="open_score_please()">
+                <i style="color:#3f51b5;" class="aui-iconfont iconfont icon-chengjiguanli "></i>
+                <div class="aui-grid-label">成绩查询</div>
+            </div>
+
+            <!--=================更多模块提示====================-->
+            <div class="aui-col-xs-3" tapmode onclick="open_more_win()">
+                <i style="color:#616161;" class="aui-iconfont iconfont icon-liulan2"></i>
+                <div class="aui-grid-label">更多</div>
+            </div>
+            <!--<div class="aui-col-xs-3" tapmode onclick="open_url()">-->
+                <!--<i class="aui-iconfont iconfont icon-jiangbei1 aui-btn-warning"></i>-->
+                <!--<div class="aui-grid-label">校园吉尼斯</div>-->
+            <!--</div>-->
+        </div>
+    </section>
+
+    <!-- ====================================活动========================================== -->
+    <div style="margin-top: 12px" tapmode onclick="open_activity_win()">
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title" style="color: #1a1a1a; font-weight: bold">校园活动</div>
+                    <div class="aui-list-item-right">
+                        <div style="position:relative;top:0; left:0">更多</div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div id="aui-slide3">
+        <div class="aui-slide-wrap">
+            <div class="aui-slide-node bg-dark" tapmode v-on:click="open_activity_content( slide_id_1 )">
+                <img :src="slide_img_1" style="border-radius: 15px"/>
+            </div>
+            <div class="aui-slide-node bg-dark" tapmode v-on:click="open_activity_content( slide_id_2 )">
+                <img :src="slide_img_2" style="border-radius: 15px"/>
+            </div>
+            <div class="aui-slide-node bg-dark" tapmode v-on:click="open_activity_content( slide_id_3 )">
+                <img :src="slide_img_3" style="border-radius: 15px"/>
+            </div>
+        </div>
+        <div class="aui-slide-page-wrap"><!--分页容器--></div>
+    </div>
+
+    <!-- ====================================文章========================================== -->
+    <div style="margin-top: 12px" tapmode onclick="open_article_win()">
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title" style="color: #1a1a1a; font-weight: bold">九点读书</div>
+                    <div class="aui-list-item-right">
+                        <div style="position:relative;top:0; left:0">更多</div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 九点读书 -->
+    <ul class="aui-list aui-media-list aui-margin-t-5">
+        <li class="aui-list-item" tapmode v-on:click="open_article_content( item.id )"
+            v-for="item in article_list">
+            <div class="aui-media-list-item-inner">
+                <div class="aui-list-item-inner">
+                    <!-- 标题 -->
+                    <div class="aui-list-item-text">
+                        <div class="aui-list-item-title aui-font-size-16">
+                            {{item.title}}
+                        </div>
+                    </div>
+                    <!-- 作者 -->
+                    <div class="aui-info aui-padded-b-0">
+                        <div class="aui-info-item aui-font-size-12">
+                            <!--<img src="" style="width:1rem" class="aui-img-round" />-->
+                            作者：<span>{{item.author}}</span>
+                        </div>
+                    </div>
+                    <br>
+                    <!-- 浏览 -->
+                    <!--<div class="aui-info aui-padded-b-0 aui-font-size-12">-->
+                        <!--<div>-->
+                            <!--<i class="iconfont icon-liulan1"></i>-->
+                            <!--<span style="padding-top: 5px;padding-left: 5px">{{item.view_num}}</span>-->
+                        <!--</div>-->
+                        <!--<div>-->
+                            <!--<i class="iconfont icon-retouch"></i>-->
+                            <!--<span style="padding-top: 5px;padding-left: 5px">原创</span>-->
+                        <!--</div>-->
+                        <!--<div class="aui-info-item aui-font-size-12">{{item.publish_date}}</div>-->
+                    <!--</div>-->
+                </div>
+                <div class="aui-list-item-media">
+                    <img :src="media + item.list_img" style="border-radius: 20px">
+                </div>
+            </div>
+        </li>
+    </ul>
+
+</div>
+</body>
+
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/auislide.js"></script>
+
+<script type="text/javascript">
+
+    // 启动执行事件
+    apiready = function () {
+
+        //接收 从学校选择 传过来的
+        api.addEventListener({
+            name: 'send_school_id'
+        }, function (ret, err) {
+            vm.school_id = ret.value.school_id;
+            vm.school_name = ret.value.school_name;
+            vm.init(); //初始化 学校文章 活动 模块
+            api.refreshHeaderLoading(); // 自动下拉刷新
+        });
+
+        //监听用户信息 获取学校id 登录发送
+        api.addEventListener({
+            name: 'send_user_id',
+        }, function (ret, err) {
+            vm.school_name = ret.value.school_name;
+            vm.school_id = ret.value.school_id;
+            vm.init(); //初始化 学校文章 活动 模块
+            api.refreshHeaderLoading(); // 自动下拉刷新
+        });
+
+        //监听用户信息 获取学校id  注册发送
+        api.addEventListener({
+            name: 'send_user_msg',
+        }, function (ret, err) {
+            vm.school_name = ret.value.school_name;
+            vm.school_id = ret.value.school_id;
+            vm.init(); //初始化 学校文章 活动 模块
+            api.refreshHeaderLoading(); // 自动下拉刷新
+        });
+
+        vm.init(); //初始化 学校文章 活动 模块
+
+        initRefresh();  // 初始化下拉刷新
+        //api.refreshHeaderLoading(); //自动下拉刷新
+
+    };
+
+
+    //vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            school_id: '4',
+            school_name: '江苏师范大学',
+            media: media_url,
+
+            s_module: [],  //学校模块
+            module_list: {},  //纯的学校模块
+
+            activity_list: [], //活动
+            article_list: [],  //文章
+
+            slide_id_1: '',  //活动轮播图
+            slide_id_2: '',
+            slide_id_3: '',
+            slide_img_1: '',
+            slide_img_2: '',
+            slide_img_3: '',
+        },
+        methods: {
+            //初始化 ajax数据请求
+            init: function () {
+                vm.module_list = {}; //清空模块再请求
+                api.ajax({
+                    url: school_module + '?school_id=' + vm.school_id,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 10,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        api.refreshHeaderLoadDone();  //加载完成 关闭下拉刷新
+                        if (ret.code === 200) {
+                            vm.s_module = ret.modules;  //js追加出来纯模块名字的列表
+                            for (i=0; i<vm.s_module.length; i++){
+                                // vm.module_list.push(vm.s_module[i].module_name : vm.s_module[i].module_name)
+                                vm.module_list[vm.s_module[i].module_name] = true;
+                            }
+                            vm.activity_list = ret.activity;
+                            vm.article_list = ret.article;
+                            vm.slide_id_1 = ret.activity[0].id;
+                            vm.slide_id_2 = ret.activity[1].id;
+                            vm.slide_id_3 = ret.activity[2].id;
+                            vm.slide_img_1 = media_url + ret.activity[0].big_img;
+                            vm.slide_img_2 = media_url + ret.activity[1].big_img;
+                            vm.slide_img_3 = media_url + ret.activity[2].big_img;
+                        } else {
+                            my_toast();
+                        }
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+
+
+            // 打开 单个 活动
+            open_activity_content: function (id_) {
+                api.openWin({
+                    name: 'home_activity_content_win',
+                    url: './home_activity_content_win.html',
+                    pageParam: {
+                        school_id: vm.school_id,
+                        activity_id: id_,
+                    }
+                });
+            },
+
+            // 打开 单个文章 内容
+            open_article_content: function (id_) {
+                api.openWin({
+                    name: 'home_article_content_win',
+                    url: './home_article_content_win.html',
+                    pageParam: {
+                        school_id: vm.school_id,
+                        article_id: id_
+                    }
+                });
+            },
+
+
+        }
+    });
+
+
+    // 实现下拉刷新功能
+    function initRefresh() {
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/fresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '嘤嘤嘤 放开我...'
+        }, function (ret, err) {
+            // 在这里从服务器加载数据，加载完成后调用
+            // api.refreshHeaderLoadDone(); //方法恢复组件到默认状态
+            // initRefresh();  // 下拉刷新
+            vm.init(); //初始化 学校文章 活动
+
+            api.toast({
+                msg: '已刷新',
+                duration: 1000,
+                location: 'bottom'
+            });
+        });
+
+    }
+
+
+    //打开 校园文化win
+    function open_culture_win() {
+        api.openWin({
+            name: 'home_culture_win',
+            url: './home_culture_win.html',
+            pageParam: {
+                school_id: vm.school_id,
+                school_name: vm.school_name
+            }
+        });
+    }
+
+
+    //打开 校园公告win
+    function open_notice_win() {
+        api.openWin({
+            name: 'home_notice_win',
+            url: './home_notice_win.html',
+            pageParam: {
+                school_id: vm.school_id,
+                school_name: vm.school_name
+            }
+        });
+    }
+
+
+    //打开 优秀师生win
+    function open_ts_win() {
+        api.openWin({
+            name: 'home_ts_win',
+            url: './home_ts_win.html',
+            pageParam: {
+                school_name: vm.school_name
+            }
+        });
+    }
+
+    //打开 校园吉尼斯 win
+    function open_record_win() {
+        api.openWin({
+            name: 'home_record_win',
+            url: './home_record_win.html',
+            pageParam: {
+                school_name: vm.school_name
+            }
+        });
+    }
+
+
+    //打开 校园小店 win
+    function open_shop_win() {
+        api.openWin({
+            name: 'home_shop_win',
+            url: './home_shop_win.html',
+            pageParam: {
+                school_id: vm.school_id,
+                school_name: vm.school_name
+            }
+        });
+    }
+
+
+    //打开 校园二手 win
+    function open_two_win() {
+        api.openWin({
+            name: 'home_two_win',
+            url: './home_two_win.html',
+            pageParam: {
+                school_id: vm.school_id,
+                school_name: vm.school_name
+            }
+        });
+    }
+
+
+    //打开 失物招领 win
+    function open_lose_win() {
+        api.openWin({
+            name: 'home_lose_win',
+            url: './home_lose_win.html',
+            pageParam: {
+                school_id: vm.school_id,
+                school_name: vm.school_name
+            }
+        });
+    }
+
+
+    //打开 垃圾回收 win
+    function open_rubbish_win() {
+        api.openWin({
+            name: 'home_rubbish_win',
+            url: './home_rubbish_win.html',
+            pageParam: {
+                school_id: vm.school_id,
+                school_name: vm.school_name
+            }
+        });
+    }
+
+    //打开 校园云景 win
+    function open_yun() {
+        api.openWin({
+            name: 'home_yun_win',
+            url: './home_yun_win.html',
+            pageParam: {
+                school_id: vm.school_id,
+                school_name: vm.school_name
+            }
+        });
+    }
+
+
+    //打开 热门活动列表 win
+    function open_activity_win() {
+        api.openWin({
+            name: 'home_activity_win',
+            url: './home_activity_win.html',
+            pageParam: {
+                school_id: vm.school_id,
+                school_name: vm.school_name
+            }
+        });
+    }
+
+
+    //打开 文章列表 win
+    function open_article_win() {
+        api.openWin({
+            name: 'home_article_win',
+            url: './home_article_win.html',
+            pageParam: {
+                school_id: vm.school_id,
+                school_name: vm.school_name
+            }
+        });
+    }
+
+
+    //恭请期待
+    function open_please() {
+        api.openWin({
+            name: 'please',
+            url: './please.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+    }
+
+    //校园团购 恭请期待
+    function open_shop_please() {
+        api.openWin({
+            name: 'home_shop_please',
+            url: './home_shop_please.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+    }
+
+    //课表查询 恭请期待
+    function open_card_please() {
+        api.openWin({
+            name: 'home_card_please',
+            url: './home_card_please.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+    }
+
+    //成绩查询 恭请期待
+    function open_score_please() {
+        api.openWin({
+            name: 'home_my_score',
+            url: './home_my_score.html',
+            allowEdit: true,
+        });
+    }
+
+
+    //更多
+    function open_more_win() {
+        api.openWin({
+            name: 'home_more_win',
+            url: './home_more_win.html',
+        });
+    }
+
+    //首页轮播图
+    var slide3 = new auiSlide({
+        container: document.getElementById("aui-slide3"),
+        // "width":300,
+        "height": 200,
+        "speed": 500,
+        "autoPlay": 3000, //自动播放3秒一个
+        "loop": true,
+        "pageShow": true,
+        "pageStyle": 'line',
+        'dotPosition': 'center'
+    });
+
+</script>
+
+</html>

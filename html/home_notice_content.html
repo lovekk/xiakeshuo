@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>校园公告</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style>
+        .aui-content{
+            background: #fff;
+        }
+        .controlimg{
+            word-break:break-all !important; /*支持IE，chrome，FF不支持*/
+            word-wrap:break-word !important;/*支持IE，chrome，FF*/
+        }
+        .controlimg img{
+            width: 100% !important;
+        }
+
+
+        .aui-list .aui-list-item-media {
+            width: 3rem;
+        }
+
+    </style>
+</head>
+<body>
+    <header class="aui-bar aui-bar-nav my-bgc">
+        <a class="aui-pull-left aui-btn" tapmode  onclick="api.closeWin();">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">公告</div>
+    </header>
+    <div class="aui-content" id="app">
+        <ul class="aui-list aui-media-list">
+            <li class="aui-list-item">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title aui-font-size-18">{{title}}</div>
+                        </div>
+
+                        <div class="aui-list-item-text aui-padded-t-10 ">
+                            <p class="controlimg" v-html="content">
+                            </p>
+                        </div>
+                        <br>
+                        <div class="aui-info aui-font-size-12" style="padding-top:5px;">
+                            <div class="aui-info-item">
+                                <span class="aui-margin-l-5">编辑：{{editor}}</span>
+                            </div>
+                        </div>
+
+                        <div class="aui-info aui-font-size-12" style="padding-top:5px;">
+                            <div class="aui-info-item">
+                                <span class="aui-margin-l-5">浏览：{{view_num}}</span>
+                            </div>
+                            <div class="aui-info-item">时间：{{publish_date}}</div>
+                        </div>
+
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>
+
+<script src="../script/api.js"></script>
+<script src="../script/common.js"></script>
+<script src="../script/vue.js"></script>
+<script>
+
+    apiready = function () {
+        $api.fixIos7Bar($api.dom("header"));//padding-top: 20px; 沉浸式状态栏
+        vm.school_id = api.pageParam.school_id;
+        vm.notice_id = api.pageParam.notice_id;
+
+        vm.init();
+    };
+
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            school_id: '',
+            notice_id: '',
+            title: '',
+            content: '',
+            editor: '',
+            publish_date: '',
+            view_num: '',
+        },
+        methods: {
+            //初始化 ajax数据请求
+            init: function () {
+                api.ajax({
+                    url: notice_detail +'?school_id=' + vm.school_id +'&notice_id=' + vm.notice_id,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        //api.refreshHeaderLoadDone(); //方法恢复组件到默认状态
+                        if (ret.code === 200){
+                            vm.title = ret.notice_data[0].title;
+                            vm.content = ret.notice_data[0].content;
+                            vm.editor = ret.notice_data[0].editor;
+                            vm.publish_date = ret.notice_data[0].publish_date;
+                            vm.view_num = ret.notice_data[0].view_num;
+                        }
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+
+        }
+    });
+
+</script>

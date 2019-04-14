@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>失物招领-正文</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/alifont/iconfont.css"/>
+    <style>
+        .aui-content {
+            background: #fff;
+        }
+
+        .controlimg {
+            word-break: break-all !important; /*支持IE，chrome，FF不支持*/
+            word-wrap: break-word !important; /*支持IE，chrome，FF*/
+        }
+
+        .controlimg img {
+            width: 100% !important;
+        }
+
+        .aui-list .aui-list-item-media {
+            width: 3rem;
+        }
+
+        .delete-btn {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 40px;
+            height: 40px;
+            /*background-color: rgba(0, 0, 0, 0.7);*/
+            margin-left: -20px;
+            margin-top: -20px;
+            color: #ffffff;
+            text-align: center;
+            vertical-align: middle;
+            /*border-radius: 50%;*/
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="app" class="aui-content">
+
+    <!--====================================正文=======================================-->
+    <ul class="aui-list aui-media-list">
+        <li class="aui-list-item">
+            <div class="aui-card-list-header aui-card-list-user" v-on:click="open_his( c_id )"
+                 style="padding: 10px 18px 5px 3px; border-bottom: none">
+                <div class="aui-card-list-user-avatar">
+                    <img :src="qiniu + c_head + qiniu_small" class="aui-img-round" style="width: 40px; height: 40px; border-radius: 40px"/>
+                </div>
+                <div class="aui-card-list-user-name">
+                    <div>{{c_nick}}</div>
+                </div>
+                <div v-if="create_date == day_date" class="aui-card-list-user-info">{{create_time|filter_time}}</div>
+                <div v-else class="aui-card-list-user-info">{{create_date}}</div>
+            </div>
+
+            <div class="aui-media-list-item-inner">
+                <div class="aui-list-item-inner">
+
+                    <!---==============文本=======================-->
+<!--需要顶头写，不然white-space:pre-wrap;会把前面的空格页当作空格显示出来-->
+<div class="aui-list-item-text" style="color:#333;font-size: 16px;white-space:pre-wrap;">{{content}}</div>
+
+                    <!--===================图片=================-->
+                    <div v-if=" img_list.length ">
+                        <div class="aui-list-item-text">
+                            <div class="aui-row-padded" style="max-width:100%;">
+                                <div class="aui-col-xs-4" v-for="(img, index) in img_list">
+                                    <img :src="qiniu + img.qiniu_img + qiniu_big"
+                                         v-on:click="open_img_big( img_list, index )"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="aui-card-list-footer " style="font-size: 14px;padding-top: 20px">
+                        <div v-if=" is_type " class="aui-btn aui-btn-primary aui-btn-outlined">捡到</div>
+                        <div v-else class="aui-btn aui-btn-warning aui-btn-outlined">丢失</div>
+                    </div>
+                    <div style="padding-top: 20px;font-size: 14px;color: #616161">
+                        浏览：{{view_num}}
+                    </div>
+
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <!-- ================================================评论================================ -->
+    <div class="aui-btn aui-btn-info aui-btn-block aui-btn-outlined aui-btn-sm" onclick="lose_comment_add()"
+         style="width: 200px; margin-left: auto; margin-right: auto;margin-top: 20px;margin-bottom: 20px;">
+        留言
+    </div>
+
+    <section class="aui-content">
+        <ul class="aui-list aui-media-list">
+
+            <li class="aui-list-item" v-for="item in comment_list">
+                <div class="aui-media-list-item-inner">
+                    <!--===========用户头像============-->
+                    <div class="aui-list-item-media" v-on:click="open_his(item.c_id)">
+                        <img :src="qiniu + item.c_head + qiniu_small" style="width: 40px; height: 40px; border-radius: 40px"/>
+                    </div>
+                    <div class="aui-list-item-inner">
+                        <!--=====用户信息======-->
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title" v-on:click="open_his(item.c_id)">{{item.c_nick}}</div>
+
+                            <!--   二级评论按钮关闭  -->
+                            <!--<div>-->
+                                <!--<i class="aui-iconfont iconfont icon-pinglun" v-on:click="two_comment(item.id)"></i>-->
+                            <!--</div>-->
+
+                        </div>
+                        <!--=====文本======-->
+                        <div class="aui-list-item-text">
+                            {{item.content}}
+                        </div>
+
+                        <!--  二级回复关闭  -->
+                        <!--=========回复================-->
+                        <!--<div style="background-color: rgba(135,206,250,0.3);font-size: 14px;padding-top: 10px" v-if="item.replycomment.length">-->
+                            <!--<div v-for="re in item.replycomment">-->
+                                <!--<span style="color:#4682B4"  v-on:touchstart=" long_press(this, re.id, item.id, re.u_id, 600);">-->
+                                    <!--{{re.c_nick}}-->
+                                <!--</span>-->
+                                <!--&lt;!&ndash;如果有自关联回复&ndash;&gt;-->
+                                <!--<span v-if=" re.p_nick !== null ">-->
+                                    <!--回复<span style="color:#4682B4">@{{re.p_nick}}</span>-->
+                                <!--</span>-->
+                                <!--<span style="color:#757575">: {{re.content}}</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <div class="aui-info aui-font-size-14 aui-padded-t-5 aui-padded-b-0">
+                            <div class="aui-info-item">{{item.comment_date|filter_d}}</div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </section>
+</div>
+</body>
+
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+
+<script type="text/javascript">
+
+    var photoBrowser;
+    var dialogBox;
+    var inputField;
+
+    // 准备
+    apiready = function () {
+        vm.lose_id = api.pageParam.lose_id;
+        vm.user_id = api.pageParam.user_id;
+
+        vm.init();
+
+        photoBrowser = api.require('photoBrowser');  //照片查看器
+        dialogBox = api.require('dialogBox');    //弹出 actionMenu 样式的对话框
+        inputField = api.require('inputField');  //二级评论框
+    };
+
+
+    //vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            qiniu: qiniu_url,
+            qiniu_small: qiniu_small,
+            qiniu_big: qiniu_big,
+            day_date: my_date(),
+
+            lose_id: '',
+            user_id: '',
+
+            content: '',  //详情文本
+            view_num: '',
+            create_date: '',
+            create_time: '',
+            is_type: '',
+            c_id: '',
+            c_nick: '',
+            c_head: '',
+
+            img_list: [],
+            one_img_list: [],
+
+            comment_list: [],  //评论
+            p_id: '',  //评论 父id
+        },
+        methods: {
+            //初始化 ajax数据请求
+            init: function () {
+                api.ajax({
+                    url: lose_detail + '?lose_id=' + vm.lose_id,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        if (ret.code === 200) {
+                            vm.content = ret.lose_data[0].content;
+                            vm.view_num = ret.lose_data[0].view_num;
+                            vm.create_date = ret.lose_data[0].create_date;
+                            vm.create_time = ret.lose_data[0].create_time;
+                            vm.is_type = ret.lose_data[0].is_type;
+                            vm.c_id = ret.lose_data[0].c_id;
+                            vm.c_nick = ret.lose_data[0].c_nick;
+                            vm.c_head = ret.lose_data[0].c_head;
+                            if (ret.img) {
+                                vm.img_list = ret.img;
+                            }
+                            //二级回复关闭
+                            if (ret.comment_data) {
+                                vm.comment_list = ret.comment_data;
+                            }
+                        }
+                    } else {
+                        //出错提示
+                        my_toast();
+                    }
+                });
+            },
+
+            // 点击头像 进入个人主页
+            open_his: function(uid_){
+                open_his_home(uid_)
+            },
+
+            //查看图片
+            open_img_big: function (list_, index_) {
+                api.openWin({
+                    name: 'open_img',
+                    url: './open_img.html',
+                    pageParam: {
+                        img_list: list_,
+                        img_index:index_,
+                    }
+                });
+            },
+
+            // 这是失物招领 关闭二级评论
+            // //二级评论,只会评论文字
+            // two_comment:function (cid_, rid_) {
+            //     inputField.open({
+            //         bgColor: '#ffffff',
+            //         lineColor: '#757575',
+            //         fileBgColor: '#fff',
+            //         borderColor: '#757575',
+            //         sendImg: 'widget://image/sendcomment.png',
+            //         fixedOn: api.frameName,
+            //         limitedWordsNumber: 100,
+            //         placeholder: '回复',
+            //         autoFocus: true,
+            //     }, function(ret, err) {
+            //         if (ret) {
+            //             if (ret.msg) {
+            //                 //提交二级评论
+            //                 api.ajax({
+            //                     url: lose_reply,
+            //                     method: 'post',
+            //                     timeout: 30,
+            //                     dataType: 'json',
+            //                     returnAll: false,
+            //                     data: {
+            //                         //以表单方式提交参数，JSON对象{"field1": "value1"}
+            //                         values: {
+            //                             comment_id: cid_,
+            //                             user_id:  $api.getStorage('uid'),
+            //                             lose_id: vm.lose_id,
+            //                             reply_id: rid_,
+            //                             reply_content: ret.msg,
+            //                         },
+            //                     }
+            //                 }, function (ret, err) {
+            //                     if (ret) {
+            //                         vm.init();
+            //                         console.log(JSON.stringify(ret));
+            //                     } else {
+            //                         console.log(JSON.stringify(err));
+            //                     }
+            //                 });
+            //                 //关闭弹窗
+            //                 inputField.close();
+            //             }
+            //         } else {
+            //             inputField.close();
+            //         }
+            //     });
+            //     //延迟1秒 监听输入框下边缘距离屏幕底边的高度
+            //     //根据高度判断是否要关闭
+            //     setTimeout(function () {
+            //         inputField.setInputFieldListener(function (ret, err) {
+            //             if (ret.chatViewH < 200) {
+            //                 inputField.close();
+            //             }
+            //         });
+            //     }, 1000);
+            // },
+            //
+            // //二级评论 自关联 回复回复
+            // //长按单击方法的封装函数
+            // long_press:function (el, pid_, cid_, uid_, longpressTime = 600) {
+            //     time_longpress = setTimeout(function(){
+            //         time_longpress = 0;
+            //         vm.fn_long(pid_, cid_);
+            //     }, longpressTime);
+            //
+            //     el.ontouchmove = function() {
+            //         clearTimeout(time_longpress);
+            //         time_longpress = 0;
+            //     };
+            //     el.ontouchend = function() {
+            //         clearTimeout(time_longpress);
+            //         if (time_longpress !== 0) {
+            //             vm.fn_click(uid_);
+            //         }
+            //     };
+            // },
+            // fn_long: function (pid_, cid_) {
+            //     api.actionSheet({
+            //         title: '选择',
+            //         cancelTitle: '取消',
+            //         buttons: ['回复',]
+            //     }, function(ret, err) {
+            //         // 回复
+            //         if (ret.buttonIndex === 1) {
+            //             vm.two_comment( cid_, pid_ );
+            //         }
+            //     });
+            // },
+            // fn_click: function (uid_) {
+            //     //这里点击事件
+            // },
+        },
+
+        //时间过滤器
+        filters: {
+            filter_time: function (time_) {
+                if (time_ && time_.length > 5) {
+                    value = time_.substring(0, 5);
+                }
+                return value;
+            },
+            filter_t: function (t_) {
+                if (t_ && t_.length > 5) {
+                    value = t_.substring(0, 5);
+                }
+                return value;
+            },
+
+            filter_d: function (d_) {
+                value = d_.substring(5, 10);
+                return value;
+            }
+        },
+
+    });
+
+
+    //添加一级评论
+    function lose_comment_add() {
+        api.openWin({
+            name: 'home_lose_comment_add',
+            url: './home_lose_comment_add.html',
+            allowEdit: true,
+            pageParam: {
+                lose_id: vm.lose_id,
+            }
+        });
+    }
+
+
+    // 实现下拉刷新功能
+    function initRefresh() {
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/fresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '嘤嘤嘤 放开我...'
+        }, function (ret, err) {
+            vm.init();//初始化 ajax数据请求
+            api.toast({
+                msg: '已刷新',
+                duration: 1000,
+                location: 'bottom'
+            });
+        });
+    }
+
+
+    //评论后跨页更新
+    function come_on() {
+        vm.init();
+    }
+
+
+</script>
+</html>

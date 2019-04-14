@@ -1,0 +1,264 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我的help</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/alifont/iconfont.css"/>
+
+    <style type="text/css">
+        .goods-title {
+            color: #757575 !important;
+        }
+        .goods-price {
+            color: #666666 !important;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+<section id="app">
+    <div class="aui-tips aui-bg-warning aui-margin-b-15" id="tips-1">
+        <i class="aui-iconfont aui-icon-paper"></i>
+        <div class="aui-tips-title">您总共发布过 {{ help_total }} 次help</div>
+        <i class="aui-iconfont aui-icon-laud"></i>
+    </div>
+    <div  class="aui-content">
+        <ul class="aui-list aui-media-list">
+
+            <li class="aui-list-item" style="border-bottom: 1px solid #dddddd;"
+                v-for="item in my_help">
+                <div class="aui-card-list-header aui-card-list-user "
+                     style="padding: 10px 18px 5px 3px; border-bottom: none">
+                    <div class="aui-card-list-user-avatar" v-on:click="open_content( item.for_text[0].id, item.for_text[0].u_id )" >
+                        <img :src="qiniu + item.for_text[0].u_img + qiniu_small" class="aui-img-round"
+                             style="width: 40px; height: 40px; border-radius: 40px"/>
+                    </div>
+                    <div class="aui-card-list-user-name">
+                        <div v-on:click="open_content( item.for_text[0].id, item.for_text[0].u_id )" >{{item.for_text[0].u_nick}}</div>
+                        <div v-on:click="del_help( item.for_text[0].id )"  style="color: #9e9e9e">
+                            [删除]
+                        </div>
+                    </div>
+                    <div class="aui-card-list-user-info">{{item.for_text[0].publish_date}}</div>
+                </div>
+
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-inner">
+<!--需要顶头写，不然white-space:pre-wrap;会把前面的空格页当作空格显示出来-->
+<div class="aui-list-item-text" style="color:#333;font-size: 16px;white-space:pre-wrap;">{{item.for_text[0].content}}</div>
+                        <div class="aui-list-item-text" v-if=" item.for_img ">
+                            <div class="aui-row-padded" style="max-width:100%;">
+                                <div class="aui-col-xs-4" v-for="(img, index) in item.for_img">
+                                    <img :src="qiniu + img.qiniu_img + qiniu_small" v-on:click="open_img_big( item.for_img, index )"/>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="aui-card-list-footer" v-on:click="open_content( item.for_text[0].id, item.for_text[0].u_id )">
+                            <!--苹果的不显示价钱-->
+                            <!--<div><i class=" iconfont icon-renminbi" ></i>&nbsp;{{item.for_text[0].price}}</div>-->
+                            <!--<div v-if="item.for_text[0].is_online === 0">-->
+                                <!--<i class=" iconfont icon-yundong" ></i>&nbsp;&nbsp;线下-->
+                            <!--</div>-->
+                            <!--<div v-else><i class=" iconfont icon-bofangzhong"></i>&nbsp;&nbsp;线上</div>-->
+                            <div><i></i></div>
+                            <div><i></i></div>
+                            <div v-if="item.for_text[0].status === 0"
+                                 class="aui-btn aui-btn-info">等待帮助</div>
+                            <div v-else class="aui-btn aui-btn-default">已帮助</div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </li>
+        </ul>
+    </div>
+</section>
+</body>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+
+<script type="text/javascript">
+
+    var photoBrowser;
+
+    // 启动执行事件
+    apiready = function () {
+
+        vm.init(true);
+        initRefresh();  // 下拉刷新
+
+        photoBrowser = api.require('photoBrowser');  //照片查看器
+
+        //下拉监听事件
+        api.addEventListener({
+            name : 'scrolltobottom',
+            extra : {
+                threshold : 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            //分页加10，和后台同步
+            vm.skip += 10;
+            vm.init(false);
+        });
+
+    };
+
+
+    // vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+
+            media: media_url,
+            qiniu: qiniu_url,
+            qiniu_small: qiniu_small,
+
+            help_total: 0,
+            my_help: [],  //所有数据
+
+            one_img_list: [],  //单个纯图片url列表
+            one_img: '',        //单个纯图片url
+            one_img_index: '',    //图片索引
+
+            is_more: true,    //加载更多,默认第一次
+            skip: 0,
+        },
+        methods: {
+
+            //初始化 ajax数据请求
+            init: function (more_) {
+                api.ajax({
+                    url: my_help_list + '?my_id=' + $api.getStorage('uid') + '&skip=' + vm.skip,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        api.refreshHeaderLoadDone(); //方法恢复组件到默认状态
+                        vm.help_total = ret.help_total;
+                        if ( more_ ){
+                            vm.my_help = ret.all_list;
+                        } else {
+                            if (ret.all_list.length > 0){
+                                //concat() 方法用于连接两个或多个数组。
+                                vm.my_help = vm.my_help.concat(ret.all_list);
+                            }else {
+                                api.toast({
+                                    msg: '没有更多了',
+                                    duration: 1000,
+                                    location: 'bottom'
+                                });
+                            }
+                        }
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+
+            //查看图片
+            open_img_big: function (list_, index_) {
+                //js数组追加
+                for (i=0; i<list_.length; i++) {
+                    vm.one_img_list.push(vm.qiniu + list_[i].qiniu_img);
+                }
+
+                //打开图片查看器
+                photoBrowser.open({
+                    images: vm.one_img_list,
+                    activeIndex: index_,   //索引
+                    placeholderImg: 'widget://image/800.png',  //占位图片路径
+                    bgColor: '#000',
+                    zoomEnabled: true
+                }, function(ret, err) {
+
+                    if (ret.eventType === 'show') {
+                        vm.one_img_index = ret.index;
+                    }
+                    if (ret.eventType === 'click') {
+                        vm.one_img_list = [];
+                        photoBrowser.close();
+                    }
+                    if (ret.eventType === 'longPress') {
+                        img_choice( vm.qiniu + list_[vm.one_img_index].qiniu_img );
+                    }
+                });
+            },
+
+            //删除发现
+            del_help: function( hid_ ){
+                api.confirm({
+                    title: '友情提示',
+                    msg: '您确定要删除吗？',
+                    buttons: ['确定', '取消']
+                }, function(ret, err) {
+                    if (ret.buttonIndex === 1){
+                        api.ajax({
+                            url: del_help + '?help_id=' + hid_ + '&user_id=' +$api.getStorage('uid'),
+                            method: 'get',
+                            cache: 'true',
+                            timeout: 30,
+                            dataType: 'json',
+                            returnAll: false,
+                        }, function (ret, err) {
+                            if (ret) {
+                                api.toast({
+                                    msg: '删除成功',
+                                    duration: 1000,
+                                    location: 'bottom'
+                                });
+                            } else {
+                                my_toast();
+                            }
+                        });
+                    }
+                });
+            },
+
+            //打开详情页
+            open_content:function (hid_, uid_) {
+                api.openWin({
+                    name: 'help_content_win',
+                    url: './help_content_win.html',
+                    pageParam: {
+                        h_id: hid_,
+                        u_id: uid_,
+                    }
+                });
+            }
+
+        }
+    });
+
+    // 实现下拉刷新功能
+    function initRefresh() {
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/fresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '嘤嘤嘤 放开我...'
+        }, function (ret, err) {
+            vm.skip = 0;
+            vm.init(true);//初始化 ajax数据请求
+            api.toast({
+                msg: '已刷新',
+                duration: 1000,
+                location: 'bottom'
+            });
+        });
+    }
+
+
+</script>
+
+</html>

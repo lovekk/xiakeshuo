@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>校园二手市场</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/alifont/iconfont.css">
+    <style type="text/css">
+        .con-font{
+            color:#333;
+            white-space:pre-wrap;
+
+        }
+    </style>
+</head>
+<body>
+
+<div id="app" class="aui-content">
+
+    <ul class="aui-list aui-media-list">
+
+        <li class="aui-list-item" v-for="(item,id_index) in text_list">
+            <div class="aui-card-list-header aui-card-list-user"
+                 style="padding: 10px 18px 5px 3px; border-bottom: none">
+                <div class="aui-card-list-user-avatar" v-on:click="open_content( item.id, item.u_id )">
+                    <img :src="qiniu_url + item.for_text[0].u_img + qiniu_small" class="aui-img-round"
+                        style="width: 40px; height: 40px; border-radius: 40px"/>
+                </div>
+                <div class="aui-card-list-user-name">
+                    <div v-on:click="open_content( item.id, item.u_id )">{{item.for_text[0].u_nick}}</div>
+                    <!--三点符号 举报-->
+                    <div v-on:click="side_choice(item.for_text[0].id, id_index)">
+                        <i style="color: #9e9e9e" class="aui-iconfont aui-icon-more"></i>
+                    </div>
+                </div>
+                <div class="aui-card-list-user-info">
+                    {{item.for_text[0].create_date|filter_d}} {{item.for_text[0].create_time|filter_time}}
+                </div>
+            </div>
+
+            <div class="aui-media-list-item-inner">
+                <div class="aui-list-item-inner">
+<!--需要顶头写，不然white-space:pre-wrap;会把前面的空格页当作空格显示出来-->
+<div class="aui-list-item-text con-font" style="font-size: 16px" v-on:click="open_content( item.id, item.u_id )">{{item.for_text[0].content}}</div>
+                    <!--============图片==================-->
+                    <div class="aui-list-item-text" v-if=" item.for_img ">
+                        <div class="aui-row-padded" style="max-width:100%;">
+                            <div class="aui-col-xs-4" v-for="(img, index) in item.for_img">
+                                <img  :src=" qiniu_url + img.qiniu_img + qiniu_big"
+                                     v-on:click="open_img_big(item.for_img, index)"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--===============三大键============-->
+                    <div class="aui-card-list-footer" style="font-size: 14px;padding-top: 20px"
+                         v-on:click="open_content( item.id, item.u_id )">
+                        <!--<div class="aui-btn aui-btn-primary aui-btn-outlined">￥{{item.price}}</div>-->
+                        <div><i class=" iconfont icon-renminbi" ></i> {{item.for_text[0].price}}</div>
+                        <div v-if="item.for_text[0].is_type == 0" class="iconfont icon-zuixintuijian"> 全新</div>
+                        <div v-else-if="item.for_text[0].is_type == 1" class="iconfont icon-zuixintuijian"> 九新</div>
+                        <div v-else class="iconfont icon-zuixintuijian"> 半新</div>
+                        <div><i class=" iconfont icon-jianzhi2" ></i> 出售中</div>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+    </ul>
+
+</div>
+</body>
+
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+
+<script type="text/javascript">
+
+    var photoBrowser;
+    var dialogBox;
+
+    // 启动执行事件
+    apiready = function () {
+
+        //接收参数
+        vm.school_id = api.pageParam.school_id;
+        vm.school_name = api.pageParam.school_name;
+
+        vm.init(true);
+        initRefresh();  // 下拉刷新
+
+        photoBrowser = api.require('photoBrowser');  //照片查看器
+        dialogBox = api.require('dialogBox');    //弹出 actionMenu 样式的对话框
+
+        //下拉监听事件
+        api.addEventListener({
+            name : 'scrolltobottom',
+            extra : {
+                threshold : 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            //分页加10，和后台同步
+            vm.skip += 10;
+            vm.init(false);
+        });
+
+    };
+
+
+    // vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            school_id: '',
+            school_name: '',
+            day_date: my_date(),// 匹配如果是当天发的显示 时间 否则显示日期
+
+            media: media_url,
+            qiniu_url:qiniu_url,
+            qiniu_small:qiniu_small,
+            qiniu_big:qiniu_big,
+
+            text_list: [],  //文本列表
+            img_list: [],   //图片列表
+            one_img_list: [],  //单个纯图片url列表
+            one_img: '',        //单个纯图片url
+            one_img_index: '',   //图片索引
+
+            is_more: true,    //加载更多,默认第一次
+            skip: 0,
+        },
+        methods: {
+            //初始化 ajax数据请求
+            init: function ( more_ ) {
+                api.ajax({
+                    url: second_list + '?school_id=' + vm.school_id +'&user_id=' + $api.getStorage('uid') + '&skip=' + vm.skip,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        api.refreshHeaderLoadDone(); //方法恢复组件到默认状态
+                        if (ret.code === 200) {
+                            if ( more_ ){
+                                vm.text_list = ret.text_list;
+                            } else {
+                                if (ret.text_list.length > 0){
+                                    //concat() 方法用于连接两个或多个数组。
+                                    vm.text_list = vm.text_list.concat(ret.text_list);
+                                }else {
+                                    api.toast({
+                                        msg: '没有更多了',
+                                        duration: 1000,
+                                        location: 'bottom'
+                                    });
+                                }
+                            }
+                        }
+                    } else {
+                        //请求出现错误提示
+                        my_toast();
+                    }
+                });
+            },
+
+            //查看图片
+            open_img_big: function (list_, index_) {
+                // //js数组追加
+                // for (i=0; i<list_.length; i++) {
+                //     vm.one_img_list.push(vm.qiniu_url + list_[i].qiniu_img);
+                // }
+
+                api.openWin({
+                    name: 'open_img',
+                    url: './open_img.html',
+                    pageParam: {
+                        img_list: list_,
+                        img_index:index_,
+                    }
+                });
+
+                // //打开图片查看器
+                // photoBrowser.open({
+                //     images: vm.one_img_list,
+                //     activeIndex: index_,   //索引
+                //     placeholderImg: 'widget://image/800.png',  //占位图片路径
+                //     bgColor: '#000',
+                //     zoomEnabled: true
+                // }, function(ret, err) {
+                //
+                //     if (ret.eventType === 'show') {
+                //         vm.one_img_index = ret.index;
+                //     }
+                //     if (ret.eventType === 'click') {
+                //         vm.one_img_list = [];
+                //         photoBrowser.close();
+                //     }
+                //     if (ret.eventType === 'longPress') {
+                //         img_choice( vm.qiniu_url + list_[vm.one_img_index].qiniu_img );
+                //     }
+                // });
+            },
+
+            //打开详情页
+            open_content:function (sid_, uid_) {
+                api.openWin({
+                    name: 'home_two_content_win',
+                    url: './home_two_content_win.html',
+                    pageParam: {
+                        s_id: sid_,
+                        u_id: uid_,
+                    }
+                });
+            },
+
+            //附加栏  举报
+            side_choice: function ( sid_, index_) {
+                dialogBox.actionMenu({
+                    rect: {
+                        h: 170
+                    },
+                    texts: {
+                        cancel: '取消'
+                    },
+                    items: [
+                        {
+                            text: '举报',
+                            icon: 'widget://image/report.png'
+                        },{
+                            text: '屏蔽此条动态',
+                            icon: 'widget://image/pingbi1.png'
+                        }
+                    ],
+                    styles: {  //对话框样式设置
+                        bg: '#FFF',
+                        column: 4,
+                        itemText: {
+                            color: '#000',
+                            size: 12,
+                            marginT: 8
+                        },
+                        itemIcon: {
+                            size: 40
+                        },
+                        cancel: {
+                            color: '#000',
+                            h: 44,
+                            size: 14
+                        }
+                    }
+                }, function (ret) {
+                    // 1.举报
+                    if (ret.index === 0) {
+                        //关闭 弹出框
+                        dialogBox.close({
+                            dialogName: 'actionMenu'
+                        });
+                        report_reason(sid_);
+                    }
+
+
+                    // 2.屏蔽二手
+                    if (ret.index === 1) {
+                        //举报确定键
+                        api.confirm({
+                            title: '屏蔽',
+                            msg: '您确定要屏蔽此动态吗？',
+                            buttons: ['确定', '取消']
+                        }, function (ret, err) {
+                            if (ret.buttonIndex === 1) {  //确认
+                                api.ajax({
+                                    url: second_refuse + '?second_id=' + sid_ +'&u_id=' + $api.getStorage('uid'),
+                                    method: 'get',
+                                    timeout: 30,
+                                    dataType: 'json',
+                                    returnAll: false,
+                                }, function (ret, err) {
+                                    if (ret) {
+                                        // 有结果就返回提示
+                                        api.toast({
+                                            msg: '已屏蔽此动态！',
+                                            duration: 2000,
+                                            location: 'bottom'
+                                        });
+                                        // my_alert('下标取id：=='+vm.find_list[index_].id+'传参id:=='+m_id_);
+                                        if (vm.text_list[index_].id == sid_){
+                                            vm.text_list.splice(index_,1)
+                                        }
+                                    }
+                                });
+                                //关闭 弹出框
+                                dialogBox.close({
+                                    dialogName: 'actionMenu'
+                                });
+                            } else {
+                                dialogBox.close({
+                                    dialogName: 'actionMenu'
+                                });
+                            }
+                        });
+                    }
+
+                    //取消
+                    if (ret.eventType === 'cancel') {
+                        dialogBox.close({
+                            dialogName: 'actionMenu'
+                        });
+                    }
+                });
+            }
+
+        },
+
+        //时间过滤器
+        filters: {
+            filter_time: function (time_) {
+                if (time_ && time_.length > 5) {
+                    value = time_.substring(0, 5);
+                }
+                return value;
+            },
+            filter_t: function (t_) {
+                if (t_ && t_.length > 5) {
+                    value = t_.substring(0, 5);
+                }
+                return value;
+            },
+
+            filter_d: function (d_) {
+                value = d_.substring(5, 10);
+                return value;
+            }
+        },
+    });
+
+
+    // 实现下拉刷新功能
+    function initRefresh() {
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/fresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '嘤嘤嘤 放开我...'
+        }, function (ret, err) {
+            vm.skip = 0;
+            vm.init(true);//初始化 ajax数据请求
+            api.toast({
+                msg: '已刷新',
+                duration: 1000,
+                location: 'bottom'
+            });
+        });
+    }
+
+    
+    // 举报入表
+    function report_user(sid_) {
+        api.ajax({
+            url: second_report + '?second_id=' + sid_ +'&u_id=' + $api.getStorage('uid'),
+            method: 'get',
+            timeout: 30,
+            dataType: 'json',
+            returnAll: false,
+        }, function (ret, err) {
+            if (ret) {
+                api.toast({
+                    msg: '举报成功,平台将会在24小时之内做出处理！',
+                    duration: 2000,
+                    location: 'bottom'
+                });
+            }
+        });
+    }
+    
+    // 举报原因分类
+    function report_reason(sid_) {
+        api.actionSheet({
+            title: '请选择举报原因',
+            cancelTitle: '这里是取消按钮',
+            buttons: ['色情低俗', '政治敏感', '广告', '令人恶心', '违纪违法', '其他']
+        }, function(ret, err) {
+             //按钮点击序号，从1开始
+            var index = ret.buttonIndex;
+            if (index == 1 || index == 2 || index == 3 || index == 4 || index == 5 || index == 6){
+                report_user(sid_);
+            }
+        });
+    }
+
+</script>
+</html>

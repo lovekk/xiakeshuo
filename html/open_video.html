@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>视频播放</title>
+</head>
+<body>
+<header id="app">
+</header>
+</body>
+
+<script type="text/javascript">
+
+    var moviePlayer;
+    // 准备
+    apiready = function () {
+
+        var video_url = api.pageParam.video_url;
+        var qiniu_ = api.pageParam.qiniu_url;
+
+        moviePlayer = api.require('moviePlayer');   //视频播放器
+
+        open_video(video_url,qiniu_)
+    };
+
+
+    //播放视频
+    //播放视频,单个视频
+    function open_video(video_,qiniu_) {
+        moviePlayer.open({
+            rect: {  //模块的位置及尺寸
+                x: 0,
+                y: api.safeArea.top,
+                w: api.frameWidth,
+                h: api.winHeight - api.safeArea.top
+            },
+            styles: {  //模块的样式设置
+                head: {
+                    bg: 'rgba(69,124,250,1.0))',
+                    height: 44,
+                    y: 0,
+                    title: {
+                        size: 20,
+                        color: '#fff',
+                        width: 40,
+                        leftMargin: 10
+                    },
+                    backSize: 30, //顶部返回按钮的背景图片
+                    backImg: 'widget://image/back.png',
+                    customButtons: [{
+                        w: 30,
+                        h: 30,
+                        rightMagin: 10,
+                        img: 'widget://image/more.png',
+                        imgSelected: 'widget://image/more.png',
+                    }]
+                },
+                foot: {
+                    bg: 'rgba(69,124,250,0.6))',
+                    height: 44,
+                    palyBtn: {
+                        size: 33,
+                        playImg: 'widget://image/v_start.png',
+                        pauseImg: 'widget://image/v_stop.png',
+                        marginLeft: 5
+                    },
+                    currentTimeLabel: {
+                        textSize: 14,
+                        textColor: "#FFF",
+                        textWidth: 43,
+                        marginLeft: 5
+                    },
+                    seekBar: {
+                        sliderImg: 'widget://image/circle.png',
+                        sliderW: 20,
+                        sliderH: 20,
+                        progressColor: '#696969',
+                        progressSelected: '#457cfa',
+                        marginLeft: 10,
+                        marginRight: 10
+                    },
+                    totalTimeLabel: {
+                        textSize: 14,
+                        textColor: "#FFF",
+                        textWidth: 43,
+                        marginRight: 5
+                    },
+                    fullscreenBtn: {
+                        size: 28,
+                        verticalImg: 'widget://image/v_full.png',
+                        horizontalImg: 'widget://image/v_small.png',
+                    }
+                }
+            },
+            path: qiniu_ + video_,
+            autoPlay: true,
+            autorotation: false,  //视频播放页面是否支持自动旋转
+            isShowStatusBar: false,  //footer和header在视频打开时是否显示
+        }, function (ret, err) {
+            if (ret) {
+                moviePlayer.addEventListener(function (ret) {
+                    if (ret && ret.eventType === 'complete') {
+                        api.toast({
+                            msg: '为您自动再次播放',
+                            duration: 2000,
+                            location: 'bottom'
+                        });
+                        moviePlayer.replay({
+                            path: qiniu_ + video_,
+                        });
+                    }
+                    if (ret && ret.eventType === 'back') {
+                        // moviePlayer.close();
+                        api.closeWin();
+                    }
+                    // if (ret && ret.index === 0) {
+                    //     alert('保存按钮');
+                    // }
+                });
+            }
+        });
+    }
+
+</script>
+</html>

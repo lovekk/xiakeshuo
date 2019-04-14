@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<style type="text/css">
+			#tx {
+				border-radius: 50%;
+				width: 30px;
+				height: 30px;
+				display: inline;
+				position: absolute;
+				top: 7px;
+				left: 3px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="aui-bar aui-bar-nav my-bgc" id="head">
+			<a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+				<span class="aui-iconfont aui-icon-left"></span> </a>
+			<div class="aui-title">
+				<img src="../image/1.png" id="tx"/> 聊天
+			</div>
+		</header>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			api.parseTapmode();
+			var html = '';
+			var id = api.pageParam.uid;
+			var tx = api.pageParam.img_url;
+			var zh = api.pageParam.nick;
+
+			html += '<img src="' + api.pageParam.img_url + '" id="tx"/>' + api.pageParam.nick;
+			$api.html($api.dom('.aui-title'), html);
+			$api.fixStatusBar($api.byId('head'));
+			var head_h = $api.offset($api.byId('head')).h;
+			api.openFrame({
+				name : 'chat_frame',
+				url : 'chat_frame.html',
+				bgColor : 'f5f5f5',
+				rect : {
+					x : 0,
+					y : head_h,
+					w : 'auto',
+					h : api.winHeight - head_h - 52
+				},
+				hScrollBarEnabled : false,
+				vScrollBarEnabled : false,
+				pageParam : {
+					head_h : head_h,
+					id : id,
+					zh : zh,
+					tx : tx
+				}
+			});
+		};
+		function closeWin() {
+			api.closeWin({
+			});
+		}
+	</script>
+</html>

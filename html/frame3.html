@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>消息</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/alifont/iconfont.css">
+    <style type="text/css">
+        .aui-list .wechat-avatar {
+            width: 3rem;
+        }
+        .wechat-avatar, .wechat-avatar > img {
+            border-radius: 8px;
+        }
+        .aui-list .aui-list-item-text img {
+            width: 14px;
+            height: 14px;
+        }
+        .aui-list .aui-list-item-text {
+            -webkit-justify-content: flex-start;
+            justify-content: flex-start;
+        }
+        .aui-list .aui-list-item-right {
+            right: 20px;
+            position: fixed;
+        }
+        .aui-list .aui-list-item-title {
+            font-size: 0.9rem;
+            position: relative;
+            max-width: 100%;
+            color: #212121;
+        }
+        .aui-list {
+            border-top: none;
+        }
+        @media screen and (-webkit-min-device-pixel-ratio: 1.5) {
+            .aui-list {
+                border: none;
+                background-size: 100% 0px;
+            }
+        }
+    </style>
+</head>
+<body style="background-color: #FFFFFF">
+<section class="aui-grid">
+    <!--<div class="aui-row" style="padding-top: 70px">-->
+    <div class="aui-row" style="padding-top: 10px">
+        <div class="aui-col-xs-3" tapmode onclick="open_fans()">
+            <i style="color:#457cfa;" class="aui-iconfont iconfont icon-jiaoshi2"></i>
+            <div class="aui-grid-label">新增粉丝</div>
+        </div>
+        <div class="aui-col-xs-3" tapmode onclick="push_msg()">
+            <i style="color:#457cfa;" class="aui-iconfont iconfont icon-pinglun"></i>
+            <div class="aui-grid-label">评论回复</div>
+        </div>
+    </div>
+    <!--用户聊天----消息列表-->
+    <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-media-list" id="hh_list"></ul>
+    </div>
+</section>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/sha1.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        hhxx();
+
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/fresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '嘤嘤嘤 放开我...'
+        }, function (ret, err) {
+            // 在这里从服务器加载数据，加载完成后调用
+            // api.refreshHeaderLoadDone(); //方法恢复组件到默认状态
+            // initRefresh();  // 下拉刷新
+            hhxx();
+            setTimeout(function() {
+                api.refreshHeaderLoadDone();
+            }, 6000)
+        });
+
+        api.addEventListener({
+            name : 'hhxx'
+        }, function(ret, err) {
+            hhxx();
+        });
+    };
+
+    function hhxx() {
+        var rong = api.require('rongCloud2');
+        rong.getConversationList(function(ret, err) {
+            if (ret.status == 'success') {
+                var html = '';
+                for (var i in ret.result) {
+                    var rs = ret.result[i];
+                    var nType = rs.type;
+                    var extra = transExtra(rs.latestMessage.extra);
+                    if (extra.xm1 == $api.getStorage('nick')) {
+                        var xm = extra.xm2;
+                        var tx = extra.tx2;
+                    } else {
+                        var xm = extra.xm1;
+                        var tx = extra.tx1;
+                    }
+                    if (rs.unreadMessageCount > 0 && extra.xm2 == $api.getStorage('nick')) {
+                        var shu = '<div class="aui-badge">' + rs.unreadMessageCount + '</div>';
+                    } else {
+                        var shu = '';
+                    }
+                    if (rs.objectName == 'RC:TxtMsg') {
+                        xx = rs.latestMessage.text.replace(reg, function(a, b) {
+                            return face[a] ? face[a] : a;
+                        });
+                        var types = '<div class="aui-list-item-text aui-font-size-12">' + xx + '</div>'
+                    } else if (rs.objectName == 'RC:ImgMsg') {
+                        var types = '<div class="aui-list-item-text aui-font-size-12 aui-text-success">[图像消息]</div>'
+                    } else if (rs.objectName == 'RC:VcMsg') {
+                        var types = '<div class="aui-list-item-text aui-font-size-12 aui-text-primary">[语音消息]</div>'
+                    }
+                    html += '<li class="aui-list-item aui-list-item-middle" onclick="lt(' + rs.targetId + ',' + "'" + xm + "'" + ',' + "'" + tx + "'" + ')">';
+                    html += '     <div class="aui-media-list-item-inner">';
+                    html += '	       <div class="aui-list-item-media wechat-avatar">';
+                    html += shu;
+                    html += '		        <img src="' + tx + '" /></div>';
+                    html += '			<div class="aui-list-item-inner">';
+                    html += '                <div class="aui-list-item-text">';
+                    html += '                     <div class="aui-list-item-title">' + xm + '</div><div class="aui-list-item-right">' + sj(rs.sentTime) + '</div></div>';
+                    html += types;
+                    html += '           </div>';
+                    html += '     </div>';
+                    html += '</li>';
+                }
+                $api.html($api.dom('#hh_list'), html);
+                api.refreshHeaderLoadDone();
+            }
+        })
+    }
+
+    function lt(id_, xm_, tx_) {
+        //打开聊天框
+        api.openWin({
+            reload : true,
+            name : 'chat',
+            url : 'chat.html',
+            pageParam : {
+                uid : id_,
+                nick: xm_,
+                img_url : tx_
+            },
+        });
+
+        if ($api.getStorage('uid') == id_) {
+
+        } else {
+            var rong = api.require('rongCloud2');
+            rong.clearMessagesUnreadStatus({
+                conversationType : 'PRIVATE',
+                targetId : id_.toString()
+            }, function(ret, err) {
+
+            })
+        }
+        api.sendEvent({
+            name : 'hhxx'
+        });
+    }
+
+    //json格式转换
+    function transExtra(arg) {
+        var result = '';
+        try {
+            result = eval('(' + arg + ')');
+        } catch (e) {
+            result = arg.slice(1, -1);
+        } finally {
+        }
+        return result;
+    }
+
+    //时间差计算
+    function sj(sj) {
+        var nowt = new Date().getTime();
+        var a = new Date(parseInt(sj));
+        var b = new Date(parseInt(nowt));
+        var date1 = Date.parse(format(a, 4));
+        var date2 = Date.parse(format(b, 4));
+        var xxsj = Math.ceil((date2 - date1) / (60 * 1000))
+        if (xxsj <= 1 && xxsj >= 0) {
+            return "就刚才";
+        } else if (xxsj <= 10 && xxsj > 1) {
+            return xxsj + "分钟前";
+        } else if (xxsj <= 60 && xxsj > 10) {
+            return format(a, 1);
+        } else if (xxsj <= 1440 && xxsj > 60) {
+            return format(a, 1);
+        } else if (xxsj <= 10080 && xxsj > 1440) {
+            return format(a, 2);
+        } else if (xxsj > 10080) {
+            return format(a, 3);
+        } else {
+            return format(a, 3);
+        }
+    }
+
+    //格式化时间
+    function format(now, type) {
+        var show_day = new Array('星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六');
+        var year = now.getFullYear().toString();
+        var month = (now.getMonth() + 1).toString();
+        var day = (now.getDate()).toString();
+        var tian = now.getDay().toString();
+        var hour = (now.getHours()).toString();
+        var minute = (now.getMinutes()).toString();
+        var second = (now.getSeconds()).toString();
+        if (hour.length == 1) {
+            hour = "0" + hour;
+        }
+        if (minute.length == 1) {
+            minute = "0" + minute;
+        }
+        if (second.length == 1) {
+            second = "0" + second;
+        }
+        if (type == 1) {
+            var dateTime = hour + ":" + minute;
+        } else if (type == 2) {
+            var dateTime = show_day[tian] + " " + hour + ":" + minute
+        } else if (type == 3) {
+            var dateTime = year + "-" + month + "-" + day
+        } else if (type == 4) {
+            var dateTime = year + "/" + month + "/" + day + " " + hour + ":" + minute + ":" + second;
+        } else if (type == 5) {
+            var dateTime = show_day[tian];
+        }
+        return dateTime;
+    }
+
+    //表情符号转换
+    var reg = /\[.+?\]/g;
+    var face = {
+        '[微笑]' : '<span><img src="../res/ChatBox/emotion/Expression_1.png"  width="28"/></span>',
+        '[撇嘴]' : '<span><img src="../res/ChatBox/emotion/Expression_2.png"  width="28" /></span>',
+        '[色]' : '<span><img src="../res/ChatBox/emotion/Expression_3.png"  width="28" /></span>',
+        '[发呆]' : '<span><img src="../res/ChatBox/emotion/Expression_4.png"  width="28" /></span>',
+        '[得意]' : '<span><img src="../res/ChatBox/emotion/Expression_5.png"  width="28" /></span>',
+        '[流泪]' : '<span><img src="../res/ChatBox/emotion/Expression_6.png"  width="28" /></span>',
+        '[害羞]' : '<span><img src="../res/ChatBox/emotion/Expression_7.png"  width="28" /></span>',
+        '[闭嘴]' : '<span><img src="../res/ChatBox/emotion/Expression_8.png"  width="28" /></span>',
+        '[睡]' : '<span><img src="../res/ChatBox/emotion/Expression_9.png"  width="28" /></span>',
+        '[大哭]' : '<span><img src="../res/ChatBox/emotion/Expression_10.png"  width="28"/></span>',
+        '[尴尬]' : '<span><img src="../res/ChatBox/emotion/Expression_11.png"  width="28"/></span>',
+        '[发怒]' : '<span><img src="../res/ChatBox/emotion/Expression_12.png"  width="28"/></span>',
+        '[调皮]' : '<span><img src="../res/ChatBox/emotion/Expression_13.png"  width="28" /></span>',
+        '[呲牙]' : '<span><img src="../res/ChatBox/emotion/Expression_14.png"  width="28" /></span>',
+        '[惊讶]' : '<span><img src="../res/ChatBox/emotion/Expression_15.png"  width="28" /></span>',
+        '[难过]' : '<span><img src="../res/ChatBox/emotion/Expression_16.png"  width="28" /></span>',
+        '[酷]' : '<span><img src="../res/ChatBox/emotion/Expression_17.png"  width="28" /></span>',
+        '[冷汗]' : '<span><img src="../res/ChatBox/emotion/Expression_18.png"  width="28" /></span>',
+        '[抓狂]' : '<span><img src="../res/ChatBox/emotion/Expression_19.png"  width="28" /></span>',
+        '[吐]' : '<span><img src="../res/ChatBox/emotion/Expression_20.png"  width="28" /></span>',
+        '[偷笑]' : '<span><img src="../res/ChatBox/emotion/Expression_21.png"  width="28" /></span>',
+        '[愉快]' : '<span><img src="../res/ChatBox/emotion/Expression_22.png"  width="28" /></span>',
+        '[白眼]' : '<span><img src="../res/ChatBox/emotion/Expression_23.png"  width="28" /></span>',
+        '[傲慢]' : '<span><img src="../res/ChatBox/emotion/Expression_24.png"  width="28" /></span>',
+        '[饥饿]' : '<span><img src="../res/ChatBox/emotion/Expression_25.png"  width="28" /></span>',
+        '[困]' : '<span><img src="../res/ChatBox/emotion/Expression_26.png"  width="28" /></span>',
+        '[恐惧]' : '<span><img src="../res/ChatBox/emotion/Expression_27.png"  width="28" /></span>',
+        '[流汗]' : '<span><img src="../res/ChatBox/emotion/Expression_28.png"  width="28" /></span>',
+        '[憨笑]' : '<span><img src="../res/ChatBox/emotion/Expression_29.png"  width="28" /></span>',
+        /*从这*/
+        '[悠闲]' : '<span><img src="../res/ChatBox/emotion/Expression_30.png"  width="28" /></span>',
+        '[奋斗]' : '<span><img src="../res/ChatBox/emotion/Expression_31.png"  width="28" /></span>',
+        '[咒骂]' : '<span><img src="../res/ChatBox/emotion/Expression_32.png"  width="28" /></span>',
+        '[疑问]' : '<span><img src="../res/ChatBox/emotion/Expression_33.png"  width="28" /></span>',
+        '[嘘]' : '<span><img src="../res/ChatBox/emotion/Expression_34.png"  width="28" /></span>',
+        '[晕]' : '<span><img src="../res/ChatBox/emotion/Expression_35.png"  width="28" /></span>',
+        '[疯了]' : '<span><img src="../res/ChatBox/emotion/Expression_36.png"  width="28" /></span>',
+        '[衰]' : '<span><img src="../res/ChatBox/emotion/Expression_37.png"  width="28" /></span>',
+        '[骷髅]' : '<span><img src="../res/ChatBox/emotion/Expression_38.png"  width="28" /></span>',
+        '[敲打]' : '<span><img src="../res/ChatBox/emotion/Expression_39.png"  width="28"/></span>',
+        '[再见]' : '<span><img src="../res/ChatBox/emotion/Expression_40.png"  width="28"/></span>',
+        '[擦汗]' : '<span><img src="../res/ChatBox/emotion/Expression_41.png"  width="28"/></span>',
+        '[抠鼻]' : '<span><img src="../res/ChatBox/emotion/Expression_42.png"  width="28" /></span>',
+        '[鼓掌]' : '<span><img src="../res/ChatBox/emotion/Expression_43.png"  width="28" /></span>',
+        '[糗大了]' : '<span><img src="../res/ChatBox/emotion/Expression_44.png"  width="28" /></span>',
+        '[坏笑]' : '<span><img src="../res/ChatBox/emotion/Expression_45.png"  width="28" /></span>',
+        '[左哼哼]' : '<span><img src="../res/ChatBox/emotion/Expression_46.png"  width="28" /></span>',
+        '[右哼哼]' : '<span><img src="../res/ChatBox/emotion/Expression_47.png"  width="28" /></span>',
+        '[哈欠]' : '<span><img src="../res/ChatBox/emotion/Expression_48.png"  width="28" /></span>',
+        '[鄙视]' : '<span><img src="../res/ChatBox/emotion/Expression_49.png"  width="28" /></span>',
+        '[委屈]' : '<span><img src="../res/ChatBox/emotion/Expression_50.png"  width="28" /></span>',
+        '[快哭了]' : '<span><img src="../res/ChatBox/emotion/Expression_51.png"  width="28" /></span>',
+        '[阴险]' : '<span><img src="../res/ChatBox/emotion/Expression_52.png"  width="28" /></span>',
+        '[亲亲]' : '<span><img src="../res/ChatBox/emotion/Expression_53.png"  width="28" /></span>',
+        '[吓]' : '<span><img src="../res/ChatBox/emotion/Expression_54.png"  width="28" /></span>',
+        '[可怜]' : '<span><img src="../res/ChatBox/emotion/Expression_55.png"  width="28" /></span>',
+        '[菜刀]' : '<span><img src="../res/ChatBox/emotion/Expression_56.png"  width="28" /></span>',
+        '[西瓜]' : '<span><img src="../res/ChatBox/emotion/Expression_57.png"  width="28" /></span>',
+        '[啤酒]' : '<span><img src="../res/ChatBox/emotion/Expression_58.png"  width="28" /></span>',
+        '[篮球]' : '<span><img src="../res/ChatBox/emotion/Expression_59.png"  width="28" /></span>',
+        '[乒乓]' : '<span><img src="../res/ChatBox/emotion/Expression_60.png"  width="28" /></span>',
+        '[咖啡]' : '<span><img src="../res/ChatBox/emotion/Expression_61.png"  width="28" /></span>',
+        '[饭]' : '<span><img src="../res/ChatBox/emotion/Expression_62.png"  width="28" /></span>',
+        '[猪头]' : '<span><img src="../res/ChatBox/emotion/Expression_63.png"  width="28" /></span>',
+        '[玫瑰]' : '<span><img src="../res/ChatBox/emotion/Expression_64.png"  width="28" /></span>',
+        '[凋谢]' : '<span><img src="../res/ChatBox/emotion/Expression_65.png"  width="28" /></span>',
+        '[嘴唇]' : '<span><img src="../res/ChatBox/emotion/Expression_66.png"  width="28" /></span>',
+        '[爱心]' : '<span><img src="../res/ChatBox/emotion/Expression_67.png"  width="28" /></span>',
+        '[心碎]' : '<span><img src="../res/ChatBox/emotion/Expression_68.png"  width="28"/></span>',
+        '[蛋糕]' : '<span><img src="../res/ChatBox/emotion/Expression_69.png"  width="28"/></span>',
+        '[闪电]' : '<span><img src="../res/ChatBox/emotion/Expression_70.png"  width="28"/></span>',
+        '[炸弹]' : '<span><img src="../res/ChatBox/emotion/Expression_71.png"  width="28" /></span>',
+        '[刀]' : '<span><img src="../res/ChatBox/emotion/Expression_72.png"  width="28" /></span>',
+        '[足球]' : '<span><img src="../res/ChatBox/emotion/Expression_73.png"  width="28" /></span>',
+        '[瓢虫]' : '<span><img src="../res/ChatBox/emotion/Expression_74.png"  width="28" /></span>',
+        '[便便]' : '<span><img src="../res/ChatBox/emotion/Expression_75.png"  width="28" /></span>',
+        '[月亮]' : '<span><img src="../res/ChatBox/emotion/Expression_76.png"  width="28" /></span>',
+        '[太阳]' : '<span><img src="../res/ChatBox/emotion/Expression_77.png"  width="28" /></span>',
+        '[礼物]' : '<span><img src="../res/ChatBox/emotion/Expression_78.png"  width="28" /></span>',
+        '[拥抱]' : '<span><img src="../res/ChatBox/emotion/Expression_79.png"  width="28" /></span>',
+        '[强]' : '<span><img src="../res/ChatBox/emotion/Expression_80.png"  width="28" /></span>',
+        '[弱]' : '<span><img src="../res/ChatBox/emotion/Expression_81.png"  width="28" /></span>',
+        '[握手]' : '<span><img src="../res/ChatBox/emotion/Expression_82.png"  width="28" /></span>',
+        '[胜利]' : '<span><img src="../res/ChatBox/emotion/Expression_83.png"  width="28" /></span>',
+        '[抱拳]' : '<span><img src="../res/ChatBox/emotion/Expression_84.png"  width="28" /></span>',
+        '[勾引]' : '<span><img src="../res/ChatBox/emotion/Expression_85.png"  width="28" /></span>',
+        '[拳头]' : '<span><img src="../res/ChatBox/emotion/Expression_86.png"  width="28" /></span>',
+        '[差劲]' : '<span><img src="../res/ChatBox/emotion/Expression_87.png"  width="28" /></span>',
+        '[爱你]' : '<span><img src="../res/ChatBox/emotion/Expression_88.png"  width="28" /></span>',
+        '[NO]' : '<span><img src="../res/ChatBox/emotion/Expression_89.png"  width="28" /></span>',
+        '[OK]' : '<span><img src="../res/ChatBox/emotion/Expression_90.png"  width="28" /></span>',
+        '[爱情]' : '<span><img src="../res/ChatBox/emotion/Expression_91.png"  width="28" /></span>',
+        '[飞吻]' : '<span><img src="../res/ChatBox/emotion/Expression_92.png"  width="28" /></span>',
+        '[跳跳]' : '<span><img src="../res/ChatBox/emotion/Expression_93.png"  width="28" /></span>',
+        '[发抖]' : '<span><img src="../res/ChatBox/emotion/Expression_94.png"  width="28" /></span>',
+        '[怄火]' : '<span><img src="../res/ChatBox/emotion/Expression_95.png"  width="28" /></span>',
+        '[转圈]' : '<span><img src="../res/ChatBox/emotion/Expression_96.png"  width="28" /></span>',
+        '[磕头]' : '<span><img src="../res/ChatBox/emotion/Expression_97.png"  width="28"/></span>',
+        '[回头]' : '<span><img src="../res/ChatBox/emotion/Expression_98.png"  width="28"/></span>',
+        '[跳绳]' : '<span><img src="../res/ChatBox/emotion/Expression_99.png"  width="28"/></span>',
+        '[投降]' : '<span><img src="../res/ChatBox/emotion/Expression_100.png"  width="28" /></span>',
+        '[激动]' : '<span><img src="../res/ChatBox/emotion/Expression_101.png"  width="28" /></span>',
+        '[街舞]' : '<span><img src="../res/ChatBox/emotion/Expression_102.png"  width="28" /></span>',
+        '[献吻]' : '<span><img src="../res/ChatBox/emotion/Expression_103.png"  width="28" /></span>',
+        '[左太极]' : '<span><img src="../res/ChatBox/emotion/Expression_104.png"  width="28" /></span>',
+        '[右太极]' : '<span><img src="../res/ChatBox/emotion/Expression_105.png"  width="28" /></span>'
+    };
+
+
+
+    // 打开粉丝页
+    function open_fans() {
+        api.openWin({
+            name: 'my_fans_win',
+            url: './my_fans_win.html',
+        });
+    }
+
+    // 打开消息推送页面
+    function push_msg() {
+        api.openWin({
+            name: 'find_push_win',
+            url: './find_push_win.html',
+        });
+    }
+
+
+</script>
+</html>

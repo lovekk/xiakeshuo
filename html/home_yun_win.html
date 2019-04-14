@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>校园云景</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+</head>
+<body>
+    <header class="aui-bar aui-bar-nav my-bgc">
+        <div class="aui-pull-left aui-btn" onclick="api.closeWin()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </div>
+        <div class="aui-title">校园云景</div>
+    </header>
+</body>
+</html>
+
+<script src="../script/api.js"></script>
+
+<script>
+
+    var yun_url;
+    apiready = function () {
+        $api.fixIos7Bar($api.dom("header"));//padding-top: 20px; 沉浸式状态栏
+        var school_id = api.pageParam.school_id;
+        var school_name = api.pageParam.school_name;
+        // if (school_id === 4){
+        //     yun_url = 'https://720yun.com/t/79ajOzhvkv8?scene_id=10099571';
+        //     open_url(yun_url)
+        // }
+
+        api.openFrame({
+            name: 'home_yun_frame',
+            url: 'https://720yun.com/t/79ajOzhvkv8?scene_id=10099571',
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: 'auto',
+                h: api.winHeight - $api.dom('header').offsetHeight
+            },
+            bounces: false,  //不能弹动
+        });
+
+    };
+
+    //
+    // function open_url(url_) {
+    //     api.openFrame({
+    //         name: 'home_yun_frame',
+    //         url: url_,
+    //         rect: {
+    //             x: 0,
+    //             y: $api.dom('header').offsetHeight,
+    //             w: 'auto',
+    //             h: api.winHeight - $api.dom('header').offsetHeight
+    //         },
+    //         bounces: true,
+    //     });
+    // }
+
+</script>

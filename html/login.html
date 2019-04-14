@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>登录</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+		<style>
+			header {
+				height: 50px;
+				color: #FFFFFF;
+				background-color: #457cfa;
+				line-height: 50px;
+				padding-right: 10px;
+			}
+			header img {
+				position : absolute;
+				height: 30px;
+				left : 0;
+				margin: 10px;
+			}
+
+			.regist{
+				position : absolute;
+				height : 30px;
+				line-height:30px;
+				right: 0;
+				margin: 10px;
+				margin-right: 25px;
+                font-size: 16px;
+			}
+			.text-view {
+				width: 100%;
+				text-align: center;
+				color: #FFFFFF;
+				font-weight: bold;
+				font-size: 20px;
+			}
+			#title1 {
+				font-size: 18px;
+				margin-top: 60px;
+			}
+			.edit_layout {
+				width: auto;
+				margin-left: 50px;
+				margin-right: 50px;
+				height: 50px;
+				margin-top: 20px;
+			}
+			.edit_text {
+				width: 70%;
+				height: 50px;
+				line-height: 50px;
+				outline: none;
+				float: left;
+			}
+			.border-bottom {
+				position: relative;
+			}
+			.border-bottom:after {
+				content: '';
+				position: absolute;
+				left: 0;
+				right: 0;
+				height: 1px;
+				top: auto;
+				bottom: 0;
+				background: #D9D9D9;
+			}
+			.border-bottom-focus:after {
+				background: #457cfa;
+			}
+			#confirm {
+				width: auto;
+				height: 50px;
+				margin-top: 40px;
+				margin-left: 50px;
+				margin-right: 50px;
+				border-radius: 25px;
+				background-color: #457cfa;
+				color: #FFFFFF;
+				font-size: 18px;
+				text-align: center;
+				line-height: 50px;
+			}
+
+            .res {
+                width: auto;
+				height: 50px;
+				line-height: 50px;
+				margin-top: 10px;
+				color: black;
+				font-size: 15px;
+				text-align: center;
+			}
+
+
+
+		</style>
+	</head>
+	<body style="background:linear-gradient(#457cfa 20%, #FFFFFF 60%);">
+    <div id="app" style="width: auto;height: 100%;">
+		<header>
+			<img src="../image/btn_back.png" onclick="api.closeWin()"/>
+			<div class="regist" id="regist"></div>
+		</header>
+
+        <div >
+		<div class="text-view" id="title1" v-on:click="get_school()">
+			登录
+		</div>
+		<div class="edit_layout border-bottom flex-wrap" id="phone_num_layout">
+			<input type="number" id="phone_num" class="edit_text"
+				   placeholder="手机号" v-model="phone_num"/>
+		</div>
+		<div class="edit_layout border-bottom" id="pwd_layout">
+			<input type="password" id="pwd" class="edit_text flex-con"
+				   placeholder="密码" v-model="password"/>
+		</div>
+		<br>
+		<div id="confirm" v-on:click="login()">
+			登录
+		</div>
+
+        <div  class="res">
+            <span tapmode onclick="register()"> 立即注册 </span> | <span tapmode onclick="find_pwd()"> 忘记密码 </span>
+		</div>
+
+        <div style="width: 300px; margin-top: 50px">
+            <img src="../image/backlogin.png" width="300px">
+        </div>
+
+        </div>
+	</div>
+
+
+	</body>
+	<script type="text/javascript" src="../script/common.js"></script>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/vue.js"></script>
+	<script type="text/javascript">
+
+		apiready = function() {
+			var header = document.getElementsByTagName("header");
+			$api.fixStatusBar(header[0]);
+
+			//获取ip地址
+			var ipAddress = api.require('ipAddress');
+			ipAddress.getIp(
+				function(ret, err) {
+					vm.ip_addr = ret.ip;
+			});
+		};
+
+		var vm = new Vue({
+		    el: '#app',
+		    data: {
+		        phone_num: '',
+		        password: '',
+
+		        ip_addr: '',
+
+				uid: '',
+				nick: '',
+				head_image_url: '',
+				token:'',
+
+				school_id: 4,
+				school_name:'江苏师范大学',
+
+				media: media_url,
+				qiniu_url:qiniu_url,
+				qiniu_small:qiniu_small,
+
+		    },
+		    methods: {
+		        //初始化 ajax数据请求
+		        login: function () {
+					//手机号码校验
+					if(!vm.phone_num){
+						alert('请填写手机号');
+						return false;
+					}
+					if (!(/^1[34578]\d{9}$/.test(vm.phone_num))) {
+					    alert('手机号格式不正确');
+						return false;
+					}
+
+					//密码校验
+					if(!vm.password){
+						alert('请填写密码');
+						return false;
+					}
+
+					api.ajax({
+						url: user_login,
+						method: 'post',
+						timeout: 30,
+						dataType: 'json',
+						returnAll: false,
+						data: {
+							//以表单方式提交参数，JSON对象{"field1": "value1"}
+							values: {
+								phone_num: vm.phone_num,
+								password: vm.password,
+							},
+						}
+					}, function (ret, err) {
+						if (ret) {
+
+						    if (ret.code === 200){
+						        vm.uid = ret.user_data[0].id;
+						        vm.nick = ret.user_data[0].nick;
+						        vm.head_image_url = vm.qiniu_url + ret.user_data[0].head_qn_url + qiniu_small;
+						        vm.school_id = ret.user_data[0].school;
+						        vm.school_name = ret.user_data[0].school__name;
+						        vm.token = ret.user_data[0].token;
+
+						        //发送用户信息
+						        api.sendEvent({
+									name: 'send_user_id',
+									extra: {
+										user_id: vm.uid,
+										user_nick: vm.nick,
+										head_img: vm.head_image_url,
+										token: vm.token,
+										school_id: vm.school_id,
+										school_name: vm.school_name,
+									}
+								});
+
+						        //用户信息存储到本地
+						        $api.setStorage('uid',vm.uid);
+								$api.setStorage('nick',vm.nick);
+								$api.setStorage('head_img',vm.head_image_url);
+								$api.setStorage('school_id',vm.school_id);
+								$api.setStorage('school_name',vm.school_name);
+								$api.setStorage('token',vm.token);
+								$api.setStorage('phone_num',vm.phone_num);
+
+								//保存用户登录信息
+								api.ajax({
+									url: login_save,
+									method: 'post',
+									timeout: 30,
+									dataType: 'json',
+									returnAll: false,
+									data: {
+										//以表单方式提交参数，JSON对象{"field1": "value1"}
+										values: {
+											phone_num: vm.phone_num,
+											password: vm.password,
+											log_ip: vm.ip_addr,
+											device_num: api.deviceId,
+											device_model: api.deviceModel,
+											device_name: api.deviceName,
+											operator: api.operator,
+
+											system_type: api.systemType,
+											system_version: api.systemVersion,
+											connection_type: api.connectionType,
+											screen_width: api.screenWidth,
+											screen_height: api.screenHeight,
+											channel: api.channel,
+											jail_break: api.jailbreak,
+										},
+									}
+								}, function (ret, err) {
+								});
+
+								//关闭登录窗口 显示首页
+								setTimeout(function () {
+									api.closeToWin({
+										name: 'root'
+									});
+								}, 200);
+							}else {
+						        alert(ret.errmsg)
+							}
+						} else {
+							api.toast({
+								msg: '网络波动，请重新登录',
+								duration: 1000,
+								location: 'bottom'
+							});
+						}
+					});
+		        },
+		    }
+		});
+
+
+		// 打开注册页面
+		function register(){
+            api.openWin({
+	            name: 'register_phone',
+	            url: './register_phone.html',
+				allowEdit: true,
+            });
+			//测试 直接跳转到 用户信息
+			// api.openWin({
+			//    name: 'register_msg',
+			//    url: 'register_msg.html',
+			//		allowEdit: true,
+			// });
+		}
+
+
+		// 忘记密码
+		function find_pwd(){
+            api.openWin({
+	            name: 'login_password',
+	            url: './login_password.html',
+				allowEdit: true,
+            });
+		}
+
+	</script>
+</html>

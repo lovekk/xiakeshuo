@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>校园公告</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style type="text/css">
+        .aui-list-item.wechat-top {
+            background-color: #f3f3f7;
+        }
+        .aui-list .wechat-avatar {
+            width:3rem;
+        }
+        .wechat-avatar .aui-row-padded {
+            background-color: #dddee0;
+            padding: 0.1rem;
+            border-radius: 0.2rem;
+            margin-left: -0.05rem;
+            margin-right: -0.05rem;
+        }
+        .wechat-avatar .aui-row-padded [class*=aui-col-xs-] {
+            padding: 0.05rem;
+        }
+        .wechat-avatar,
+        .wechat-avatar > img {
+            border-radius:0.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div id='app' class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-media-list">
+            <li v-for="item in notice_list" class="aui-list-item aui-list-item-middle"
+                tapmode v-on:click="open_notice_content(item.id)">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-media wechat-avatar">
+                        <img src="../image/notice.jpg" />
+                    </div>
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title" style="width: 70%">{{item.title}}</div>
+                            <div class="aui-list-item-right" >{{item.publish_date}}</div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</body>
+<script type="text/javascript" src="../script/common.js" ></script>
+<script type="text/javascript" src="../script/api.js" ></script>
+<script type="text/javascript" src="../script/vue.js" ></script>
+<script type="text/javascript">
+
+    //准备 文档加载完毕
+    apiready = function () {
+        vm.school_id = api.pageParam.school_id;
+        vm.school_name = api.pageParam.school_name;
+
+        vm.init();
+        initRefresh();
+
+        //下拉监听事件
+        api.addEventListener({
+            name : 'scrolltobottom',
+            extra : {
+                threshold : 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            //分页加10，和后台同步
+            vm.skip += 10;
+            vm.init(false);
+        });
+    };
+
+
+    //vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            school_id: '',
+            school_name: '',
+            notice_list: [],
+
+            is_more: true,    //加载更多,默认第一次
+            skip: 0,
+        },
+        methods: {
+            //初始化 ajax数据请求
+            init: function ( more_ ) {
+                api.ajax({
+                    url: notice_list +'?school_id=' + vm.school_id + '&skip=' + vm.skip,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        api.refreshHeaderLoadDone(); //方法恢复组件到默认状态
+                        if (ret.code === 200){
+                            if ( more_ ){
+                                vm.notice_list = ret.notice_data;
+                            } else {
+                                if (ret.notice_data.length > 0){
+                                    //concat() 方法用于连接两个或多个数组。
+                                    vm.notice_list = vm.notice_list.concat(ret.notice_data);
+                                }else {
+                                    api.toast({
+                                        msg: '没有更多了',
+                                        duration: 1000,
+                                        location: 'bottom'
+                                    });
+                                }
+                            }
+                        }
+
+                    } else {
+                        //出错提示
+                        my_toast();
+                    }
+                });
+            },
+
+            //打开 公告内容页
+            open_notice_content: function (id_) {
+                api.openWin({
+                    name: 'home_notice_content',
+                    url: './home_notice_content.html',
+                    pageParam: {
+                        notice_id: id_,
+                        school_id: vm.school_id,
+
+                    }
+                });
+            }
+
+        }
+    });
+
+
+    // 实现下拉刷新功能
+    function initRefresh() {
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/fresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '嘤嘤嘤 放开我...'
+        }, function (ret, err) {
+            //在这里从服务器加载数据，加载完成后调用
+            vm.skip = 0;
+            vm.init(true);//初始化 ajax数据请求
+            api.toast({
+                msg: '已刷新',
+                duration: 1000,
+                location: 'bottom'
+            });
+        });
+    }
+
+
+
+</script>
+</html>

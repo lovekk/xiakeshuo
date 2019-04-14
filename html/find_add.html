@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>发布</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/alifont/iconfont.css"/>
+
+    <style type="text/css">
+
+        html {
+            height: 100%;
+            background-color: transparent;
+        }
+
+        textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            color: #000;
+            font-size: 16px;
+            height: 250px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            margin: 3px 10px;
+            background: #457cfa;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            font-size: 20px;
+            margin-top: 20px;
+            border-radius: 20px;
+            color: #fff;
+        }
+
+        .aui-list .aui-list-item-media {
+            width: 3rem;
+        }
+
+        textarea {
+            height: 8rem;
+            background-color: #ffffff;
+            padding: 0.5rem;
+        }
+
+        .photos img {
+            display: block;
+            width: 100%;
+        }
+
+        .add-photos > div {
+            width: 100%;
+            height: 5.15rem;
+            line-height: 5.15rem;
+        }
+
+        .add-photos > div .aui-iconfont {
+            font-size: 2rem;
+            color: #ccc;
+        }
+
+        .image-item {
+            position: relative;
+            height: 5.3rem;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+
+        .image-item img {
+            display: block;
+            margin: 0 auto;
+            width: auto;
+            height: 100%;
+        }
+
+        .image-item .delete-btn {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 28px;
+            height: 28px;
+            background-color: rgba(0, 0, 0, 0.7);
+            margin-left: -14px;
+            margin-top: -14px;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app" class="aui-content">
+
+    <header class="aui-bar aui-bar-nav my-bgc">
+        <div class="aui-pull-left aui-btn" tapmode onclick="api.closeWin();">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </div>
+        <div class="aui-title">发布</div>
+    </header>
+
+    <!--=================================文本=============================-->
+
+    <!--<p class="aui-text-center aui-margin-t-15">内容发布</p>-->
+    <section class="aui-content-padded">
+        <textarea placeholder="在这里输入内容...(300字以内)" v-model="content"></textarea>
+    </section>
+    <!--<p class="aui-text-center aui-margin-t-15">语音</p>-->
+
+    <!--<section class="aui-content-padded" v-if="is_show">-->
+        <!--<div class="aui-row aui-row-padded" style="text-align: center">-->
+            <!--<div class="aui-col-xs-4" onclick="open_audio()">-->
+                <!--<div class="aui-btn aui-btn-info">音频</div>-->
+            <!--</div>-->
+            <!--<div class="aui-col-xs-4" onclick="img_open()">-->
+                <!--<div class="aui-btn aui-btn-info">图片</div>-->
+            <!--</div>-->
+            <!--<div class="aui-col-xs-4" onclick="video_open()">-->
+                <!--<div class="aui-btn aui-btn-info">视频</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</section>-->
+
+    <section class="aui-content-padded" v-if="is_show">
+        <div class="aui-row" style="text-align: center;">
+            <div class="aui-col-xs-4" tapmode onclick="open_audio()">
+                <i style="color:#039be5;font-size: 35px" class="aui-iconfont iconfont icon-luyin"></i>
+            </div>
+            <div class="aui-col-xs-4" tapmode onclick="img_open()">
+                <i style="color:#71400b;font-size: 35px" class="aui-iconfont iconfont icon-tupian2"></i>
+            </div>
+            <div class="aui-col-xs-4" tapmode onclick="video_open()">
+                <i style="color: #6AB494;font-size: 39px" class="aui-iconfont iconfont icon-shipin2"></i>
+            </div>
+        </div>
+    </section>
+
+
+    <!--=================================多媒体 显示=============================-->
+
+    <!-- 音频 -->
+    <section class="aui-content-padded" v-if="is_voice_con">
+        <div class="aui-row aui-row-padded">
+            <div class="aui-col-xs-3">
+                <div><img src="../image/luyin.png"></div>
+            </div>
+            <div class="aui-col-xs-3">
+                <div style="font-size: 14px;color: #9e9e9e;padding-top: 5px">
+                    共:{{voice_time}}S
+                </div>
+            </div>
+            <div class="aui-col-xs-3" onclick="paly_audio()">
+                <div class="aui-btn aui-btn-primary">{{play_s}}</div>
+            </div>
+            <div class="aui-col-xs-3" onclick="del_audio()">
+                <div class="aui-btn aui-btn-danger">删除</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 图片 -->
+    <section class="aui-content-padded" v-if="is_img_con">
+        <div class="aui-row aui-row-padded">
+            <div class="aui-col-xs-4 image-item" v-for="item in img_list">
+                <img :src=" item " class="notes-image">
+                <div class="delete-btn">
+                    <i class="aui-iconfont aui-icon-trash" v-on:click="del_img( item )"></i>
+                </div>
+            </div>
+            <div v-if=" list_len < 9 ">
+                <div class="aui-col-xs-4 add-photos" style="border: #c7c7c7 1px solid" onclick="img_open()">
+                    <div class="aui-border aui-text-center">
+                        <i class="aui-iconfont aui-icon-camera "></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </section>
+
+    <!-- 短视频 -->
+    <section class="aui-content-padded" v-if="is_video_con">
+        <div class="aui-row aui-row-padded">
+            <div class="aui-col-xs-4 image-item">
+                <img :src=" video_img " class="notes-image">
+                <div class="delete-btn" onclick="del_video()">
+                    <i class="aui-iconfont aui-icon-trash"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <br>
+    <!--=================================话题=============================-->
+
+
+    <section class="aui-content-padded" style="margin-top: 0;">
+        <div class="">
+            <span>
+                <label><input style="color:#1874CD" type="text" v-model="topic"></label>
+            </span>
+        </div>
+        <div class="aui-card-list" style="background-color: #f5f5f5">
+            <div class="">
+                <span style="font-size: 16px;color: #616161;font-weight: bolder">话题：</span>
+                <span v-for="item in topic_list" style="padding-right: 10px"
+                      v-on:click="choose_topic(item.name)">
+                    #{{item.name}}#
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!--========================同步全国============================-->
+    <section class="aui-list-item aui-content-padded">
+        <div class="aui-list-item-inner">
+            <label><input class="aui-radio" type="checkbox" checked> &nbsp;同步全国</label>
+        </div>
+    </section>
+
+    <!--=================================完成=============================-->
+    <div class="btn" tapmode v-on:click="fn_submit();">完成</div>
+    <br>
+    <section class="aui-content-padded">
+        <!--<div style="color: #9e9e9e;font-size: 14px">-->
+            <!--*注：话题标签，点击自动录入；<br>-->
+            <!--图片最多同时上传9张；<br>-->
+            <!--音频最多上传1个，120s以内；<br>-->
+            <!--视频最多上传1个，10M以内；<br>-->
+            <!--<br>-->
+            <!--💗好好学习 &nbsp; 天冷加衣💗-->
+        <!--</div>-->
+    </section>
+    <br>
+</div>
+
+
+</body>
+
+
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+
+<script type="text/javascript">
+
+
+    var UIAlbumBrowser;
+    apiready = function () {
+
+        $api.fixIos7Bar($api.dom("header"));//padding-top: 20px; 沉浸式状态栏
+        UIAlbumBrowser = api.require('UIAlbumBrowser'); //上传图片模块实例
+
+        //接收参数
+        vm.school_id = api.pageParam.school_id;
+        vm.school_name = api.pageParam.school_name;
+        vm.init(); //获取话题标签
+
+    };
+
+
+    //vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            school_id: '',
+            school_name: '',
+
+            is_show: 1,  //按钮状态
+            is_img_con: 0,  //音视图内容状态
+            is_video_con: 0,
+            is_voice_con: 0,
+
+            content: '',   //文本
+            topic_list: [],  //话题标签
+            topic: '',
+
+            img_list: [],  //图片
+            list_len: '',
+
+            voice_url: '',  //音频
+            voice_time: '',
+            play_s: '播放',
+
+            video_url: '',  //视频
+            video_img: '',
+            video_size: '',
+
+        },
+        methods: {
+            //初始化 ajax数据请求
+            //获取话题标签
+            init: function () {
+                api.ajax({
+                    url: tag_list,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        vm.topic_list = ret.tag;  //话题标签
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+
+            //提交 ajax数据
+            fn_submit: function () {
+                api.showProgress({
+                    title: '正在审核中...',
+                    text: '先学会习...',
+                    modal: false
+                });
+                api.ajax({
+                    url: moment_add,
+                    method: 'post',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                    data: {
+                        //以表单方式提交参数，JSON对象{"field1": "value1"}
+                        values: {
+                            school_id: vm.school_id,  //文本内容
+                            creator_id: $api.getStorage('uid'),
+                            content: vm.content,
+                            tag: vm.topic,
+
+                            voice_time: vm.voice_time,  //多媒体参数
+                            video_size: vm.video_size,
+                        },
+                        //以表单方式提交文件，JSON对象{"file": "path"}
+                        files: {
+                            img_list: vm.img_list,
+                            voice_url: vm.voice_url,
+                            video_url: vm.video_url,
+                        }
+                    }
+                }, function (ret, err) {
+                    if (ret) {
+                        if (ret.code === 200){
+                            api.hideProgress();
+                            //完成后 刷新详情页
+                            api.execScript({
+                                name: 'root',
+                                frameName: 'frame1',
+                                script: 'come_on();'
+                            });
+                            alert('发布成功！');
+                            api.closeWin();
+                        }
+                    }
+                    else {
+                        api.toast({
+                            msg: '网络波动，请退出重新发布！',
+                            duration: 3000,
+                            location: 'bottom'
+                        });
+                    }
+                });
+            },
+
+            //选择标签
+            choose_topic: function (topic_) {
+               vm.topic = topic_
+            },
+
+            //删除图片
+            del_img: function (ele_) {
+                del_ele(ele_, vm.img_list);
+                vm.list_len = vm.img_list.length;
+                if (vm.img_list.length === 0) {
+                    vm.is_show = 1;  // 图片为0 显示按钮
+
+                    vm.is_img_con = 0; //图 内容状态
+                    vm.is_video_con = 0; //视 内容状态
+                    vm.is_voice_con = 0; //音 内容状态
+
+                }
+            }
+        }
+    });
+
+
+    //==========================================图片================================
+    //打开图片选择器
+    function img_open() {
+        var len;
+        if (vm.img_list.length < 9) {
+            len = 9 - vm.img_list.length;
+        }
+        UIAlbumBrowser.open({
+            max: len,
+            type: 'image',   //纯图片
+            isOpenPreview: true,
+            classify: true,
+            styles: {
+                bg: '#000000',
+                mark: {
+                    position: 'bottom_left',
+                    size: 20
+                },
+                nav: {
+                    bg: '#000000',
+                    titleColor: '#ffffff',
+                    titleSize: 18,
+                    cancelColor: '#00ff00',
+                    cancelSize: 16,
+                    finishColor: '#00ff00',
+                    finishSize: 16
+                }
+            },
+            rotation: false  //横屏无效
+        }, function (ret) {
+            if (ret) {
+                if (ret.eventType === 'confirm') {
+                    vm.list_len += ret.list.length;
+
+                    for (i = 0; i < ret.list.length; i++) {
+                        if (0 <= ret.list[i].size <= 524288) {                //0.5M 原图
+                            trans_path(ret.list[i].path, 1.0);
+                        } else if (524288 <= ret.list[i].size <= 2097152) {  //0.5M-2M 压缩2/3
+                            trans_path(ret.list[i].path, 0.3);
+                        } else {                                             //2M以上 压缩至1/10
+                            trans_path(ret.list[i].path, 0.1);
+                        }
+                    }
+
+                }else {
+                    if (vm.img_list.length === 0) {
+                        vm.is_show = 1;   // 图片为0 显示按钮
+
+                        vm.is_img_con = 0; //图 内容状态
+                        vm.is_video_con = 0; //视 内容状态
+                        vm.is_voice_con = 0; //音 内容状态
+                    }
+                }
+
+            }
+        });
+    }
+
+
+    var l_img;
+    // 将相册图片地址转换为可以直接使用的本地路径地址（临时文件夹的绝对路径），
+    // 相册图片会被拷贝到临时文件夹，调用 api.clearCache 接口可清除该临时图片文件
+    // 主要是控制图片的质量
+    // 为什么有的图片会旋转 bug bug bug bug bug bug bug bug bug bug bug bug bug
+    function trans_path(img_, scale_) {
+        UIAlbumBrowser.transPath({
+            path: img_,
+            scale: scale_
+        }, function(ret, err) {
+            if (ret) {
+                l_img = ret.path;
+                vm.img_list.push(l_img);
+
+                if (vm.img_list.length >= 1) {
+                    vm.is_show = 0;   // 图片>1 隐藏按钮
+
+                    vm.is_img_con = 1; //图 内容状态
+                    vm.is_video_con = 0; //视 内容状态
+                    vm.is_voice_con = 0; //音 内容状态
+                }
+            } else {
+                api.toast({
+                    msg: '图片可能过大，出现错误',
+                    duration: 2000,
+                    location: 'bottom'
+                });
+            }
+        });
+    }
+
+
+    //==========================================录音================================
+    //录音窗口
+    function open_audio() {
+        api.openWin({
+            name: 'find_add_audio',
+            url: './find_add_audio.html',
+            pageParam: {
+                voice: 'f_voice'
+            }
+        });
+    }
+
+
+    //接收录音参数
+    function voice_par(voice_, time_) {
+        vm.voice_url = voice_;
+        vm.voice_time = time_;
+        if (vm.voice_url && vm.voice_time) {
+            vm.is_show = 0;  //录音成功 隐藏按钮
+
+            vm.is_img_con = 0; //图 内容状态
+            vm.is_video_con = 0; //视 内容状态
+            vm.is_voice_con = 1; //音 内容状态
+        }
+    }
+
+
+    //播放录音
+    function paly_audio() {
+        vm.play_s = '播放中...';
+        api.startPlay({
+            path: vm.voice_url
+        }, function (ret, err) {
+            if (ret) {
+                vm.play_s = '播放完成';
+            } else {
+                vm.play_s = '播放错误';
+            }
+        });
+    }
+
+
+    //删除录音
+    function del_audio() {
+        api.confirm({
+            title: '提示',
+            msg: '确定要删除吗？',
+            buttons: ['确定', '取消']
+        }, function(ret, err) {
+            if (ret.buttonIndex === 1) {
+                vm.voice_url = '';
+                vm.voice_time = '';
+
+                vm.is_show = 1;  //录音删除 显示按钮
+
+                vm.is_img_con = 0; //图 内容状态
+                vm.is_video_con = 0; //视 内容状态
+                vm.is_voice_con = 0; //音 内容状态
+            }
+
+        });
+    }
+
+
+    //==========================================视频================================
+    //打开视频选择器
+    function video_open() {
+        UIAlbumBrowser.open({
+            max: 1,
+            type: 'video',   //纯视频
+            isOpenPreview: true,
+            classify: true,
+            styles: {
+                bg: '#000000',
+                mark: {
+                    position: 'bottom_left',
+                    size: 20
+                },
+                nav: {
+                    bg: '#000000',
+                    titleColor: '#ffffff',
+                    titleSize: 18,
+                    cancelColor: '#00ff00',
+                    cancelSize: 16,
+                    finishColor: '#00ff00',
+                    finishSize: 16
+                }
+            },
+            rotation: false  //横屏无效
+        }, function (ret) {
+            if (ret) {
+                if (ret.eventType === 'confirm') {
+                    //这边设置的视频最大值
+                    //这边设置的视频最大值
+                    //这边设置的视频最大值
+                    var v_s = ret.list[0].size/1048576;
+                    if (v_s >= 30) {
+                        alert('您的短视频过大了哦！(30M以内)');
+                        return false
+                    }
+
+                    if (ret.list[0].videoPath) {
+                        vm.video_url = ret.list[0].videoPath;
+                        vm.video_img = ret.list[0].thumbPath;
+                        vm.video_size = ret.list[0].size / 1048576;
+                    }
+
+                    if (vm.video_url) {
+                        vm.is_show = 0;   // 视频有 隐藏按钮
+                        vm.is_img_con = 0; //图 内容状态
+                        vm.is_video_con = 1; //视 内容状态
+                        vm.is_voice_con = 0; //音 内容状态
+                    }
+
+                }else {
+                    if (vm.video_url === '') {
+                        vm.is_show = 1;   // 视频为0 显示按钮
+                        vm.is_img_con = 0; //图 内容状态
+                        vm.is_video_con = 0; //视 内容状态
+                        vm.is_voice_con = 0; //音 内容状态
+                    }
+                }
+
+            }
+        });
+    }
+
+
+    //删除视频
+    function del_video() {
+        api.confirm({
+            title: '提示',
+            msg: '确定要删除吗？',
+            buttons: ['确定', '取消']
+        }, function(ret, err) {
+            if (ret.buttonIndex === 1) {
+                vm.video_url = '';  //置空视频数据
+                vm.video_img = '';
+                vm.video_size = '';
+
+                vm.is_show = 1;  //视频删除 显示按钮
+
+                vm.is_img_con = 0; //图 内容状态
+                vm.is_video_con = 0; //视 内容状态
+                vm.is_voice_con = 0; //音 内容状态
+
+            }
+
+        });
+    }
+
+
+
+
+
+</script>
+
+</html>

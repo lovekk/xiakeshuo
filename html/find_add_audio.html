@@ -1,0 +1,207 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>录音</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <style>
+        .aui-btn {
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+<header class="aui-bar aui-bar-nav my-bgc">
+    <a class="aui-pull-left aui-btn" tapmode onclick="api.closeWin();">
+        <span class="aui-iconfont aui-icon-left"></span>
+    </a>
+    <div class="aui-title">录音</div>
+</header>
+
+
+<div id="app" class="aui-content" style="position:fixed; bottom:20px; width: 100%;">
+
+
+    <div class="aui-btn aui-btn-primary aui-btn-block"
+         v-on:click="start_audio();">{{start_a}}{{audio_time_ing}}
+    </div>
+    <div class="aui-btn aui-btn-primary aui-btn-block"
+         v-on:click="stop_audio();">{{stop_a}}
+    </div>
+    <div v-if="play_s" class="aui-btn aui-btn-primary aui-btn-block"
+         v-on:click="paly_audio();">{{paly_a}}
+    </div>
+    <div v-else class="aui-btn aui-btn-default aui-btn-block"
+         onclick="alert('尚未开始录音/结束录音哦！')">播放录音
+    </div>
+    <div class="aui-btn aui-btn-primary aui-btn-block"
+         v-on:click="fin_audio()">完成
+    </div>
+
+    <div class="aui-btn aui-btn-warning aui-btn-block" onclick="api.closeWin();">取消，返回</div>
+
+
+</div>
+
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript">
+
+    // var audio_url;
+    // var audio_time;
+    // var audio_decibel = 20;
+    var mp3recorder;
+
+    apiready = function () {
+
+        $api.fixIos7Bar($api.dom("header"));//padding-top: 20px; 沉浸式状态栏
+        // 接收参数
+        vm.is_where = api.pageParam.voice;
+
+
+        mp3recorder = api.require('mp3Recorder');
+        mp3recorder.openVoiceLine({
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: api.winWidth,
+                h: api.winHeight / 3
+            },
+            fixed: true,
+            isTransparent: true
+        }, function (ret) {
+            mp3recorder.setDecibels({
+                decibel: vm.audio_decibel
+            }, function (ret, err) {
+            });
+        });
+    };
+
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            is_where:'', //谁传的 是find还是comment
+            audio_url: '',
+            audio_time: '',
+            audio_time_ing: '',
+            audio_decibel: 20,
+
+            start_a: '开始录音',
+            stop_a: '结束录音',
+            paly_a: '播放录音',
+
+            play_s: false,  //录音没完成 不可播放
+        },
+        methods: {
+            //方法
+            //开始录音
+            start_audio: function () {
+                vm.play_s = false;
+                vm.start_a = '正在录音中...';
+                vm.stop_a = '结束录音';
+                vm.paly_a = '播放录音';
+                mp3recorder.startRecord({
+                    channel: 2,//声道支持:1 单声道 2 立体声道
+                    sampleRates: 44100,//采样率
+                }, function (ret, err) {
+                    if (ret.status) {
+                        mp3recorder.addEventListener(function (ret, err) {
+                            if (ret.status) {
+                                if (ret.evenType === 'Decibels') {
+                                    vm.audio_decibel = ret.decibel;
+                                }
+                            }
+                            else {
+                                my_toast();
+                            }
+                        });
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+
+            //结束录音
+            stop_audio: function () {
+                vm.play_s = true;
+                vm.stop_a = '录音完成';
+                vm.start_a = '重新录音';
+                mp3recorder.stopRecord();
+                mp3recorder.addEventListener(function (ret, err) {
+                    if (ret.status) {
+                        if (ret.evenType === 'endRecord') {
+                            vm.audio_url = ret.data.path;
+                            vm.audio_time = ret.data.duration / 1000;
+                        }
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+
+            //播放录音
+            paly_audio: function () {
+                vm.paly_a = '播放中...';
+                api.startPlay({
+                    path: vm.audio_url
+                }, function (ret, err) {
+                    if (ret) {
+                        vm.paly_a = '播放完成';
+                    } else {
+                        vm.paly_a = '播放错误';
+                    }
+                });
+            },
+
+            //完成
+            fin_audio:function () {
+                //指定 window 或者 frame 中执行脚本
+                //拼接字符串好痛苦
+                //其实这里相当于传参
+                if (vm.audio_time > 120){
+                    alert('小可爱，录音时间太长了');
+                    return false
+                }else if (vm.audio_url === '') {
+                    alert('尚未录音，不可完成哦！');
+                    return false
+                }else {
+                    if (vm.is_where === 'c_voice'){
+                        api.execScript({
+                            name: 'find_comment_add',
+                            script: 'voice_par("'+ vm.audio_url +'", "'+vm.audio_time+'")'
+                        });
+
+                    }
+                    if (vm.is_where === 'f_voice'){
+                        api.execScript({
+                            name: 'find_add',
+                            script: 'voice_par("'+ vm.audio_url +'", "'+vm.audio_time+'")'
+                        });
+                    }
+
+                    //完成，关闭当前窗口
+                    api.closeWin({
+                        name: 'find_add_audio'
+                    });
+                }
+
+
+            }
+
+        }
+    });
+
+
+
+
+
+</script>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>敬请期待</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <style>
+        .aui-content {
+            background: #fff;
+        }
+
+        .controlimg {
+            word-break: break-all !important; /*支持IE，chrome，FF不支持*/
+            word-wrap: break-word !important; /*支持IE，chrome，FF*/
+        }
+
+        .controlimg img {
+            width: 100% !important;
+        }
+
+        .aui-list .aui-list-item-media {
+            width: 3rem;
+        }
+
+        body{
+            background-image: url("../image/pleaselong.png");
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+        }
+
+    </style>
+</head>
+
+<body >
+<header class="aui-bar aui-bar-nav my-bgc">
+    <a class="aui-pull-left aui-btn" tapmode onclick="api.closeWin();">
+        <span class="aui-iconfont aui-icon-left"></span>
+    </a>
+    <div class="aui-title">敬请期待</div>
+</header>
+<div class="aui-content bg" id="app"></div>
+</body>
+</html>
+
+<script src="../script/api.js"></script>
+<script src="../script/common.js"></script>
+<script src="../script/vue.js"></script>
+
+<script>
+    apiready = function () {
+        $api.fixIos7Bar($api.dom("header"));//padding-top: 20px; 沉浸式状态栏
+    };
+</script>

@@ -1,0 +1,473 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>底部导航</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/aui.css"/>
+
+    <style>
+        /*header{ background: DeepSkyBlue linear-gradient(#1E90FF, #00BFFF);!*渐变色*! }*/
+        header {
+            background-color: #457cfa;
+        }
+
+        header ul li {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            display: none;
+            color: white;
+            position: relative;
+            font-size: 18px;
+        }
+
+        header ul li.active {
+            display: block;
+        }
+
+        #footer {
+            background-color: #f2f2f2;
+        }
+
+        #footer ul li {
+            padding-top: 33px;
+            padding-bottom: 3px;
+            background: url() no-repeat center 2px;
+            background-size: auto 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        #footer ul li.active {
+            color: #457cfa;
+        }
+
+        #footer ul li:nth-child(1) {
+            background-image: url(./image/home_0.png);
+        }
+
+        #footer ul li:nth-child(2) {
+            background-image: url(./image/brush.png);
+        }
+
+        #footer ul li:nth-child(3) {
+            background-image: url(./image/integral.png);
+        }
+
+        #footer ul li:nth-child(4) {
+            background-image: url(./image/message.png);
+        }
+
+        #footer ul li:nth-child(5) {
+            background-image: url(./image/my_home.png);
+        }
+
+        #footer ul li:nth-child(1).active {
+            background-image: url(./image/home_00.png);
+        }
+
+        #footer ul li:nth-child(2).active {
+            background-image: url(./image/brush_fill.png);
+        }
+
+        #footer ul li:nth-child(3).active {
+            background-image: url(./image/integral_fill.png);
+        }
+
+        #footer ul li:nth-child(4).active {
+            background-image: url(./image/message_fill.png);
+        }
+
+        #footer ul li:nth-child(5).active {
+            background-image: url(./image/my_home_fill.png);
+        }
+
+        .flex-con {
+            overflow: auto
+        }
+
+        .choose-school {
+            float: left;
+            width: 25px;
+            margin-top: 12px;
+            margin-left: 8px;
+        }
+
+        .choose-school-con {
+            float: right;
+            width: 25px;
+            margin-top: 12px;
+            margin-left: 8px;
+        }
+
+        .add-find {
+            float: left;
+            width: 23px;
+            margin-top: 12px;
+            margin-left: 10px;
+        }
+
+        .add-find-con {
+            float: right;
+            width: 25px;
+            margin-top: 12px;
+            margin-right: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="wrap" class="flex-wrap flex-vertical">
+    <header>
+        <ul>
+            <li class="border-b active">
+                <img v-if="point" src="./image/point_down.png" class="choose-school" v-on:click="open_school_list()">
+                <img v-else src="./image/point_up.png" class="choose-school" v-on:click="close_school_list()">
+                {{ school_name }}
+                <div class="choose-school-con"></div>
+            </li>
+
+            <li class="border-b">
+                <img  src="./image/searchicon.png" class="add-find" onclick="open_search_find()">
+                <!--remen -->
+                <span onclick="find_select()">{{find_name}}<i class="aui-iconfont aui-icon-down"></i></span>
+                <img  src="./image/add.png" class="add-find-con" onclick="open_add_find()">
+            </li>
+
+            <li class="border-b">
+                <div class="add-find"></div>
+                校园help
+                <img  src="./image/add.png" class="add-find-con" onclick="open_add_service()">
+            </li>
+
+            <li class="border-b">消息</li>
+            <!--不加border-b 去横线-->
+            <li>我的</li>
+        </ul>
+    </header>
+    <div id="main" class="flex-con">
+
+    </div>
+    <div id="footer" class="border-t">
+        <ul class="flex-wrap">
+            <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con active">首页</li>
+            <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">说说</li>
+            <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">help</li>
+            <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">消息</li>
+            <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">我的</li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="script/common.js"></script>
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript" src="script/vue.js"></script>
+<script type="text/javascript">
+
+    var dialogBox; //热门选择 弹框
+
+    // 启动执行事件
+    apiready = function () {
+        // 状态栏
+        $api.fixStatusBar($api.dom('header'));
+        api.setStatusBarStyle({
+            style: 'light',
+            color: '#457cfa'
+        });
+
+        dialogBox = api.require('dialogBox'); //加载热门选择 弹框
+
+        funIniGroup();  //初始化frame组
+
+        //监听学校选择 获取学校id  下拉选择发送
+        api.addEventListener({
+            name: 'send_school_id',
+        }, function (ret, err) {
+            vm.point = ret.value.point;
+            vm.school_name = ret.value.school_name;
+            vm.school_id = ret.value.school_id;
+        });
+
+
+        //监听用户信息 获取学校id 登录发送
+        api.addEventListener({
+            name: 'send_user_id',
+        }, function (ret, err) {
+            vm.school_name = ret.value.school_name;
+            vm.school_id = ret.value.school_id;
+        });
+
+
+        //监听用户信息 获取学校id  注册发送
+        api.addEventListener({
+            name: 'send_user_msg',
+        }, function (ret, err) {
+            vm.school_name = ret.value.school_name;
+            vm.school_id = ret.value.school_id;
+        });
+
+        //没有获取到用户id 进入登录
+        if(!$api.getStorage('uid')){
+            api.openWin({
+                name: 'login_begin',
+                url: './html/login_begin.html',
+                allowEdit: true,
+            });
+        }
+
+
+        //融云初始化
+        var rong = api.require('rongCloud2');
+        rong.init(function(ret, err) {
+            if (ret.status == 'success') {
+                //消息监听
+                jt();
+
+                // 融云连接
+                rong.connect({
+                    token : $api.getStorage('token')
+                }, function(ret, err) {
+                });
+            } else {
+                api.toast({
+                    msg : '通讯初始化失败'
+                });
+            }
+        });
+        //融云消息监听器
+        function jt() {
+			var rong = api.require('rongCloud2');
+			rong.setOnReceiveMessageListener(function(ret, err) {
+				if (ret) {
+					api.sendEvent({
+						name : 'hhxx'
+					});
+					api.sendEvent({
+						name : 'new_msg',
+						extra : {
+							msg : ret.result.message
+						}
+					})
+				}
+			})
+        }
+    };
+
+
+
+    //vue实例
+    var vm = new Vue({
+        el: '#wrap',
+        data: {
+            point: true,  //学校选择下拉按钮
+            school_id: '4',
+            school_name: '江苏师范大学',
+            school_list: [],
+
+            find_name: '最新',
+        },
+        methods: {
+            //打开学校选择
+            open_school_list: function () {
+                api.openFrame({
+                    name: 'home_school_list',
+                    url: './html/home_school_list.html',
+                    bgColor: 'rgba(0, 0, 0, 0.8)',
+                    rect: {
+                        x: 0,
+                        y: $api.dom('header').offsetHeight,
+                        w: 'auto', // 自动填充所在Window的宽度
+                        h: 'auto' // 自动填充所在Window的高度
+                    },
+                    bounces: true // 打开弹动
+                });
+                vm.point = false;
+            },
+            //关闭学校选择
+            close_school_list: function () {
+                api.closeFrame({
+                    name: 'home_school_list'
+                });
+                vm.point = true;
+            }
+        }
+    });
+
+
+    //打开 frame组
+    function funIniGroup() {
+        var eHeaderLis = $api.domAll('header li'),
+            frames = [];
+        for (var i = 0, len = eHeaderLis.length; i < len; i++) {
+            frames.push({
+                name: 'frame' + i,
+                url: './html/frame' + i + '.html',
+                bgColor: 'widget://image/homeb.png',
+                bounces: true,
+                pageParam:{
+                    head_height:$api.dom('header').offsetHeight,
+                },
+            })
+        }
+        api.openFrameGroup({
+            name: 'group',
+            scrollEnabled: false,
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: api.winWidth,
+                h: $api.dom('#main').offsetHeight
+            },
+            index: 0,
+            frames: frames
+        }, function (ret, err) {
+
+        });
+    }
+
+
+    // 底部 随意切换按钮
+    function randomSwitchBtn(tag) {
+        if (tag === $api.dom('#footer li.active')) return;
+        var eFootLis = $api.domAll('#footer li'),
+            eHeaderLis = $api.domAll('header li'),
+            index = 0;
+        for (var i = 0, len = eFootLis.length; i < len; i++) {
+            if (tag === eFootLis[i]) {
+                index = i;
+            } else {
+                $api.removeCls(eFootLis[i], 'active');
+                $api.removeCls(eHeaderLis[i], 'active');
+            }
+        }
+        $api.addCls(eFootLis[index], 'active');
+        $api.addCls(eHeaderLis[index], 'active');
+        api.setFrameGroupIndex({
+            name: 'group',
+            index: index
+        });
+    }
+
+
+    //添加 发现
+    function open_add_find() {
+        api.openWin({
+            name: 'find_add',
+            url: './html/find_add.html',
+            pageParam: {
+                school_name: vm.school_name,
+                school_id: vm.school_id,
+            },
+            allowEdit: true,
+        });
+    }
+
+
+    //搜索 发现
+    function open_search_find() {
+
+        api.openWin({
+            name: 'find_search_win',
+            url: './html/find_search_win.html',
+            pageParam: {
+                school_name: vm.school_name,
+                school_id: vm.school_id,
+            },
+            allowEdit: true,
+        });
+    }
+
+
+    //添加  服务
+    function open_add_service() {
+        api.openWin({
+            name: 'help_add',
+            url: './html/help_add.html',
+            pageParam: {
+                school_name: vm.school_name,
+                school_id: vm.school_id,
+            },
+            allowEdit: true,
+        });
+    }
+
+
+    //发现 下拉选择 最新 关注 热门
+    function find_select() {
+        dialogBox.share({
+            rect: {
+                w: 300,
+                h: 150
+            },
+            items: [{
+                text: '最新',
+                icon: 'widget://image/findzx128.png'
+            }, {
+                text: '热门',
+                icon: 'widget://image/findrm128.png'
+            }, {
+                text: '关注',
+                icon: 'widget://image/findguan128.png'
+            }],
+            styles: {
+                bg: '#FFF',
+                corner: 10,
+                column: 3,
+                horizontalSpace: 15,
+                verticalSpace: 30,
+                itemText: {
+                    color: '#000',
+                    size: 15,
+                    marginT: 10
+                },
+                itemIcon: {
+                    size: 70
+                }
+            }
+        }, function(ret) {
+            // 热门
+            if (ret.index === 0){
+                vm.find_name = '最新';
+                api.sendEvent({
+                    name: 'find_choose',
+                    extra: {
+                        find_index: ret.index,
+                    }
+                });
+            }
+            //最新
+            if (ret.index === 1){
+                vm.find_name = '热门';
+                api.sendEvent({
+                    name: 'find_choose',
+                    extra: {
+                        find_index: ret.index,
+                    }
+                });
+            }
+            //关注
+            if (ret.index === 2){
+                vm.find_name = '关注';
+                api.sendEvent({
+                    name: 'find_choose',
+                    extra: {
+                        find_index: ret.index,
+                    }
+                });
+            }
+            //关闭box
+            dialogBox.close({
+                dialogName: 'share'
+            });
+        });
+    }
+
+
+</script>

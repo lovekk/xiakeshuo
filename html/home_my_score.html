@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我的成绩</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <style>
+        html {
+            height: 100%;
+            background-color: transparent;
+        }
+
+        .desp {
+            margin: 10px;
+        }
+
+        textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            color: #000;
+            font-size: 16px;
+            height: 250px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            margin: 3px 10px;
+            background: #457cfa;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            font-size: 20px;
+            margin-top: 20px;
+            border-radius: 20px;
+            color: #fff;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app" class="aui-content">
+
+    <header class="aui-bar aui-bar-nav my-bgc">
+        <a class="aui-pull-left aui-btn" tapmode onclick="api.closeWin();">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">教务成绩</div>
+    </header>
+
+
+<div class="aui-content aui-margin-b-15">
+    <ul class="aui-list aui-form-list">
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    学号：
+                </div>
+                <div class="aui-list-item-input">
+                    <input type="password" v-model="stu_num">
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    密码：
+                </div>
+                <div class="aui-list-item-input">
+                    <input type="password" v-model="stu_pwd">
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    验证码：
+                </div>
+                <div class="aui-list-item-input">
+                    <input type="password" v-model="stu_code">
+                </div>
+            </div>
+        </li>
+    </ul>
+    <img :src="code_img">
+    <ul class="aui-list aui-form-list">
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn">
+                <div class="aui-btn aui-btn-info aui-margin-r-5" v-on:click="get_score()">提交</div>
+                <div class="aui-btn aui-btn-danger aui-margin-l-5" onclick="api.closeWin();">取消</div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+</div>
+</body>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript">
+
+    apiready = function () {
+        $api.fixIos7Bar($api.dom("header"));  //padding-top: 20px; 沉浸式状态栏
+        vm.init();
+    };
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            school_id:'',
+            stu_num: '',
+            stu_pwd: '',
+            stu_code: '',
+
+            code_img:'',
+        },
+        methods: {
+            //初始化 ajax数据请求
+            init: function () {
+                api.ajax({
+                    url: code_img + '?school_id=3',
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        var code_=(ret.code_img).slice(2);
+                        vm.code_img = 'data:image/jpg;base64,' + code_.substring(0, code_.length - 1);
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+            get_score: function () {
+                //密码校验
+                if(!vm.stu_num){
+                    alert('请填写学号！');
+                    return false;
+                }
+                if(!vm.stu_pwd){
+                    alert('请填写密码！');
+                    return false;
+                }
+                if(!vm.stu_code){
+                    alert('请填写验证码！');
+                    return false;
+                }
+                api.ajax({
+                    url: get_score,
+                    method: 'post',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                    data: {
+                        values: {
+                            school_id: 3,
+                            user_id: 28,
+                            account: vm.stu_num,
+                            password: vm.stu_pwd,
+                            code: vm.stu_code,
+
+                        },
+                    }
+                }, function (ret, err) {
+                    if (ret.code === 200) {
+                        my_alert(ret);
+                    }
+                });
+            }
+        }
+    });
+
+</script>
+</html>

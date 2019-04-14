@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>help-正文</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/alifont/iconfont.css"/>
+    <style>
+        .aui-content {
+            background: #fff;
+        }
+
+        .controlimg {
+            word-break: break-all !important; /*支持IE，chrome，FF不支持*/
+            word-wrap: break-word !important; /*支持IE，chrome，FF*/
+        }
+
+        .controlimg img {
+            width: 100% !important;
+        }
+
+        .aui-list .aui-list-item-media {
+            width: 3rem;
+        }
+
+        .delete-btn {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 40px;
+            height: 40px;
+            /*background-color: rgba(0, 0, 0, 0.7);*/
+            margin-left: -20px;
+            margin-top: -20px;
+            color: #ffffff;
+            text-align: center;
+            vertical-align: middle;
+            /*border-radius: 50%;*/
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="app" class="aui-content">
+
+    <!--====================================正文=======================================-->
+    <ul class="aui-list aui-media-list">
+        <li class="aui-list-item">
+            <div class="aui-card-list-header aui-card-list-user"
+                 style="padding: 10px 18px 5px 3px; border-bottom: none">
+                <div class="aui-card-list-user-avatar" v-on:click="open_home( c_id )">
+                    <img :src="qiniu + c_head + qiniu_small" class="aui-img-round" style="width: 40px; height: 40px; border-radius: 40px"/>
+                </div>
+                <div class="aui-card-list-user-name">
+                    <div>{{c_nick}}</div>
+                </div>
+                <div class="aui-card-list-user-info">
+                    {{publish_date|filter_d}} &nbsp;{{publish_time|filter_t}}
+                </div>
+            </div>
+
+            <div class="aui-media-list-item-inner">
+                <div class="aui-list-item-inner">
+
+                    <!---==============文本=======================-->
+                    <div class="aui-list-item-text" style="color:#333;font-size: 16px">
+                        {{ content }}
+                    </div>
+
+                    <!--===================图片=================-->
+                    <div v-if=" img_list.length ">
+                        <div class="aui-list-item-text">
+                            <div class="aui-row-padded" style="max-width:100%;">
+                                <div class="aui-col-xs-4" v-for="(img, index) in img_list">
+                                    <img :src="qiniu + img.qiniu_img + qiniu_big"
+                                         v-on:click="open_img_big( img_list, index )"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="aui-card-list-footer">
+                        <!--苹果的不显示价格-->
+                        <!--<div><i class=" iconfont icon-renminbi" ></i>&nbsp;{{price}}</div>-->
+                        <!--<div v-if="is_online === 0">-->
+                            <!--<i class=" iconfont icon-yundong" ></i>&nbsp;&nbsp;线下-->
+                        <!--</div>-->
+                        <!--<div v-else><i class=" iconfont icon-bofangzhong"></i>&nbsp;&nbsp;线上</div>-->
+                        <div><i></i></div>
+                        <div><i></i></div>
+                        <div v-if="status == 0" class="aui-btn aui-btn-info" onclick="goto_help()">help</div>
+                        <div v-else class="aui-btn aui-btn-default">已帮助</div>
+                    </div>
+                    <div style="padding-top: 20px;font-size: 14px;color: #616161">
+                        浏览：{{view_num}}
+                    </div>
+
+                </div>
+            </div>
+        </li>
+    </ul>
+
+
+    <!--=========接单者==========-->
+    <ul v-if="helper" class="aui-list aui-media-list">
+        <li class="aui-list-item">
+            <div class="aui-card-list-header aui-card-list-user"
+                 style="padding: 10px 18px 5px 3px; border-bottom: none">
+                <div class="aui-card-list-user-avatar" v-on:click="open_home( helper_id )">
+                    <img :src="qiniu + helper_head + qiniu_small" class="aui-img-round" style="width: 40px; height: 40px; border-radius: 40px"/>
+                </div>
+                <div class="aui-card-list-user-name">
+                    <div>{{helper_nick}} &nbsp;&nbsp;&nbsp;&nbsp; [helper]</div>
+
+                </div>
+                <div class="aui-card-list-user-info">{{helper_time|filter_t}}</div>
+            </div>
+        </li>
+    </ul>
+
+
+
+    <!-- ================================================评论================================ -->
+    <div class="aui-btn aui-btn-info aui-btn-block aui-btn-outlined aui-btn-sm" onclick="open_one_c()"
+         style="width: 200px; margin-left: auto; margin-right: auto;margin-top: 20px;margin-bottom: 20px;">
+        留言
+    </div>
+
+    <section class="aui-content">
+        <ul class="aui-list aui-media-list">
+
+            <li class="aui-list-item" v-for="item in comment_list">
+                <div class="aui-media-list-item-inner">
+                    <!--===========用户头像========================-->
+                    <div class="aui-list-item-media" v-on:click="open_home(item.c_id)">
+                        <img :src="qiniu + item.c_head + qiniu_small" style="width: 40px; height: 40px; border-radius: 40px"/>
+                    </div>
+                    <div class="aui-list-item-inner">
+                        <!--=====用户信息======-->
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title" style="color:#4c5276" v-on:click="open_home(item.c_id)">{{item.c_nick}}</div>
+                            <div>
+                                <i style="" class="aui-iconfont iconfont icon-pinglun" v-on:click="two_comment(item.id)"></i>
+                            </div>
+                        </div>
+
+                        <!--=====文本======-->
+                        <div class="aui-list-item-text" style="padding-top: 5px;font-size: 15px">
+                            {{item.content}}
+                        </div>
+
+                        <!--=====多媒体======-->
+                        <div>
+                            <!--=====图片======-->
+                            <div class="aui-list-item-text" v-if=" item.one_img.length ">
+                                <div class="aui-row-padded" style="max-width:100%;">
+                                    <div class="aui-col-xs-4" v-for="(img,index) in item.one_img">
+                                        <img :src="qiniu + img.qiniu_img + qiniu_big"
+                                             v-on:click="open_img_big( item.one_img, index )"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="padding-top: 8px"></div>
+                        <!--=========回复================-->
+                        <div style="background-color: rgba(135,206,250,0.3);font-size: 15px;" v-if="item.replycomment.length">
+                            <div v-for="re in item.replycomment">
+                                <span style="color:#4682B4"  v-on:click=" open_home( re.u_id )">
+                                    {{re.c_nick}}
+                                </span>
+                                <!--如果有自关联回复-->
+                                <span v-if=" re.p_nick !== null ">
+                                    回复<span style="color:#4682B4">@{{re.p_nick}}</span>
+                                </span>
+                                <span style="color:#757575" v-on:click="fn_long( item.id, re.id)">: {{re.content}}</span>
+                            </div>
+
+                        </div>
+                        <div class="aui-info aui-font-size-12 aui-padded-t-0 aui-padded-b-0">
+                            <div class="aui-info-item">{{item.comment_date}}</div>
+
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </section>
+
+</div>
+</body>
+
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript">
+
+    var photoBrowser;
+    var dialogBox;
+    var inputField;
+
+    // 准备
+    apiready = function () {
+
+        vm.help_id = api.pageParam.h_id;
+        vm.user_id = api.pageParam.u_id; //user_id 点击头像用
+
+        vm.init();
+
+        photoBrowser = api.require('photoBrowser');  //照片查看器
+        dialogBox = api.require('dialogBox');    //弹出 actionMenu 样式的对话框
+        inputField = api.require('inputField');  //二级评论框
+
+    };
+
+
+    //vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            qiniu: qiniu_url,
+            qiniu_small: qiniu_small,
+            qiniu_big: qiniu_big,
+            day_date: my_date(),
+
+            help_id: '',
+            user_id: '',
+
+            content: '',  //详情文本
+            price: '',
+            view_num: '',
+            publish_date: '',
+            publish_time: '',
+            is_online: '',
+            status: '',
+            c_id: '',
+            c_nick: '',
+            c_head: '',
+
+            helper:'',  //接单者
+            helper_id:'',  //接单者
+            helper_head:'',  //接单者
+            helper_nick:'',  //接单者
+            helper_time:'',  //接单者
+
+            img_list: [],
+            one_img_list: [],
+
+            comment_list: [],  //评论
+            p_id: '',  //评论 父id
+
+        },
+        methods: {
+            //初始化 ajax数据请求
+            init: function () {
+                api.ajax({
+                    url: help_content + '?help_id=' + vm.help_id + '&user_id=' + vm.user_id,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        if (ret.code === 200) {
+
+                            vm.content = ret.myhelp_data[0].content;
+                            vm.price = ret.myhelp_data[0].price;
+                            vm.view_num = ret.myhelp_data[0].view_num;
+                            vm.publish_date = ret.myhelp_data[0].publish_date;
+                            vm.publish_time = ret.myhelp_data[0].publish_time;
+                            vm.is_online = ret.myhelp_data[0].is_online;
+                            vm.status = ret.myhelp_data[0].status;
+                            vm.c_id = ret.myhelp_data[0].c_id;
+                            vm.c_nick = ret.myhelp_data[0].c_nick;
+                            vm.c_head = ret.myhelp_data[0].c_head;
+                            if (ret.img) {
+                                vm.img_list = ret.img;
+                            }
+                            if (ret.comment_data) {
+                                vm.comment_list = ret.comment_data;
+                            }
+                            if (ret.helper){
+                                vm.helper = ret.helper;
+                                vm.helper_id = ret.helper[0].helper_id;
+                                vm.helper_head = ret.helper[0].helper_head;
+                                vm.helper_nick = ret.helper[0].helper_nick;
+                                vm.helper_time = ret.helper[0].order_time;
+
+                            }
+                        }
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+
+            //打开个人主页
+            open_home: function(his_id_){
+                open_his_home(his_id_);
+            },
+
+            //查看图片
+            open_img_big: function (list_, index_) {
+                 api.openWin({
+                    name: 'open_img',
+                    url: './open_img.html',
+                    pageParam: {
+                        img_list: list_,
+                        img_index:index_,
+                    }
+                });
+            },
+
+
+            //二级评论,只会评论文字
+            two_comment:function (cid_, rid_) {
+                inputField.open({
+                    bgColor: '#ffffff',
+                    lineColor: '#757575',
+                    fileBgColor: '#fff',
+                    borderColor: '#757575',
+                    sendImg: 'widget://image/sendcomment.png',
+                    fixedOn: api.frameName,
+                    limitedWordsNumber: 100,
+                    placeholder: '回复',
+                    autoFocus: true,
+                }, function(ret, err) {
+                    if (ret) {
+                        if (ret.msg) {
+                            //提交二级评论
+                            api.ajax({
+                                url: help_reply,
+                                method: 'post',
+                                timeout: 30,
+                                dataType: 'json',
+                                returnAll: false,
+                                data: {
+                                    //以表单方式提交参数，JSON对象{"field1": "value1"}
+                                    values: {
+                                        comment_id: cid_,
+                                        user_id:  $api.getStorage('uid'),
+                                        help_id: vm.help_id,
+                                        reply_id: rid_,
+                                        reply_content: ret.msg,
+                                    },
+                                }
+                            }, function (ret, err) {
+                                if (ret) {
+                                    vm.init();
+
+                                } else {
+                                    my_toast();
+                                }
+                            });
+                            //关闭弹窗
+                            inputField.close();
+                        }
+                    } else {
+                        my_toast();
+                        inputField.close();
+                    }
+                });
+                //延迟1秒 监听输入框下边缘距离屏幕底边的高度
+                //根据高度判断是否要关闭
+                setTimeout(function () {
+                    inputField.setInputFieldListener(function (ret, err) {
+                        if (ret.chatViewH < 200) {
+                            inputField.close();
+                        } else {
+                            my_toast();
+                        }
+                    });
+                }, 1000);
+            },
+
+            //二级评论 自关联 回复回复
+            fn_long: function (cid_, pid_ ) {
+                api.actionSheet({
+                    title: '选择',
+                    cancelTitle: '取消',
+                    buttons: ['回复',]
+                }, function(ret, err) {
+                    // 回复
+                    if (ret.buttonIndex === 1) {
+                        vm.two_comment( cid_, pid_ );
+                    }
+                });
+
+            },
+
+
+        },
+
+        //时间过滤器
+        filters: {
+            filter_t: function (t_) {
+                if (t_ && t_.length > 5) {
+                    value = t_.substring(0, 5);
+                }
+                return value;
+            },
+
+            filter_d: function (d_) {
+                value = d_.substring(5, 10);
+                return value;
+            }
+        },
+    });
+
+
+    //添加一级评论
+    function open_one_c() {
+        api.openWin({
+            name: 'help_comment_add',
+            url: './help_comment_add.html',
+            pageParam: {
+                help_id: vm.help_id,
+            }
+        });
+    }
+
+
+    // 实现下拉刷新功能
+    function initRefresh() {
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/fresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '嘤嘤嘤 放开我...'
+        }, function (ret, err) {
+            vm.init();//初始化 ajax数据请求
+            api.toast({
+                msg: '已刷新',
+                duration: 1000,
+                location: 'bottom'
+            });
+        });
+    }
+
+
+    //评论后跨页更新
+    function come_on() {
+        vm.init();
+    }
+
+
+    //接单 去帮助
+    function goto_help() {
+        if (Number(vm.user_id) === Number($api.getStorage('uid'))) {
+            api.toast({
+                msg: '这是你寄几的！',
+                duration: 1000,
+                location: 'bottom'
+            });
+            return false;
+        }
+        //确认
+        api.confirm({
+            title: '确认提示',
+            msg: '您确定要去帮助Ta吗？',
+            buttons: ['确定', '取消']
+        }, function(ret, err) {
+            if ( ret.buttonIndex === 1){
+                api.ajax({
+                    url: to_help,
+                    method: 'post',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                    data: {
+                        //以表单方式提交参数，JSON对象{"field1": "value1"}
+                        values: {
+                            helper_id: $api.getStorage('uid'),
+                            help_id: vm.help_id
+                        },
+                    }
+                }, function (ret, err) {
+                    if (ret) {
+                        if (ret.code === 200) {
+                            api.toast({
+                                msg: '快去联系吧！',
+                                duration: 2000,
+                                location: 'bottom'
+                            });
+                            //刷新页面
+                            vm.init()
+                        }
+                    } else {
+                        api.toast({
+                            msg: '对不起，出现错误！',
+                            duration: 1000,
+                            location: 'bottom'
+                        });
+
+                    }
+                });
+            }
+        });
+    }
+
+</script>
+
+</html>

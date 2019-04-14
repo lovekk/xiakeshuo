@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>学校选择Frame</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+        html,
+        body {
+            height: 100%;
+            background-color: transparent;
+        }
+
+        header {
+            width: 100%;
+            height: 96px;
+        }
+
+        header .title {
+            box-sizing: border-box;
+            width: auto;
+            height: 96px;
+            margin: 0 32px;
+            padding-top: 64px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #c8026f;
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        section {
+            width: 100%;
+            height: auto;
+        }
+
+        .school {
+            width: 100%;
+            height: 55px;
+            line-height: 55px;
+            text-align: center;
+            font-size: 22px;
+            color: #fff;
+        }
+
+        .highlight {
+            opacity: 0.7;
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <div class="title">请选择学校</div>
+</header>
+<section id="list">
+    <div class="school" tapmode v-for="item in sc_list"
+         v-on:click="close_list(item.id, item.name)"> {{ item.name }}
+    </div>
+</section>
+</body>
+
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+
+<script>
+    //准备
+    apiready = function () {
+        vm.school_list()
+    };
+
+    //vue实例
+    var vm = new Vue({
+        el: '#list',
+        data: {
+            sc_list: [],
+        },
+        methods: {
+            school_list: function(){
+                //获取学校列表
+                api.ajax({
+                    url: root_url + 'user/school/',
+                    method: 'get',
+                    cache: 'false', //不缓存
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        vm.sc_list = [];
+                        vm.sc_list = ret.list;
+                    } else {
+                        my_toast();
+                    }
+                });
+
+            },
+
+            //选择后关闭窗口 发送监听事件 传递学校id
+            close_list: function (school_id, school_name) {
+                api.sendEvent({
+                    name: 'send_school_id',
+                    extra: {
+                        school_id: school_id,
+                        school_name: school_name,
+                        point: true,
+                    }
+                });
+
+                setTimeout(function () {
+                    api.closeFrame({
+                        name: 'home_school_list'
+                    });
+                }, 100);
+            },
+
+        },
+
+    });
+</script>
+</html>

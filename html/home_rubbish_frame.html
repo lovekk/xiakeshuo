@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>环保回收</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/alifont/iconfont.css">
+</head>
+<body>
+<div id="app" class="aui-content">
+    <section class="aui-grid">
+        <br>
+        <div class="aui-row">
+            <div class="aui-col-xs-3" tapmode onclick="open_rubbish_rank()">
+                <i class="aui-iconfont iconfont icon-jiangbei1 aui-btn-warning"></i>
+                <div class="aui-grid-label">贡献排名</div>
+            </div>
+            <div class="aui-col-xs-3" tapmode onclick="open_rubbish_price()">
+                <i class="aui-iconfont iconfont icon-huishou4 aui-btn-primary"></i>
+                <div class="aui-grid-label">回收价格</div>
+            </div>
+            <div class="aui-col-xs-3" tapmode onclick="open_rubbish_callback()">
+                <i class="aui-iconfont iconfont icon-jilu1 aui-btn-success"></i>
+                <div class="aui-grid-label">预约</div>
+            </div>
+            <div class="aui-col-xs-3" tapmode onclick="open_back_order()">
+                <i class="aui-iconfont iconfont icon-jilu1-copy aui-btn-default"></i>
+                <div class="aui-grid-label">回收订单</div>
+            </div>
+        </div>
+
+        <br><br><br>
+        <div class="aui-card-list aui-border-t aui-border-b">
+            <div class="aui-info aui-padded-l-15 aui-padded-r-15" style="border-bottom: 0.5px solid #4c5276">
+                <div class="aui-info-item aui-font-size-16" >
+                    <span class="aui-margin-l-5">环保小贴士</span>
+                </div>
+                <!--<div class="aui-info-item">-->
+                    <!--<i class="aui-iconfont aui-icon-more"></i>-->
+                <!--</div>-->
+            </div>
+            <!--<div class="aui-card-list-content">-->
+                <!--<img src="../image/800.jpg" />-->
+            <!--</div>-->
+            <!--<div class="aui-card-list-header aui-padded-t-5 aui-padded-b-5">-->
+                <!--分类回收-->
+            <!--</div>-->
+            <br>
+            <div class="aui-card-list-content-padded aui-padded-t-0 aui-padded-b-0"
+                 style="color:#7b7b7b;" v-html="introduce">
+            </div>
+            <div class="aui-card-list-footer aui-font-size-12" style="color:#999;">
+                <div>
+                    <span> 浏览 </span> &nbsp; &nbsp;&nbsp;<span> {{view_num}} </span>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>
+
+<script src="../script/common.js"></script>
+<script src="../script/vue.js"></script>
+<script>
+    var school_id;
+    var school_name;
+    apiready = function () {
+        school_id = api.pageParam.school_id;
+        school_name = api.pageParam.school_name;
+        vm.init();
+    };
+
+
+    //打开 环保排名 窗口
+    function open_rubbish_rank() {
+        api.openWin({
+            name: 'home_rubbish_rank',
+            url: './home_rubbish_rank.html',
+            pageParam: {
+                school_id: school_id,
+                school_name: school_name
+            }
+        });
+    }
+
+
+    //打开 回收价格 窗口
+    function open_rubbish_price() {
+        api.openWin({
+            name: 'home_rubbish_price',
+            url: './home_rubbish_price.html',
+            pageParam: {
+                school_id: school_id,
+                school_name: school_name
+            }
+        });
+    }
+
+
+    //打开 回收预约 窗口
+    function open_rubbish_callback() {
+        api.openWin({
+            name: 'home_rubbish_callback',
+            url: './home_rubbish_callback.html',
+            pageParam: {
+                school_id: school_id,
+                school_name: school_name
+            }
+        });
+    }
+    //打开 回收预约 窗口
+    function open_back_order() {
+        api.openWin({
+            name: 'home_recovery_order_win',
+            url: './home_recovery_order_win.html',
+        });
+    }
+
+
+    //vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            introduce: '',
+            view_num: '',
+        },
+        methods: {
+            //初始化 ajax数据请求
+            //获取 分类回收知识点介绍
+            init: function () {
+                api.ajax({
+                    url: recovery_introduce,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        if (ret.code === 200){
+                            vm.introduce = ret.introduce[0].content;
+                            vm.view_num = ret.introduce[0].view_num;
+                        }
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+        }
+    });
+
+
+</script>

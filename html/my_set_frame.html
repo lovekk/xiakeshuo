@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我的设置</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+
+</head>
+<body>
+<div id="app">
+    <section class="aui-content">
+        <br>
+
+        <ul class="aui-list aui-list-in aui-margin-b-15">
+            <li class="aui-list-item" onclick="change_safe()">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-lock aui-text-warning"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">账号与安全</div>
+                    <div class="aui-list-item-right"></div>
+                </div>
+            </li>
+        </ul>
+
+        <ul class="aui-list aui-list-in aui-margin-b-15">
+            <li class="aui-list-item" onclick="clear_cache()">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-recovery aui-text-primary"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">清除缓存</div>
+                    <div class="aui-list-item-right">{{size}}M</div>
+                </div>
+            </li>
+        </ul>
+
+        <!--安卓-->
+        <!--<ul class="aui-list aui-list-in aui-margin-b-15">-->
+            <!--<li class="aui-list-item">-->
+                <!--<div class="aui-list-item-label-icon">-->
+                    <!--<i class="aui-iconfont aui-icon-mobile aui-text-info"></i>-->
+                <!--</div>-->
+                <!--<div class="aui-list-item-inner aui-list-item-arrow">-->
+                    <!--<div class="aui-list-item-title">消息提醒</div>-->
+                    <!--<div class="aui-list-item-right">已开启</div>-->
+                <!--</div>-->
+            <!--</li>-->
+        <!--</ul>-->
+
+        <!--苹果-->
+        <ul class="aui-list aui-list-in aui-margin-b-15">
+            <li class="aui-list-item" onclick="refuse_user_back()">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-mobile aui-text-info"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">已屏蔽用户</div>
+                    <div class="aui-list-item-right">查看</div>
+                </div>
+            </li>
+        </ul>
+
+        <ul class="aui-list aui-list-in aui-margin-b-15">
+            <li class="aui-list-item">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-flag aui-text-danger"></i>
+                </div>
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">关于</div>
+                    <div class="aui-list-item-right">版本{{version}}</div>
+                </div>
+            </li>
+        </ul>
+    </section>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript">
+
+    apiready = function () {
+        //异步返回结果：
+        api.getCacheSize(function(ret) {
+            //缓存大小，单位为Byte，数字类型。
+            vm.size = (ret.size/1048576).toFixed(1);
+        });
+        vm.version = api.version;
+    };
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            size: '',
+            version: '',
+        },
+        methods: {
+            //方法
+            reverseMessage: function () {
+              this.message = this.message.split('').reverse().join('')
+            }
+        }
+    });
+
+
+    //清除缓存
+    function clear_cache() {
+        api.confirm({
+            title: '清除提醒',
+            msg: '您确定清除缓存吗？',
+            buttons: ['确定', '取消']
+        }, function(ret, err) {
+            if ( ret.buttonIndex === 1){
+                vm.size = 0.0;
+                api.clearCache(function() {
+                    api.toast({
+                        msg: '清除完成'
+                    });
+                });
+            }
+        });
+    }
+
+    //账号安全  修改密码
+    function change_safe() {
+        api.openWin({
+            name: 'my_set_safe',
+            url: './my_set_safe.html',
+            allowEdit: true,
+        });
+    }
+
+
+    // 屏蔽恢复
+    function refuse_user_back() {
+        api.openWin({
+            name: 'my_refuse_win',
+            url: './my_refuse_win.html',
+            allowEdit: true,
+        });
+    }
+
+
+</script>
+</html>

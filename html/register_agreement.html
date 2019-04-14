@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>网络协议</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <style>
+        html {
+            height: 100%;
+            background-color: transparent;
+        }
+
+        .desp {
+            margin: 10px;
+        }
+
+        textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            color: #000;
+            font-size: 16px;
+            height: 250px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            margin: 3px 10px;
+            background: #457cfa;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            font-size: 20px;
+            margin-top: 20px;
+            border-radius: 20px;
+            color: #fff;
+        }
+
+        .active {
+            -webkit-opacity: 0.7;
+            opacity: 0.7;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div id="app" class="aui-content">
+
+    <header class="aui-bar aui-bar-nav my-bgc">
+        <a class="aui-pull-left aui-btn" tapmode onclick="api.closeWin();">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">《下课说协议》</div>
+    </header>
+    <section>
+
+        <p style="text-align: center;"><strong>&nbsp;</strong></p>
+        <p class="MsoNormal"
+           style="margin-top: 15pt; text-align: center; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; padding-left: 30px;"
+           align="center"><strong><span style="font-family: Arial; color: #333333; font-size: 25.5pt;"><span
+                style="font-family: 宋体;">用户协议</span></span></strong></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">欢迎您来到</span>&rdquo;下课说&rdquo;</span></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">请您仔细阅读以下条款，如果您对本协议的任何条款表示异议，您可以选择不进入</span>&rdquo;下课说&rdquo;。当您注册成功，无论是进入&rdquo;下课说&rdquo;，还是在&rdquo;下课说&rdquo;上发布任何内容，或者是直接或通过各类方式（如站外API引用等）间接使用&rdquo;下课说&rdquo;网服务和数据的行为，都将被视作已无条件接受本声明所涉全部内容。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">若您对本声明的任何条款有异议，请停止使用</span>&rdquo;下课说&rdquo;网所提供的全部服务。</span></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><strong><span
+                style="font-family: 宋体; font-size: 12pt;">使用规则</span></strong></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">1、用户注册成功后，&rdquo;下课说&rdquo;将给予每个用户一个用户帐号及相应的密码，该用户帐号和密码由用户负责保管；用户应当对以其用户帐号进行的所有活动和事件负法律责任。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">2、用户须对在&rdquo;下课说&rdquo;的注册信息的真实性、合法性、有效性承担全部责任，用户不得冒充他人；不得利用他人的名义发布任何信息；不得恶意使用注册帐号导致其他用户误认； 任何机构或个人注册和使用的互联网用户账号名称，不得有下列情形：</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><br/></span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">（一）违反宪法或法律法规规定的；</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><br/></span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">（二）危害国家安全，泄露国家秘密，颠覆国家政权，破坏国家统一的；</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><br/></span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">（三）损害国家荣誉和利益的，损害公共利益的；</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><br/></span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">（四）煽动民族仇恨、民族歧视，破坏民族团结的；</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><br/></span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">（五）破坏国家宗教政策，宣扬邪教和封建迷信的；</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><br/></span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">（六）散布谣言，扰乱社会秩序，破坏社会稳定的；</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><br/></span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">（七）散布淫秽、色情、赌博、暴力、凶杀、恐怖或者教唆犯罪的；</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><br/></span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">（八）侮辱或者诽谤他人，侵害他人合法权益的；</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><br/></span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">（九）含有法律、行政法规禁止的其他内容的。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">关于用户名的管理</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">请勿以党和国家领导人或其他名人的真实姓名、字、号、艺名、笔名、头衔等注册和使用昵</span> <span style="font-family: 宋体;">称（如确为本人，需要提交相关证据并通过审核方可允许使用）；</span></span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">请勿以国家组织机构或其他组织机构的名称等注册和使用昵称（如确为该机构，需要提交相关证据并通过审核方可允许使用）；</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">请勿注册和使用与其他网友相同、相仿的名字或昵称；</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">请勿注册和使用不文明、不健康的</span>ID和昵称；</span></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">请勿注册和使用易产生歧义、引起他人误解或带有各种奇形怪状符号的</span>ID和昵称。</span></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">用户以虚假信息骗取账号名称注册，或账号头像、简介等注册信息存在违法和不良信息的，</span>&rdquo;下课说&rdquo;将暂停或注销。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">用户连续一年没有在</span>&rdquo;下课说&rdquo;上更新动态，&rdquo;下课说&rdquo;有权收回该用户昵称。</span></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">3、&rdquo;下课说&rdquo;是一个信息分享及传播的平台。用户通过&rdquo;下课说&rdquo;发表的信息为公开的信息，其他第三方均可以通过&rdquo;下课说&rdquo;获取用户发表的信息，用户对任何信息的发表即认可该信息为公开的信息，并单独对此行为承担法律责任；任何用户不愿被其他第三人获知的信息都不应该在&rdquo;下课说&rdquo;上进行发表。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">4、用户承诺不得以任何方式利用&rdquo;下课说&rdquo;直接或间接从事违反中国法律、以及社会公德的行为，&rdquo;下课说&rdquo;有权对违反上述承诺的内容予以删除。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">5、&rdquo;下课说&rdquo;用户不得利用&rdquo;下课说&rdquo;服务制作、上载、复制、发布、传播或者转载如下内容：</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&middot; 反对宪法所确定的基本原则的；</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&middot; 危害国家安全，泄露国家秘密，颠覆国家政权，破坏国家统一的；</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&middot; 损害国家荣誉和利益的；</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&middot; 煽动民族仇恨、民族歧视，破坏民族团结的；</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&middot; 破坏国家宗教政策，宣扬邪教和封建迷信的；</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&middot; 散布谣言，扰乱社会秩序，破坏社会稳定的；</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&middot; 散布淫秽、色情、赌博、暴力、凶杀、恐怖或者教唆犯罪的；</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&middot; 侮辱或者诽谤他人，侵害他人合法权益的；</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&middot; 含有法律、行政法规禁止的其他内容的信息。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">6、&rdquo;下课说&rdquo;有权对用户使用&rdquo;下课说&rdquo;的情况进行审查和监督，如用户在使用&rdquo;下课说&rdquo;时违反任何上述规定，&rdquo;下课说&rdquo;或其授权的人有权要求用户改正或直接采取一切必要的措施（包括但不限于更改或删除用户张贴的内容、暂停或终止用户使用&rdquo;下课说&rdquo;的权利）以减轻用户不当行为造成的影响。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">7、用户在使用&rdquo;下课说&rdquo;时，禁止发布令人反感的内容或滥用用户的容忍度的内容，用户可以通过在本APP举报或者官方检测人员发现，24小时之内直接在后台删除此内容，并给予发布者警告甚至封号。
+</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><strong><span
+                style="font-family: 宋体; font-size: 12pt;">知识产权</span></strong></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&ldquo;下课说&rdquo;是一个信息获取、分享及传播的平台，我们尊重和鼓励&rdquo;下课说&rdquo;用户创作的内容，认识到保护知识产权对&rdquo;下课说&rdquo;生存与发展的重要性，承诺将保护知识产权作为&rdquo;下课说&rdquo;运营的基本原则之一。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">1、用户在&rdquo;下课说&rdquo;上发表的全部原创内容，著作权均归用户本人所有。用户可授权第三方以任何方式使用，不需要得到&rdquo;下课说&rdquo;的同意。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">2、&rdquo;下课说&rdquo;提供的网络服务中包含的标识、版面设计、排版方式、文本、图片、图形等均受著作权、商标权及其它法律保护，未经相关权利人（含&rdquo;下课说&rdquo;及其他原始权利人）同意，上述内容均不得在任何平台被直接或间接发布、使用、出于发布或使用目的的改写或再发行，或被用于其他任何商业目的。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">3、为了促进其创作内容的分享和传播，用户将其在&rdquo;下课说&rdquo;上发表的全部内容，授予&rdquo;下课说&rdquo;免费的、不可撤销的、非独家使用许可，&rdquo;下课说&rdquo;有权将该内容用于&rdquo;下课说&rdquo;各种形态的产品和服务上，包括但不限于网站以及发表的应用或其他互联网产品。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">第三方若出于非商业目的，将用户在</span>&rdquo;下课说&rdquo;上发表的内容转载在&rdquo;下课说&rdquo;之外的地方，应当在作品的正文开头的显著位置注明原作者姓名（或原作者在&rdquo;下课说&rdquo;上使用的帐号名称），给出原始链接，注明「发表于&rdquo;下课说&rdquo;」，并不得对作品进行修改演绎。若需要对作品进行修改，或用于商业目的，第三方应当联系用户获得单独授权，按照用户规定的方式使用该内容。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">4</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">、在</span>&rdquo;下课说&rdquo;上传或发表的内容，用户应保证其为著作权人或已取得合法授权，并且该内容不会侵犯任何第三方的合法权益。如果第三方提出关于著作权的异议，&rdquo;下课说&rdquo;有权根据实际情况删除相关的内容有权追究用户的法律责任，给&rdquo;下课说&rdquo;或任何第三方造成损失的，用户应负责全额赔偿。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">5</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">、如果任何第三方侵犯了</span>&rdquo;下课说&rdquo;用户相关的权利，用户同意授权&rdquo;下课说&rdquo;或其指定的代理人代表&rdquo;下课说&rdquo;自身或用户对该第三方提出警告、投诉、发起行政执法、诉讼、进行上诉，或谈判和解，并且用户同意在&rdquo;下课说&rdquo;认为必要的情况下参与共同维权。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">6</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">、</span>&rdquo;下课说&rdquo;有权但无义务对用户发布的内容进行审核，有权根据相关证据结合《侵权责任法》、《信息网络传播权保护条例》等法律法规及&rdquo;下课说&rdquo;社区指导原则对侵权信息进行处理。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><strong><span
+                style="font-family: 宋体; font-size: 12pt;">个人隐私</span></strong></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">尊重用户个人隐私信息的私有性是</span>&rdquo;下课说&rdquo;的一贯原则，&rdquo;下课说&rdquo;将通过技术手段、强化内部管理等办法充分保护用户的个人隐私信息，除法律或有法律赋予权限的政府部门要求或事先得到用户明确授权等原因外，&rdquo;下课说&rdquo;保证不对外公开或向第三方透露用户个人隐私信息，或用户在使用服务时存储的非公开内容。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">同时，为了运营和改善</span>&rdquo;下课说&rdquo;的技术与服务，&rdquo;下课说&rdquo;将可能会自行收集使用或向第三方提供用户的非个人隐私信息，这将有助于&rdquo;下课说&rdquo;向用户提供更好的用户体验和服务质量。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><strong><span
+                style="font-family: 宋体; font-size: 12pt;">侵权举报</span></strong></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">1、处理原则</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&ldquo;下课说&rdquo;高度重视自由表达和企业正当权利的平衡。依照法律规定删除违法信息是&rdquo;下课说&rdquo;社区的法定义务，&rdquo;下课说&rdquo;社区亦未与任何中介机构合作开展此项业务。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">2、受理范围</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">受理</span>&rdquo;下课说&rdquo;社区内侵犯企业或个人合法权益的侵权举报，包括但不限于涉及个人隐私、造谣与诽谤、商业侵权。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">涉及个人隐私：发布内容中直接涉及身份信息，如个人姓名、家庭住址、身份证号码、工作单位、私人电话等详细个人隐私；</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">造谣、诽谤：发布内容中指名道姓（包括自然人和企业）的直接谩骂、侮辱、虚构中伤、恶意诽谤等；</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">商业侵权：泄露企业商业机密及其他根据保密协议不能公开讨论的内容。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">3、举报条件</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">如果个人或单位发现</span>&rdquo;下课说&rdquo;上存在侵犯自身合法权益的内容，请与&rdquo;下课说&rdquo;取得联系（邮箱：</span><a
+                href="mailto:help@xiakeshuo.com"><span style="text-decoration: underline;"><span
+                style="font-family: 宋体; color: #0000ff; font-size: 12pt;">37312587@qq</span></span><span
+                style="text-decoration: underline;"><span class="15"
+                                                          style="font-family: 宋体; color: #0000ff; font-size: 12pt;">.com</span></span></a><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">）。为了保证问题能够及时有效地处理，请务必提交真实有效、完整清晰的材料，否则不予受理。请使用以下格式（包括各条款的序号）：</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">A、权利人对涉嫌侵权内容拥有商标权、著作权和/或其他依法可以行使权利的权属证明；如果举报人非权利人，请举报人提供代表企业进行举报的书面授权证明。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">B、充分、明确地描述侵犯了权利人合法权益的内容，提供涉嫌侵权内容在&rdquo;下课说&rdquo;上的具体页面地址，指明涉嫌侵权内容中的哪些内容侵犯了上述列明的权利人的合法权益；</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">C、权利人具体的联络信息，包括姓名、身份证或护照复印件（对自然人）、单位登记证明复印件（对单位）、通信地址、电话号码、传真和电子邮件；</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">D、在侵权举报中加入如下关于举报内容真实性的声明：</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&middot; 我本人为所举报内容的合法权利人；</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&middot; 我举报的发布在&rdquo;下课说&rdquo;社区中的内容侵犯了本人相应的合法权益；</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&middot; 如果本侵权举报内容不完全属实，本人将承担由此产生的一切法律责任。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">4、处理流程</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">出于网络社区的监督属性，并非所有申请都必须受理。</span>&rdquo;下课说&rdquo;自收到举报邮件七个工作日内处理完毕并给出回复。处理期间，不提供任何电话、邮件及其他方式的查询服务。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">出现</span>&rdquo;下课说&rdquo;已经删除或处理的内容，但是百度、谷歌等搜索引擎依然可以搜索到的现象，是因为百度、谷歌等搜索引擎自带缓存，此类问题&rdquo;下课说&rdquo;无权也无法处理，因此相关申请不予受理。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">此为</span>&rdquo;下课说&rdquo;社区唯一的官方的侵权投诉渠道，暂不提供其他方式处理此业务。用户在&rdquo;下课说&rdquo;中的商业行为引发的法律纠纷，由交易双方自行处理，与&rdquo;下课说&rdquo;无关。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><strong><span
+                style="font-family: 宋体; font-size: 12pt;">服务终止及暂停</span></strong></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">任何引起其他用户反感的行为，包括但不限于利用</span>&rdquo;下课说&rdquo;平台发布广告或是垃圾信息，利用简信骚扰其他用户等，网站可随时行使暂停、收回、删除帐号的权利。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><strong><span
+                style="font-family: 宋体; font-size: 12pt;">免责申明</span></strong></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">1、用户在&rdquo;下课说&rdquo;发表的内容仅表明其个人的立场和观点，并不代表&rdquo;下课说&rdquo;的立场或观点。作为内容的发表者，需自行对所发表内容负责，因所发表内容引发的一切纠纷，由该内容的发表者承担全部法律及连带责任。&rdquo;下课说&rdquo;不承担任何法律及连带责任。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">2、&rdquo;下课说&rdquo;不保证网络服务一定能满足用户的要求，也不保证网络服务不会中断，对网络服务的及时性、安全性、准确性也都不作保证。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">3、对于因不可抗力或&rdquo;下课说&rdquo;不能控制的原因造成的网络服务中断或其它缺陷，&rdquo;下课说&rdquo;不承担任何责任，但将尽力减少因此而给用户造成的损失和影响。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">4、在使用本&rdquo;下课说&rdquo;APP的任何功能模块时（特别是校园帮助help），出现的个人的利益问题、人身安全问题等，&rdquo;下课说&rdquo;不承担任何责任，请用户们注意安全，谨防上当受骗。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><strong><span
+                style="font-family: 宋体; font-size: 12pt;">协议修改</span></strong></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">1、根据互联网的发展和有关法律、法规及规范性文件的变化，或者因业务发展需要，&rdquo;下课说&rdquo;有权对本协议的条款作出修改或变更，一旦本协议的内容发生变动，&rdquo;下课说&rdquo;将会直接在&rdquo;下课说&rdquo;网站上公布修改之后的协议内容，该公布行为视为&rdquo;下课说&rdquo;已经通知用户修改内容。&rdquo;下课说&rdquo;也可采用电子邮件或私信的传送方式，提示用户协议条款的修改、服务变更、或其它重要事项。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">2、如果不同意&rdquo;下课说&rdquo;对本协议相关条款所做的修改，用户有权并应当停止使用&rdquo;下课说&rdquo;。如果用户继续使用&rdquo;下课说&rdquo;，则视为用户接受&rdquo;下课说&rdquo;对本协议相关条款所做的修改。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">您的鼓励是我们前进的动力！</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;">&nbsp;</p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;">&nbsp;</p>
+        <h1 style="text-align: center; padding-left: 30px;" align="center"><strong><span
+                style="font-family: 宋体; font-size: 22pt;">隐私声明</span></strong></h1>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&nbsp;</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&ldquo;下课说&rdquo;</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">App</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">（以下简称</span>&rdquo;下课说&rdquo;）非常重视对您的个人隐私保护，有时候我们需要某些信息才能为您提供您请求的服务，本隐私声明解释了这些情况下的数据收集和使用情况。</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><br/></span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">本隐私声明适用于</span>&rdquo;下课说&rdquo;的所有相关服务，随着&rdquo;下课说&rdquo;服务范围的扩大，隐私声明的内容可由&rdquo;下课说&rdquo;随时更新，且毋须另行通知。更新后的隐私声明一旦在网页上公布即有效代替原来的隐私声明。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><strong><span
+                style="font-family: 宋体; font-size: 18pt;">我们收集哪些信息</span></strong></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">通常，您能在匿名的状态下访问</span>&rdquo;下课说&rdquo;并获取信息。当我们需要能识别您的个人信息或者可以与您联系的信息时，我们会征求您的同意。通常，在您注册&rdquo;下课说&rdquo;或申请开通新的功能时，我们可能收集这些信息：姓名，电话号码</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">等</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">，并征求您的确认。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><strong><span
+                style="font-family: 宋体; font-size: 18pt;">关于您的个人信息</span></strong></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&ldquo;下课说&rdquo;严格保护您个人信息的安全。我们使用各种安全技术和程序来保护您的个人信息不被未经授权的访问、使用或泄漏。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&ldquo;下课说&rdquo;会在法律要求或符合&rdquo;下课说&rdquo;的相关服务条款、软件许可使用协议约定的情况下透露您的个人信息，或者有充分理由相信必须这样做才能：</span>
+        </p>
+        <p class="MsoNormal"
+           style="margin-top: 5pt; margin-bottom: 5pt; margin-left: 36pt; text-indent: -18pt; padding-left: 30px;">
+            <!--[if !supportLists]--><span
+                style="font-family: Symbol; mso-fareast-font-family: 宋体; mso-bidi-font-family: 宋体; font-size: 10.0000pt; mso-font-kerning: 0.0000pt;">&middot;&nbsp;</span>
+            <!--[endif]--><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">满足法律或行政法规的明文规定，或者符合</span>&rdquo;下课说&rdquo;网站适用的法律程序；</span></p>
+        <p class="MsoNormal"
+           style="margin-top: 5pt; margin-bottom: 5pt; margin-left: 36pt; text-indent: -18pt; padding-left: 30px;">
+            <!--[if !supportLists]--><span
+                style="font-family: Symbol; mso-fareast-font-family: 宋体; mso-bidi-font-family: 宋体; font-size: 10.0000pt; mso-font-kerning: 0.0000pt;">&middot;&nbsp;</span>
+            <!--[endif]--><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">符合</span>&rdquo;下课说&rdquo;相关服务条款、软件许可使用协议的约定；</span></p>
+        <p class="MsoNormal"
+           style="margin-top: 5pt; margin-bottom: 5pt; margin-left: 36pt; text-indent: -18pt; padding-left: 30px;">
+            <!--[if !supportLists]--><span
+                style="font-family: Symbol; mso-fareast-font-family: 宋体; mso-bidi-font-family: 宋体; font-size: 10.0000pt; mso-font-kerning: 0.0000pt;">&middot;&nbsp;</span>
+            <!--[endif]--><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">保护</span>&rdquo;下课说&rdquo;的权利或财产，以及</span></p>
+        <p class="MsoNormal"
+           style="margin-top: 5pt; margin-bottom: 5pt; margin-left: 36pt; text-indent: -18pt; padding-left: 30px;">
+            <!--[if !supportLists]--><span
+                style="font-family: Symbol; mso-fareast-font-family: 宋体; mso-bidi-font-family: 宋体; font-size: 10.0000pt; mso-font-kerning: 0.0000pt;">&middot;&nbsp;</span>
+            <!--[endif]--><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">在紧急情况下保护</span>&rdquo;下课说&rdquo;员工、&rdquo;下课说&rdquo;产品或服务的用户或大众的个人安全。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&ldquo;下课说&rdquo;不会未经您的允许将这些信息与第三方共享，本声明已经列出的上述情况除外。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><strong><span
+                style="font-family: 宋体; font-size: 18pt;">Cookie的使用</span></strong></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">使用</span> Cookie 能帮助您实现您的联机体验的个性化，您可以接受或拒绝 Cookie ，大多数 Web 浏览器会自动接受 Cookie，但您通常可根据自己的需要来修改浏览器的设置以拒绝 Cookie。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&ldquo;下课说&rdquo;有时会使用 Cookie 以便知道哪些网站受欢迎，使您在访问&rdquo;下课说&rdquo;时能得到更好的服务。Cookie不会跟踪个人信息。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">当您注册</span>&rdquo;下课说&rdquo;时，&rdquo;下课说&rdquo;亦会使用 Cookie。在这种情况下，&rdquo;下课说&rdquo;会收集并存储有用信息，当您再次访问&rdquo;下课说&rdquo;时，我们可辨认您的身份。来自&rdquo;下课说&rdquo;的 Cookie 只能被&rdquo;下课说&rdquo;读取。</span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><br/></span><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">如果您的浏览器被设置为拒绝</span> Cookie，您仍然能够访问&rdquo;下课说&rdquo;的大多数网页。</span></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><strong><span
+                style="font-family: 宋体; font-size: 18pt;">关于免责说明</span></strong></p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">就下列相关事宜的发生，</span>&rdquo;下课说&rdquo;不承担任何法律责任：</span></p>
+        <p class="MsoNormal"
+           style="margin-top: 5pt; margin-bottom: 5pt; margin-left: 36pt; text-indent: -18pt; padding-left: 30px;">
+            <!--[if !supportLists]--><span
+                style="font-family: Symbol; mso-fareast-font-family: 宋体; mso-bidi-font-family: 宋体; font-size: 10.0000pt; mso-font-kerning: 0.0000pt;">&middot;&nbsp;</span>
+            <!--[endif]--><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">由于您将用户密码告知他人或与他人共享注册帐户，由此导致的任何个人信息的泄漏，或其他非因</span>&rdquo;下课说&rdquo;原因导致的个人信息的泄漏；</span>
+        </p>
+        <p class="MsoNormal"
+           style="margin-top: 5pt; margin-bottom: 5pt; margin-left: 36pt; text-indent: -18pt; padding-left: 30px;">
+            <!--[if !supportLists]--><span
+                style="font-family: Symbol; mso-fareast-font-family: 宋体; mso-bidi-font-family: 宋体; font-size: 10.0000pt; mso-font-kerning: 0.0000pt;">&middot;&nbsp;</span>
+            <!--[endif]--><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&ldquo;下课说&rdquo;根据法律规定或政府相关政策要求提供您的个人信息；</span>
+        </p>
+        <p class="MsoNormal"
+           style="margin-top: 5pt; margin-bottom: 5pt; margin-left: 36pt; text-indent: -18pt; padding-left: 30px;">
+            <!--[if !supportLists]--><span
+                style="font-family: Symbol; mso-fareast-font-family: 宋体; mso-bidi-font-family: 宋体; font-size: 10.0000pt; mso-font-kerning: 0.0000pt;">&middot;&nbsp;</span>
+            <!--[endif]--><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;"><span
+                style="font-family: 宋体;">任何第三方根据</span>&rdquo;下课说&rdquo;各服务条款及声明中所列明的情况使用您的个人信息，由此所产生的纠纷；</span></p>
+        <p class="MsoNormal"
+           style="margin-top: 5pt; margin-bottom: 5pt; margin-left: 36pt; text-indent: -18pt; padding-left: 30px;">
+            <!--[if !supportLists]--><span
+                style="font-family: Symbol; mso-fareast-font-family: 宋体; mso-bidi-font-family: 宋体; font-size: 10.0000pt; mso-font-kerning: 0.0000pt;">&middot;&nbsp;</span>
+            <!--[endif]--><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">任何由于黑客攻击、电脑病毒侵入或政府管制而造成的暂时性网站关闭；</span>
+        </p>
+        <p class="MsoNormal"
+           style="margin-top: 5pt; margin-bottom: 5pt; margin-left: 36pt; text-indent: -18pt; padding-left: 30px;">
+            <!--[if !supportLists]--><span
+                style="font-family: Symbol; mso-fareast-font-family: 宋体; mso-bidi-font-family: 宋体; font-size: 10.0000pt; mso-font-kerning: 0.0000pt;">&middot;&nbsp;</span>
+            <!--[endif]--><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">因不可抗力导致的任何后果；</span>
+        </p>
+        <p class="MsoNormal"
+           style="margin-top: 5pt; margin-bottom: 5pt; margin-left: 36pt; text-indent: -18pt; padding-left: 30px;">
+            <!--[if !supportLists]--><span
+                style="font-family: Symbol; mso-fareast-font-family: 宋体; mso-bidi-font-family: 宋体; font-size: 10.0000pt; mso-font-kerning: 0.0000pt;">&middot;&nbsp;</span>
+            <!--[endif]--><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">&ldquo;下课说&rdquo;在各服务条款及声明中列明的使用方式或免责情形。</span>
+        </p>
+        <p class="MsoNormal" style="margin-top: 5pt; margin-bottom: 5pt; padding-left: 30px;"><span
+                style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 12.0000pt; mso-font-kerning: 0.0000pt;">您的鼓励是我们前进的动力！</span>
+        </p>
+        <p class="MsoNormal"><span
+                style="mso-spacerun: 'yes'; font-family: Calibri; mso-fareast-font-family: 宋体; mso-bidi-font-family: 'Times New Roman'; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">&nbsp;</span>
+        </p>
+        <p class="MsoNormal"
+           style="margin-top: 15pt; text-align: center; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"
+           align="center"><strong><span
+                style="font-family: Arial; color: #333333; font-size: 25.5pt;">&nbsp;</span></strong></p>
+
+    </section>
+</div>
+</body>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    apiready = function () {
+        $api.fixIos7Bar($api.dom("header"));//padding-top: 20px; 沉浸式状态栏
+    };
+</script>
+</html>

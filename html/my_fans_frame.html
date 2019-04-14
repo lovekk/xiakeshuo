@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>粉丝</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+</head>
+<body>
+
+<div id="app" class="aui-content">
+
+    <ul class="aui-list aui-media-list">
+        <li class="aui-list-item" v-for="item in fans_list">
+            <div class="aui-card-list-header aui-card-list-user"
+                 v-on:click="his_home(item.u_id)">
+                <div class="aui-card-list-user-avatar" >
+                    <img :src="qiniu + item.u_head_img + qiniu_small" class="aui-img-round my-img-size"/>
+                </div>
+                <div class="aui-card-list-user-name" >
+                    <div>
+                        {{item.u_nick}}
+                    </div>
+                </div>
+                <div class="aui-card-list-user-info">[{{item.u_school_name}}]</div>
+            </div>
+        </li>
+    </ul>
+
+</div>
+</body>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript">
+
+    apiready = function () {
+        vm.init(true);
+        vm.skip = 0;
+
+        //下拉加载 监听事件
+        api.addEventListener({
+            name : 'scrolltobottom',
+            extra : {
+                threshold : 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            //分页加20，和后台同步
+            vm.skip += 20;
+            vm.init(false);
+        });
+    };
+
+    //vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            qiniu: qiniu_url,
+            qiniu_small: qiniu_small,
+
+            fans_list:[],
+
+            is_more: true,    //加载更多,默认第一次
+            skip: 0,
+        },
+        methods: {
+            //初始化 ajax数据请求
+            init: function (more_) {
+                api.ajax({
+                    url: my_fans + '?user_id=' + $api.getStorage('uid') + '&skip=' + vm.skip,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        if (ret.code === 200){
+                            //区分 上拉加载，下拉刷新
+                            if ( more_ ){
+                                vm.fans_list = ret.fans;
+                            } else {
+                                if (ret.fans.length > 0){
+                                    //concat() 方法用于连接两个或多个数组。
+                                    //该方法不会改变现有的数组，而仅仅会返回被连接数组的一个副本。
+                                    vm.fans_list = vm.fans_list.concat(ret.fans);
+                                }else {
+                                    api.toast({
+                                        msg: '没有更多了',
+                                        duration: 1000,
+                                        location: 'bottom'
+                                    });
+                                }
+                            }
+                        }
+                    }
+                });
+            },
+
+            //打开个人主页
+            his_home: function (id_) {
+                open_his_home(id_)
+            }
+        }
+    });
+
+</script>
+</html>

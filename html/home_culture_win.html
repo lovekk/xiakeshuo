@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>校园文化窗口</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+</head>
+<body>
+    <header class="aui-bar aui-bar-nav my-bgc"  id="app">
+        <a class="aui-pull-left aui-btn" onclick="api.closeWin()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">{{ school_name }}</div>
+    </header>
+</body>
+</html>
+
+<script src="../script/vue.js"></script>
+<script src="../script/api.js"></script>
+<script>
+    apiready = function () {
+        $api.fixIos7Bar($api.dom("header")); //padding-top: 20px; 沉浸式状态栏
+        //接收参数
+        vm.school_id = api.pageParam.school_id;
+        vm.school_name = api.pageParam.school_name;
+
+        //打开frame 传入学校参数
+        api.openFrame({
+            name: 'home_culture_frame',
+            url: './home_culture_frame.html',
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: 'auto',
+                h: api.winHeight - $api.dom('header').offsetHeight
+            },
+            bounces: true,
+            pageParam: {
+                school_id: vm.school_id,
+                school_name: vm.school_name
+            }
+        });
+    };
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            school_id: '',
+            school_name: '',
+        },
+    });
+</script>

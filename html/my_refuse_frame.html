@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>黑名单</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+</head>
+<body>
+
+<div id="app" class="aui-content">
+
+    <ul class="aui-list aui-media-list">
+        <li class="aui-list-item" v-for="item in refuse_list">
+            <div class="aui-card-list-header aui-card-list-user"
+                 v-on:click="move_refuse(item.id)">
+                <div class="aui-card-list-user-avatar" >
+                    <img :src="qiniu + item.head_qn_url + qiniu_small" class="aui-img-round my-img-size"/>
+                </div>
+                <div class="aui-card-list-user-name" >
+                    <div>{{item.nick}}</div>
+                    <div>
+                        <!--<i class="aui-iconfont aui-icon-more"></i>-->
+                        移除
+                    </div>
+                </div>
+                <div class="aui-card-list-user-info">[{{item.school_name}}]</div>
+            </div>
+        </li>
+    </ul>
+
+</div>
+</body>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript">
+
+    apiready = function () {
+        vm.init();
+        vm.skip = 0;
+    };
+
+    //vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            qiniu: qiniu_url,
+            qiniu_small: qiniu_small,
+
+            refuse_list:[],
+        },
+        methods: {
+            //初始化 ajax数据请求
+            init: function () {
+                api.ajax({
+                    url: refuse_user_list + '?my_id=' + $api.getStorage('uid'),
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        if (ret.code === 200){
+                            vm.refuse_list = ret.cancel_list;
+
+                        }
+                    }
+                });
+            },
+
+            //打开个人主页
+            move_refuse: function (id_) {
+                api.ajax({
+                    url: cancel_refuse_user + '?his_id=' + id_,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        if (ret.code === 200){
+                            vm.init();
+                            api.toast({
+                                msg: '已经移除！',
+                                duration: 2000,
+                                location: 'bottom'
+                            });
+
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+</script>
+</html>

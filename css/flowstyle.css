@@ -1,0 +1,2083 @@
+body,
+button,
+input,
+select,
+textarea {
+  font-family: 'PingFang SC', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+}
+
+button {
+  border: 0;
+  outline: none;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  border: 0;
+}
+
+a:active,
+a:link,
+a:visited,
+a:hover {
+  text-decoration: none;
+}
+
+html,
+body {
+  height: 100%;
+  background: #f5f5f9;
+  overflow-x: hidden;
+}
+
+body {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-overflow-scrolling: touch;
+  font-size: 14px;
+  width: 7.5rem;
+  margin: 0 auto;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+}
+
+.listHeader {
+  background: #ffffff;
+  border-bottom: 1px solid #eaeaec;
+}
+
+.listHeader nav {
+  padding: 0.2rem 0.2rem;
+}
+
+.listHeader nav > img {
+  vertical-align: middle;
+}
+
+.listHeader nav span {
+  font-size: 14px;
+  vertical-align: middle;
+  color: #2295f2;
+  display: inline-block;
+}
+
+.listHeader nav span.arrow {
+  background: url("../../img/smallArrow.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 0.14rem;
+  height: 0.2rem;
+}
+
+.listHeader nav span.logo {
+  background: url("../../img/newLogo.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 1.74rem;
+  height: 0.5rem;
+}
+
+.listHeader nav span.title {
+  margin-left: 0.2rem;
+}
+
+.listHeader nav a {
+  color: #2295f2;
+}
+
+.eachListTitle {
+  background: #ffffff;
+}
+
+.eachListTitle .icon {
+  width: 0.46rem;
+  height: 0.46rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.eachListTitle .txt {
+  color: #2295f2;
+  font-size: 16px;
+}
+
+.commonListTitle {
+  color: #1A1A1A;
+}
+
+.commonListTitle li {
+  height: 0.87rem;
+  line-height: 0.88rem;
+  border-bottom: 1px dashed #dddddd;
+}
+
+.commonListTitle li a {
+  display: block;
+  overflow: hidden;
+  color: #1A1A1A;
+  font-size: 15px;
+}
+
+.commonListTitle li a i:after {
+  content: "";
+  vertical-align: middle;
+  display: inline-block;
+  width: 0.1rem;
+  height: 0.1rem;
+  border-radius: 0.05rem;
+  background: #000;
+}
+
+.commonListTitle li a span {
+  margin-left: 0.2rem;
+}
+
+.commonListTitle li a .listTxt {
+  display: inline-block;
+  width: 64%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.commonListTitle li a .dateTime {
+  margin-left: 0 !important;
+  float: right;
+  font-size: 14px;
+  margin-right: 0.2rem;
+  color: #999999;
+  width: 1.62rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 0.08rem;
+}
+
+.homePageHeader {
+  background: #ffffff;
+  padding: 0.15rem 0.2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  text-align: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.homePageHeader > div {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.homePageHeader .location {
+  margin-left: 0.15rem;
+  font-size: 14px;
+  text-align: left;
+  color: #2295f2;
+}
+
+.homePageHeader .location .locationIcon {
+  display: inline-block;
+  background: url("../../img/arrowBottom.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 0.26rem;
+  height: 0.17rem;
+  margin-left: 0.1rem;
+}
+
+.homePageHeader .logo {
+  width: 1.74rem;
+  height: 0.5rem;
+}
+
+.homePageHeader .phone {
+  text-align: right;
+}
+
+.homePageHeader .phone .p-txt {
+  font-size: 13px;
+}
+
+.homePageHeader .phone .p-txt a {
+  display: block;
+}
+
+.homePageHeader .phone .p-txt i {
+  vertical-align: middle;
+  display: inline-block;
+  background: url("../../img/phone.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 0.37rem;
+  height: 0.4rem;
+}
+
+.homePageHeader .phone .p-txt .txt {
+  color: #2295f2;
+  margin-left: 0.06rem;
+  vertical-align: middle;
+}
+
+.homePageNav {
+  background: #ffffff;
+  overflow: hidden;
+  padding: 0.27rem 0 0.32rem 0;
+  margin-left: -1px;
+  color: #656565;
+}
+
+.homePageNav ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+
+.homePageNav ul li {
+  float: left;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  text-align: center;
+  line-height: 1;
+  border-left: 1px solid #2295f2;
+}
+
+.homePageNav ul li a {
+  font-size: 14px;
+}
+
+.homePageBanner {
+  width: 100%;
+  height: 3.8rem;
+  position: relative;
+}
+
+.homePageBanner .swiper-container {
+  width: 100%;
+}
+
+.homePageBanner .swiper-container .swiper-wrapper {
+  width: 400%;
+}
+
+.homePageBanner .swiper-container .swiper-pagination {
+  position: absolute;
+  bottom: 0.2rem;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+
+.homePageBanner .swiper-container .swiper-pagination span {
+  width: 0.2rem;
+  height: 0.2rem;
+  border-radius: 0.1rem;
+  background: #ffffff;
+  display: inline-block;
+  margin-left: 0.2rem;
+}
+
+.homePageBanner .swiper-container .swiper-pagination span.swiper-pagination-bullet-active {
+  background: #2295f2;
+}
+
+.homePageBanner .swiper-container .swiper-slide {
+  float: left;
+  width: 25%!important;
+}
+
+.homePageBanner .swiper-container .swiper-slide img {
+  width: 100%;
+  height: 3.8rem;
+}
+
+.paginationUL {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 7.1rem;
+  margin: 0 auto;
+  text-align: center;
+  color: #999999;
+}
+
+.paginationUL li {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  font-size: 13px;
+  padding: 0.26rem 0 0 0;
+  border-bottom: 0.01rem solid #eaeaec;
+}
+
+.paginationUL li a {
+  display: inline-block;
+  padding-bottom: 0.23rem;
+}
+
+footer {
+  background: #303030;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 1.5rem;
+  width: 100%;
+  font-size: 12px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+  color: #ffffff;
+  margin-top: 0.3rem;
+}
+
+footer > div {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+footer > div img {
+  width: 1.7rem;
+}
+
+footer .aboutUs {
+  font-size: 13px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+footer .aboutUs a {
+  -ms-flex-preferred-size: 50%;
+      flex-basis: 50%;
+  margin: 0.1rem 0;
+}
+
+footer .footerPhone {
+  font-size: 11px;
+}
+
+footer .footerPhone .phone {
+  font-size: 14px;
+  padding-bottom: 0.1rem;
+}
+
+.locationModal {
+  display: none;
+  position: absolute;
+  top: 0;
+  background: #ffffff;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+}
+
+.locationModal .tooltip {
+  width: 100%;
+  position: relative;
+  text-align: center;
+  padding: 0.2rem;
+  background: #ebebeb;
+}
+
+.locationModal .tooltip .close {
+  background: url("../../img/xClose.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 0.36rem;
+  height: 0.36rem;
+  position: absolute;
+  left: 0.3rem;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.locationModal ul {
+  margin-left: 0.3rem;
+}
+
+.locationModal ul li {
+  padding: 0.2rem 0.3rem 0.2rem 0.5rem;
+  border-bottom: 1px solid #eaeaec;
+}
+
+.navMoreList {
+  display: none;
+}
+
+.navMoreList.toggleList {
+  display: block;
+}
+
+.navMoreList a {
+  color: #1A1A1A;
+  display: block;
+  text-align: center;
+  padding: 0.2rem;
+  border-bottom: 1px solid #eaeaec;
+}
+
+.navMoreList a span {
+  font-size: 14px;
+}
+
+.search {
+  margin-top: 0.2rem;
+  font-size: 14px;
+}
+
+.search .searchTopArea {
+  padding: 0 0 0 0.2rem;
+  background: #ffffff;
+  border-top: 1px solid #eaeaec;
+}
+
+.search .searchTopArea .searchSum {
+  padding: 0.2rem 0;
+  border-bottom: 1px solid #eaeaec;
+}
+
+.search .searchTopArea .searchSum .text {
+  float: right;
+  margin-right: 0.2rem;
+}
+
+.search .searchTopArea .searchHideBox {
+  display: none;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid #eaeaec;
+}
+
+.search .searchTopArea .searchHideBox .searchCondition {
+  position: relative;
+  height: auto;
+  overflow: hidden;
+}
+
+.search .searchTopArea .searchHideBox .searchCondition .more {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.15rem;
+  text-align: center;
+  color: #2295f2;
+  font-size: 0;
+}
+
+.search .searchTopArea .searchHideBox .searchCondition .more.moreGrade i {
+  display: inline-block;
+  background: url("../../img/bigArrow.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 0.21rem;
+  height: 0.35rem;
+  margin-left: 0.05rem;
+  vertical-align: middle;
+}
+
+.search .searchTopArea .searchHideBox .searchCondition .more.moreGrade .moreGradeTxt {
+  display: inline-block;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.search .searchTopArea .searchHideBox .searchCondition .searchConditionItem {
+  position: relative;
+}
+
+.search .searchTopArea .searchHideBox .searchCondition .searchConditionItem:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.search .searchTopArea .searchHideBox .searchCondition .searchConditionItem > div {
+  float: left;
+}
+
+.search .searchTopArea .searchHideBox .searchCondition .searchConditionItem .item {
+  width: 65%;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.search .searchTopArea .searchHideBox .searchCondition .searchConditionItem .item ul {
+  margin: 0.3rem 0 0 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  text-align: center;
+}
+
+.search .searchTopArea .searchHideBox .searchCondition .searchConditionItem .item ul li {
+  padding: 0.05rem 0;
+  -ms-flex-preferred-size: 33%;
+      flex-basis: 33%;
+  margin-bottom: 0.3rem;
+}
+
+.search .searchTopArea .searchHideBox .searchCondition .searchConditionItem .item ul li a {
+  color: black;
+  padding: 0.02rem 0;
+  border: 0.01rem solid #eaeaec;
+  display: inline-block;
+  border-radius: 0.07rem;
+  width: 90%;
+}
+
+.search .searchTopArea .searchHideBox .searchCondition .searchConditionItem .item ul li:last-child {
+  margin: 0;
+}
+
+.search .searchTopArea .searchHideBox .searchCondition .searchConditionItem .txt {
+  margin-top: 0.35rem;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.search .searchTopArea .searchHideBox .searchButton {
+  width: 6rem;
+  height: 0.7rem;
+  margin: 0 auto;
+  text-align: center;
+  background: #2295f2;
+  line-height: 0.7rem;
+  border-radius: 0.1rem;
+  color: #ffffff;
+  margin-top: 0.3rem;
+  font-size: 14px;
+}
+
+.activeListClickQuery {
+  background: #2295f2;
+  color: #fff !important;
+}
+
+.displayBlock {
+  display: block !important;
+}
+
+.blueColor {
+  color: #2295f2;
+}
+
+.information .hotInformation {
+  position: relative;
+  padding: 0.15rem 0 0.15rem 0.2rem;
+}
+
+.information .hotInformation .listTxt {
+  width: 90%!important;
+}
+
+.information .hotInformation .icon {
+  width: 0.46rem;
+  height: 0.46rem;
+  background: url("../../img/hotInfo.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.information .moreInfo {
+  position: absolute;
+  bottom: 0;
+  right: 0.15rem;
+}
+
+.information .viewMore {
+  text-align: center;
+  color: #2295f2;
+  background: #EBF8FF;
+  width: 7rem;
+  height: 0.7rem;
+  margin: 0.3rem auto 0 auto;
+  line-height: 0.7rem;
+  border-radius: 0.08rem;
+  font-size: 14px;
+}
+
+.information .viewMore.hotInfo {
+  position: relative;
+  right: 0.1rem;
+}
+
+.information .worryFreeInfo {
+  position: relative;
+}
+
+.information .worryFreeInfo .iconBox {
+  padding: 0.3rem 0.2rem 0 0.2rem;
+}
+
+.information .worryFreeInfo .icon {
+  width: 0.46rem;
+  height: 0.46rem;
+  background: url("../../img/hotInfo.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.information .worryFreeInfo .worryFreeInfoContentBox {
+  background: #ffffff;
+  border-bottom: 1px solid #eaeaec;
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide1 .sideList,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide2 .sideList,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide3 .sideList,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide4 .sideList,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide5 .sideList {
+  padding: 0.2rem 0 0.2rem 0.2rem;
+  overflow: hidden;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  border-bottom: 1px solid #eaeaec;
+}
+
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide1 .sideList > div,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide2 .sideList > div,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide3 .sideList > div,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide4 .sideList > div,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide5 .sideList > div {
+  float: left;
+}
+
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide1 .sideList .w_f_i_pic,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide2 .sideList .w_f_i_pic,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide3 .sideList .w_f_i_pic,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide4 .sideList .w_f_i_pic,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide5 .sideList .w_f_i_pic {
+  width: 20%;
+}
+
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide1 .sideList .w_f_i_pic img,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide2 .sideList .w_f_i_pic img,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide3 .sideList .w_f_i_pic img,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide4 .sideList .w_f_i_pic img,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide5 .sideList .w_f_i_pic img {
+  max-width: 100%;
+}
+
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide1 .sideList .w_f_i_txt,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide2 .sideList .w_f_i_txt,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide3 .sideList .w_f_i_txt,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide4 .sideList .w_f_i_txt,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide5 .sideList .w_f_i_txt {
+  padding: 0 0.35rem 0 0.2rem;
+  width: 80%;
+}
+
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide1 .sideList .w_f_i_txt .date,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide2 .sideList .w_f_i_txt .date,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide3 .sideList .w_f_i_txt .date,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide4 .sideList .w_f_i_txt .date,
+.information .worryFreeInfo .worryFreeInfoContentBox .worryFreeInfoContent .pageSide5 .sideList .w_f_i_txt .date {
+  position: absolute;
+  right: 0.2rem;
+  bottom: 0.3rem;
+  font-size: 14px;
+  color: #999999;
+}
+
+.information .dataDownload {
+  padding: 0.15rem 0 0.3rem 0;
+}
+
+.information .dataDownload .icon {
+  width: 0.46rem;
+  height: 0.46rem;
+  background: url("../../img/download.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.information .dataDownload .downloadList span {
+  margin-left: 0.15rem;
+}
+
+.information .parentsQA {
+  padding: 0.3rem 0 0.1rem 0;
+  border-bottom: 1px solid #eaeaec;
+}
+
+.information .parentsQA .icon {
+  width: 0.46rem;
+  height: 0.46rem;
+  background: url("../../img/qa.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.information .parentsQA .commonListTitle li:last-child {
+  border: 0;
+}
+
+.information .recommendTeacher {
+  margin-bottom: 0.3rem;
+  margin-top: 0.3rem;
+  border-top: 1px solid #eaeaec;
+  border-bottom: 1px solid #eaeaec;
+  padding: 0.3rem 0 0 0.2rem;
+}
+
+.information .recommendTeacher .icon {
+  width: 0.46rem;
+  height: 0.46rem;
+  background: url("../../img/teacherIcon.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.information .evaluate {
+  display: none;
+  background: #ffffff;
+  padding: 0.3rem 0 0 0.2rem;
+}
+
+.information .evaluate .icon {
+  width: 0.46rem;
+  height: 0.46rem;
+  background: url("../../img/evaluate.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.slideWarpper {
+  width: 500%;
+  position: relative;
+  left: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.slideWarpper .pageSide1,
+.slideWarpper .pageSide2,
+.slideWarpper .pageSide3,
+.slideWarpper .pageSide4,
+.slideWarpper .pageSide5 {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  overflow: hidden;
+}
+
+.slideWarpper .pageSide1.textList,
+.slideWarpper .pageSide2.textList,
+.slideWarpper .pageSide3.textList,
+.slideWarpper .pageSide4.textList,
+.slideWarpper .pageSide5.textList {
+  padding: 0 0.2rem;
+}
+
+.marginLeft20 {
+  margin-left: 0.2rem;
+}
+
+.activeBorder {
+  border-bottom: 0.03rem solid #2295f2;
+}
+
+.teacherList {
+  margin-top: 0.1rem;
+  font-size: 0;
+}
+
+.teacherList section {
+  height: 1.8rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid #eaeaec;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.teacherList section:last-child {
+  border: 0;
+}
+
+.teacherList section > div {
+  display: inline-block;
+}
+
+.teacherList section .t_r_cover {
+  vertical-align: middle;
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.teacherList section .t_r_cover img {
+  width: 100%;
+  height: 100%;
+}
+
+.teacherList section .t_r_txt {
+  padding: 0 0.1rem 0 0.2rem;
+  vertical-align: middle;
+  font-size: 13px;
+  width: 80%;
+}
+
+.teacherList section .t_r_txt .introduce {
+  color: #999999;
+  margin-top: 0.1rem;
+}
+
+.advertiseBrand {
+  background: #ffffff;
+  border-top: 0.01rem solid #eaeaec;
+  padding: 0.2rem 0.2rem 0 0.2rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+.advertiseBrand h1 {
+  font-size: 18px;
+  color: #333333;
+}
+
+.advertiseBrand h2 {
+  color: #2295f2;
+  font-size: 16px;
+  padding: 0.28rem 0;
+}
+
+.advertiseBrand article {
+  text-align: justify;
+  line-height: 23px;
+  font-size: 14px;
+}
+
+.advertiseBrand p {
+  text-align: left;
+  margin-top: 0.4rem;
+  font-size: 14px;
+}
+
+.viewMoreEvaluate {
+  background: #ffffff;
+  color: #2295f2;
+  font-size: 14px;
+  text-align: center;
+  padding-top: 0.3rem;
+}
+
+.viewMoreEvaluate .viewMoreEvaluateBtn {
+  margin: 0 auto;
+  width: 1.8rem;
+}
+
+.viewMoreEvaluate i {
+  margin-left: 0.05rem;
+  background: url("../../img/arrow_bot.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 0.24rem;
+  height: 0.19rem;
+}
+
+.packUpEvaluate {
+  display: none;
+  background: #ffffff;
+  color: #2295f2;
+  font-size: 14px;
+  text-align: center;
+  padding-top: 0.3rem;
+}
+
+.packUpEvaluate .packUpBtn {
+  margin: 0 auto;
+  width: 1.8rem;
+}
+
+.packUpEvaluate i {
+  background: url("../../img/pickUp.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 0.24rem;
+  height: 0.19rem;
+  margin-left: 0.05rem;
+}
+
+.familyEducationBox {
+  padding: 0 0.2rem 0 0.2rem;
+  background: #ffffff;
+}
+
+.familyEducationBox ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: -1px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.familyEducationBox ul li {
+  font-size: 14px;
+  -ms-flex-preferred-size: 33%;
+      flex-basis: 33%;
+  float: left;
+  text-align: left;
+  padding: 0.2rem 0 0.1rem 0;
+  color: #1A1A1A;
+}
+
+.familyEducationBox ul li a {
+  display: block;
+  border-left: 1px solid #1A1A1A;
+  line-height: 1;
+  padding: 0 0 0 0.2rem;
+  white-space: nowrap;
+}
+
+.familyEducationBox ul.news li {
+  font-size: 14px;
+  -ms-flex-preferred-size: 25%;
+      flex-basis: 25%;
+}
+
+.familyEducationBox .familyEducationArea,
+.familyEducationBox .familyEducationSubject,
+.familyEducationBox .familyEducationType,
+.familyEducationBox .familyEducationNews {
+  overflow: hidden;
+  padding-top: 0.2rem;
+}
+
+.familyEducationBox .familyEducationArea ul,
+.familyEducationBox .familyEducationSubject ul,
+.familyEducationBox .familyEducationType ul,
+.familyEducationBox .familyEducationNews ul {
+  margin-top: 0.1rem;
+}
+
+.familyEducationBox .familyEducationArea .icon,
+.familyEducationBox .familyEducationSubject .icon,
+.familyEducationBox .familyEducationType .icon,
+.familyEducationBox .familyEducationNews .icon {
+  width: 0.46rem;
+  height: 0.46rem;
+}
+
+.familyEducationBox .familyEducationArea {
+  padding-top: 0.3rem;
+}
+
+.familyEducationBox .familyEducationArea .icon {
+  background: url("../../img/teachArea.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.familyEducationBox .familyEducationSubject .icon {
+  background: url("../../img/teachSubject.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.familyEducationBox .familyEducationType .icon {
+  background: url("../../img/teachType.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.familyEducationBox .familyEducationNews .icon {
+  background: url("../../img/familyEducationNews.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.imgInfoBanner {
+  background: #ffffff;
+  border-top: 1px solid #eaeaec;
+  padding: 0 0 0.2rem 0;
+}
+
+.imgInfoBanner a {
+  display: block;
+}
+
+.imgInfoBanner .imgBannerPic {
+  width: 7.1rem;
+  height: 1.68rem;
+  margin: 0 auto;
+  padding-top: 0.3rem;
+  position: relative;
+}
+
+.imgInfoBanner .imgBannerPic img {
+  width: 100%;
+  height: 100%;
+}
+
+.imgInfoBanner .imgBannerPic .w-f-txtBg {
+  background: #000;
+  opacity: 0.5;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 0.64rem;
+  border-bottom-left-radius: 0.1rem;
+  border-bottom-right-radius: 0.1rem;
+}
+
+.imgInfoBanner .imgBannerPic .w-f-txt {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0.64rem;
+  line-height: 0.64rem;
+  color: #ffffff;
+  z-index: 3;
+  font-size: 14px;
+  text-align: center;
+}
+
+.imgInfoBanner .imgBannerPic .w-f-txt span {
+  opacity: 1;
+}
+
+.informationList .listContentArticle {
+  background: #ffffff;
+  padding: 0.3rem 0.2rem;
+  margin: 0.3rem 0;
+  border-bottom: 1px solid #eaeaec;
+  border-top: 1px solid #eaeaec;
+}
+
+.informationList .listContentArticle img {
+  max-width: 100% !important;
+}
+
+.informationList .listContentArticle iframe {
+  max-width: 100% !important;
+}
+
+.informationList .listContentArticle .content {
+  color: #999999;
+  margin-top: 0.26rem;
+}
+
+.informationList .listContentArticle .tip1 {
+  margin-top: 0.2rem;
+  color: #1A1A1A;
+}
+
+.informationList .listContentArticle .tip2 {
+  color: #999999;
+  margin-top: 0.2rem;
+}
+
+.informationList .newsButton {
+  background: #f5f5f9;
+  text-align: center;
+  font-size: 0;
+  padding: 0.31rem 0 0.3rem 0;
+}
+
+.informationList .newsButton > div {
+  display: inline-block;
+  font-size: 16px;
+  width: 1.6rem;
+  height: 0.7rem;
+  line-height: 0.7rem;
+  border-radius: 0.1rem;
+}
+
+.informationList .newsButton .prev {
+  border: 1px solid #2295f2;
+}
+
+.informationList .newsButton .prev a {
+  display: block;
+  color: #2295f2;
+}
+
+.informationList .newsButton .next {
+  margin-left: 0.3rem;
+  border: 1px solid transparent;
+  background: #2295f2;
+}
+
+.informationList .newsButton .next a {
+  display: block;
+  color: #ffffff;
+}
+
+.informationList .contentList {
+  margin-top: 0.2rem;
+  border-top: 1px solid #eaeaec;
+}
+
+.informationList .contentList a {
+  display: block;
+  color: #1A1A1A;
+}
+
+.informationList .contentList section {
+  padding: 0.5rem 0 0.3rem 0.2rem;
+  background: #ffffff;
+  border-bottom: 1px solid #eaeaec;
+  font-size: 0;
+}
+
+.informationList .contentList section > div {
+  display: inline-block;
+}
+
+.informationList .contentList section .newsCover {
+  vertical-align: middle;
+  width: 20%;
+}
+
+.informationList .contentList section .newsCover img {
+  width: 100%;
+  height: 1.28rem;
+}
+
+.informationList .contentList section .newsTxt {
+  padding: 0 0.1rem 0 0.2rem;
+  vertical-align: middle;
+  font-size: 14px;
+  width: 80%;
+}
+
+.informationList .QRcodeArea {
+  padding: 0.1rem 0 0.2rem 0.2rem;
+  border-bottom: 1px dashed #dddddd;
+  border-top: 1px solid #eaeaec;
+  background: #ffffff;
+}
+
+.informationList .QRcodeArea .icon {
+  background: url("../../img/listIcon1.png");
+  background-size: contain;
+}
+
+.informationList .QRcodeArea .QRcode {
+  margin: 0.4rem auto 0 auto;
+  border-radius: 0.1rem;
+  border: 0.02rem dashed #000000;
+  width: 2.3rem;
+  height: 2.3rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.informationList .QRcodeArea .QRcode img {
+  max-width: 95%;
+}
+
+.informationList .QRcodeArea .QRTxt {
+  margin-left: 0.8rem;
+  margin-top: 0.3rem;
+  font-size: 14px;
+}
+
+.informationList .hotArticle {
+  padding: 0.3rem 0 0 0.2rem;
+  background: #ffffff;
+}
+
+.informationList .hotArticle .icon {
+  background: url("../../img/listIcon1.png");
+  background-size: contain;
+}
+
+.informationList .lastNews {
+  padding: 0.3rem 0 0.3rem 0.2rem;
+  background: #ffffff;
+  border-bottom: 1px solid #eaeaec;
+}
+
+.informationList .lastNews .icon {
+  background: url("../../img/lastNewsLogo.png");
+  background-size: contain;
+}
+
+.informationList .teacherRecommended {
+  margin: 0.3rem 0;
+  padding: 0.3rem 0 0 0.2rem;
+  background: #ffffff;
+  border-top: 1px solid #eaeaec;
+  border-bottom: 1px solid #eaeaec;
+}
+
+.informationList .teacherRecommended .icon {
+  background: url("../../img/teachRecommendLogo.png");
+  background-size: contain;
+}
+
+.informationList .evaluate {
+  display: none;
+  background: #ffffff;
+  padding: 0.3rem 0 0 0.2rem;
+}
+
+.informationList .evaluate .icon {
+  width: 0.46rem;
+  height: 0.46rem;
+  background: url("../../img/evaluate.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.informationList .schoolDetailContent {
+  border-top: 1px solid #eaeaec;
+  margin-top: 0.3rem;
+  background: #ffffff;
+  padding: 0.3rem 0;
+}
+
+.informationList .schoolDetailContent .schoolDetail {
+  margin-top: 0.3rem;
+  padding-left: 0.2rem;
+}
+
+.informationList .schoolDetailContent .schoolDetail section {
+  height: 0.88rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #999999;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-top: 1px solid #eaeaec;
+}
+
+.informationList .schoolDetailContent .schoolDetail section > div {
+  -webkit-box-flex: 3;
+      -ms-flex: 3;
+          flex: 3;
+}
+
+.informationList .schoolDetailContent .schoolDetail section > div.title {
+  color: #1A1A1A;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.informationList .schoolDetailContent .schoolDetail section.studentDemand .star ul li,
+.informationList .schoolDetailContent .schoolDetail section.score .star ul li,
+.informationList .schoolDetailContent .schoolDetail section.hot .star ul li {
+  margin-left: 0.05rem;
+  background: url("../../img/star.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 0.34rem;
+  height: 0.34rem;
+}
+
+.informationList .schoolDetailContent .schoolDetail section.phone {
+  height: 1.24rem;
+}
+
+.informationList .schoolDetailContent .schoolDetail section.schoolOverview,
+.informationList .schoolDetailContent .schoolDetail section.well-knownAlumni {
+  padding: 0.3rem 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: auto;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.informationList .schoolDetailContent .schoolDetail section.schoolOverview > div,
+.informationList .schoolDetailContent .schoolDetail section.well-knownAlumni > div {
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+}
+
+.informationList .schoolDetailContent .schoolDetail section.schoolOverview .article,
+.informationList .schoolDetailContent .schoolDetail section.well-knownAlumni .article {
+  margin-top: 0.3rem;
+  padding-right: 0.2rem;
+  word-break: break-all;
+  width: 100%;
+}
+
+.informationList .schoolGlory {
+  padding-left: 0.2rem;
+}
+
+.informationList .schoolGlory > div {
+  font-size: 0;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.informationList .schoolGlory img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.informationList .schoolGlory .gloryListBox {
+  width: 70%;
+}
+
+.informationList .schoolGlory .gloryListBox .schoolName {
+  margin-left: 0.1rem;
+  font-size: 17px;
+  color: #1A1A1A;
+}
+
+.informationList .schoolGlory .gloryListBox .gloryList ul {
+  text-align: center;
+  overflow: hidden;
+}
+
+.informationList .schoolGlory .gloryListBox .gloryList ul li {
+  margin-left: 0.1rem;
+  margin-top: 0.2rem;
+  font-size: 13px;
+  float: left;
+  width: 2.35rem;
+  border: 1px solid #999999;
+  border-radius: 0.1rem;
+  padding: 0.1rem 0;
+}
+
+.informationList .schoolControl {
+  background: #f5f5f9;
+  color: #1A1A1A;
+  border-top: 1px solid #eaeaec;
+  border-bottom: 1px solid #eaeaec;
+  padding: 0.24rem 0;
+  text-align: center;
+}
+
+.informationList .schoolControl > div {
+  width: 3.3rem;
+  margin: 0 auto;
+}
+
+.informationList .schoolControl > div.nextSchool {
+  margin-top: 0.3rem;
+}
+
+.informationList .noData {
+  background: #ffffff;
+  padding: 0.2rem 0;
+  text-align: center;
+  border-bottom: 1px solid #eaeaec;
+}
+
+.carefree footer {
+  margin: 0;
+}
+
+.carefree .swiper-container {
+  width: 100%;
+  height: 60%;
+  position: relative;
+  padding-top: 0.5rem;
+}
+
+.carefree .swiper-container .swiper-wrapper {
+  width: 400%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+}
+
+.carefree .swiper-container .swiper-wrapper .swiper-slide {
+  float: left;
+}
+
+.carefree .swiper-container .swiper-pagination {
+  list-style: none;
+  position: absolute;
+  z-index: 999;
+  bottom: 0.1rem;
+  overflow: hidden;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+
+.carefree .swiper-container .swiper-pagination li {
+  width: 0.2rem;
+  height: 0.2rem;
+  background: #ffffff;
+  border-radius: 50%;
+  float: left;
+  margin-left: 0.2rem;
+}
+
+.carefree .swiper-container .swiper-pagination li.swiper-pagination-bullet-active {
+  background: #2295f2;
+}
+
+.carefree .inputBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 7.09rem;
+  height: 0.89rem;
+  border: 0.01rem solid #adadad;
+  border-radius: 0.1rem;
+  padding: 0.15rem;
+  margin: 0.3rem auto 0 auto;
+}
+
+.carefree .inputBox input {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  font-size: 0.14rem;
+}
+
+.carefree .inputBox.formButtonBox {
+  border: 0;
+  padding: 0;
+}
+
+.carefree .inputBox.formButtonBox .formButton {
+  color: #ffffff;
+  background: #2295f2;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.1rem;
+  text-align: center;
+  line-height: 100%;
+  font-size: 17px;
+}
+
+.carefree header.pic {
+  background: url("../img/headerBg.png");
+  width: 7.5rem;
+  height: 5rem;
+  background-size: 100% 100%;
+}
+
+.carefree .ads-foreignTeach {
+  background: url("../img/ads_ft.png");
+  width: 6.68rem;
+  height: 6.52rem;
+  margin-top: 0.1rem;
+  margin-left: 0.2rem;
+  background-size: 100% 100%;
+}
+
+.carefree .ads-advantage {
+  background: url("../img/bg.png");
+  width: 7.5rem;
+  height: 7.2rem;
+  margin-top: 0.1rem;
+  background-size: 100% 100%;
+}
+
+.carefree .ads-advantage .ads-advantageBg {
+  background: url("../img/advantageBg.png");
+  width: 7.5rem;
+  height: 7.2rem;
+  padding-top: 0.28rem;
+  padding-left: 0.2rem;
+  background-size: 100% 100%;
+}
+
+.carefree .ads-advantage .detailBg {
+  background: url("../img/advantage_detail.png");
+  width: 6.3rem;
+  height: 5.66rem;
+  background-size: 100% 100%;
+  margin: 0.15rem auto 0 auto;
+}
+
+.carefree .adsFea {
+  width: 7.5rem;
+  height: 5.34rem;
+  padding-left: 0.2rem;
+  padding-top: 0.15rem;
+}
+
+.carefree .adsFea .txtDescription {
+  font-size: 0;
+}
+
+.carefree .adsFea .txtDescription > div {
+  display: inline-block;
+}
+
+.carefree .adsFea .txtDescription .Box {
+  background: url("../img/box.png");
+  width: 0.05rem;
+  height: 0.56rem;
+}
+
+.carefree .adsFea .txtDescription .ads-txt {
+  position: relative;
+  top: 0;
+}
+
+.carefree .adsFea .contentArea .itemBox {
+  width: 7.09rem;
+  height: 1.13rem;
+  margin-top: 0.25rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.carefree .adsFea .contentArea .itemBox .a_f_txt {
+  margin-left: 0.26rem;
+}
+
+.carefree .adsFea .contentArea .itemBox .a_f_txt p {
+  color: #ffffff;
+  font-size: 0.14rem;
+}
+
+.carefree .adsFea .contentArea .itemBox .a_f_txt p.supplement {
+  font-size: 0.12rem;
+}
+
+.carefree .adsFea .contentArea .itemBox > div {
+  display: inline-block;
+}
+
+.carefree .adsFea .contentArea .itemBox .logo {
+  width: 0.69rem;
+  height: 0.69rem;
+  margin-left: 0.26rem;
+}
+
+.carefree .adsFea .contentArea .itemBox.teachLogoBox {
+  font-size: 0;
+  background: url("../img/teachLogoBox.png");
+  background-size: 100% 100%;
+}
+
+.carefree .adsFea .contentArea .itemBox.teachLogoBox .logo {
+  background: url("../img/teachLogo.png");
+  background-size: 100% 100%;
+}
+
+.carefree .adsFea .contentArea .itemBox.clockBox {
+  font-size: 0;
+  background: url("../img/clockBox.png");
+  background-size: 100% 100%;
+}
+
+.carefree .adsFea .contentArea .itemBox.clockBox .logo {
+  background: url("../img/clock.png");
+  background-size: 100% 100%;
+}
+
+.carefree .adsFea .contentArea .itemBox.cupBox {
+  font-size: 0;
+  background: url("../img/cupBox.png");
+  background-size: 100% 100%;
+}
+
+.carefree .adsFea .contentArea .itemBox.cupBox .logo {
+  background: url("../img/cup.png");
+  background-size: 100% 100%;
+}
+
+.carefree .media {
+  width: 7.5rem;
+  padding-left: 0.2rem;
+  margin: 0.2rem 0;
+}
+
+.carefree .media .title-box {
+  font-size: 0;
+}
+
+.carefree .media .title-box > div {
+  display: inline-block;
+}
+
+.carefree .media .title-box .BOX {
+  background: url("../img/box.png");
+  width: 0.05rem;
+  height: 0.56rem;
+}
+
+.carefree .media .title-box .ads-txt {
+  position: relative;
+  top: 0;
+}
+
+.carefree .media .mediaList {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.carefree .media .mediaList {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.carefree .media .mediaList > div {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  -ms-flex-preferred-size: 25%;
+      flex-basis: 25%;
+  margin: 0.3rem 0;
+}
+
+.carefree .media .mediaList > div > div {
+  width: 1.33rem;
+  height: 0.4rem;
+}
+
+.carefree .media .mediaList > div .dz {
+  background: url("../../img/dz.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.carefree .media .mediaList > div .jm {
+  background: url("../../img/jm.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.carefree .media .mediaList > div .fh {
+  background: url("../../img/fh.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.carefree .media .mediaList > div .tt {
+  background: url("../../img/tt.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.carefree .media .mediaList > div .tx {
+  background: url("../../img/tx.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.carefree .media .mediaList > div .sh {
+  background: url("../../img/sh.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.carefree .media .mediaList > div .wy {
+  background: url("../../img/wy.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.carefree .media .mediaList > div .xl {
+  background: url("../../img/xl.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.carefree .honorsBox {
+  width: 7.5rem;
+  background: url("../../img/honorsBoxBg.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 0.3rem 0 0.3rem 0.2rem;
+}
+
+.carefree .honorsBox .title-box {
+  font-size: 0;
+}
+
+.carefree .honorsBox .title-box > div {
+  display: inline-block;
+}
+
+.carefree .honorsBox .title-box .BOX {
+  background: url("../../img/whiteBox.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 0.05rem;
+  height: 0.56rem;
+}
+
+.carefree .honorsBox .title-box .ads-txt {
+  position: relative;
+  top: 0;
+  color: #ffffff!important;
+}
+
+.carefree .honorsBox .title-box .ads-txt .title {
+  color: #ffffff!important;
+}
+
+.carefree .honorsBox .honorsList {
+  background: url("../img/honorsList.png");
+  width: 7.1rem;
+  height: 1.11rem;
+  background-size: 100% 100%;
+  margin: 0.15rem auto 0 auto;
+}
+
+.carefree .footerBg {
+  background: url("../img/footerBg.png");
+  width: 7.5rem;
+  height: 2.42rem;
+  background-size: 100% 100%;
+  margin: 0 auto;
+  margin-top: 0.3rem;
+  padding-top: 0.5rem;
+}
+
+.carefree .footerBg a {
+  display: block;
+  border: 0;
+  width: 4.91rem;
+  height: 0.65rem;
+  margin: 0 auto;
+}
+
+.carefree .footerBg .button {
+  background: url("../img/footerButton.png");
+  width: 4.91rem;
+  height: 0.65rem;
+  line-height: 0.65rem;
+  background-size: 100% 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin: 0 auto;
+}
+
+.carefree .footerBg .button .logo {
+  background: url("../img/phoneLogo.png");
+  width: 0.36rem;
+  height: 0.36rem;
+  background-size: 100% 100%;
+  display: inline-block;
+}
+
+.carefree .footerBg .button .txt {
+  color: #ffffff;
+  font-size: 16px;
+  margin-left: 0.1rem;
+}
+
+.carefree .footerBg .footerTxt {
+  color: #ffffff;
+  font-size: 14px;
+  text-align: center;
+  line-height: 0.45rem;
+  margin-top: 0.15rem;
+}
+
+.carefree .formArea {
+  text-align: center;
+  padding: 0.2rem 0.15rem;
+}
+
+.carefree .formArea > div {
+  margin: 0 auto;
+}
+
+.carefree .formArea .tips {
+  margin-top: 0.1rem;
+  font-size: 12px;
+}
+
+.carefree .formArea .title {
+  color: #fe914d;
+  font-size: 17px;
+}
+
+.carefree .customerReputation {
+  margin: 0.3rem 0 0 0;
+  background: url("../../img/customerReputationBg.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 7.5rem;
+  height: 6.74rem;
+}
+
+.carefree .customerReputation .title-box {
+  font-size: 0;
+  padding: 0.2rem 0.2rem 0 0.2rem;
+}
+
+.carefree .customerReputation .title-box > div {
+  display: inline-block;
+}
+
+.carefree .customerReputation .title-box .BOX {
+  background: url("../../img/whiteBox.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 0.05rem;
+  height: 0.56rem;
+}
+
+.carefree .customerReputation .title-box .ads-txt {
+  position: relative;
+  top: 0;
+}
+
+.carefree .customerReputation .title-box .ads-txt p {
+  color: #ffffff!important;
+}
+
+.carefree .customerReputation figure {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  position: relative;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.carefree .customerReputation figure img {
+  position: absolute;
+  z-index: 3;
+  top: 0.1rem;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  width: 0.9rem;
+}
+
+.carefree .customerReputation figure article {
+  border-radius: 0.05rem;
+  width: 7.1rem;
+  background: #ffffff;
+  height: 2.4rem;
+  padding: 0.4rem 0.15rem 0.1rem 0.15rem;
+}
+
+.carefree .customerReputation figure article p {
+  display: inline-block;
+  text-align: left;
+}
+
+.carefree .customerReputation figure article .detailTxt {
+  font-size: 12px;
+  font-weight: 100;
+  line-height: 0.36rem;
+}
+
+.carefree .customerReputation figure article h2 {
+  font-weight: 500;
+  font-size: 16px;
+  text-align: center;
+}
+
+.carefree .ads-txt {
+  padding: 0 0 0 0.25rem;
+  position: relative;
+  top: -0.1rem;
+}
+
+.carefree .ads-txt .title {
+  font-size: 16px;
+  color: #fe914d;
+}
+
+.carefree .ads-txt .txt {
+  font-size: 13px;
+}
+
+.carefree .ads-txt .tips {
+  font-size: 12px;
+  color: #adadad;
+}
+
+.AppDownloadContent .Bg {
+  position: relative;
+  background: url("../../img/appBg.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 7.5rem;
+  height: 4.7rem;
+}
+
+.AppDownloadContent .Bg .iphone {
+  background: url("../../img/iphone.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 3.05rem;
+  height: 5.26rem;
+  position: absolute;
+  bottom: -1rem;
+  left: 0.5rem;
+}
+
+.AppDownloadContent .appStudentBox,
+.AppDownloadContent .appTeacherBox {
+  background: #ffffff;
+  padding: 0.3rem;
+  margin: 1rem 0.2rem 0 0.2rem;
+  font-size: 0;
+}
+
+.AppDownloadContent .appStudentBox > div,
+.AppDownloadContent .appTeacherBox > div {
+  font-size: 16px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.AppDownloadContent .appStudentBox .icon,
+.AppDownloadContent .appTeacherBox .icon {
+  background: url("../../img/appD_icon.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 1.87rem;
+  height: 1.89rem;
+}
+
+.AppDownloadContent .appStudentBox .contentBox,
+.AppDownloadContent .appTeacherBox .contentBox {
+  padding-left: 0.2rem;
+  width: 4.5rem;
+  overflow: hidden;
+}
+
+.AppDownloadContent .appStudentBox .contentBox .btn,
+.AppDownloadContent .appTeacherBox .contentBox .btn {
+  width: 2.24rem;
+  height: 0.8rem;
+  background: #2eb3ff;
+  color: #ffffff;
+  border-radius: 0.1rem;
+  float: right;
+}
+
+.AppDownloadContent .appStudentBox .contentBox .btn a,
+.AppDownloadContent .appTeacherBox .contentBox .btn a {
+  display: block;
+  width: 100%;
+  height: 0.8rem;
+  text-align: center;
+  line-height: 0.8rem;
+  color: #ffffff;
+}
+
+.AppDownloadContent .appTeacherBox .icon {
+  background: url("../../img/appD_icon2.png") !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+}
+
+.successCaseContent .topTitle {
+  margin-top: 0.3rem;
+  text-align: center;
+}
+
+.successCaseContent .topTitle .title {
+  color: #2295f2;
+  font-size: 16px;
+}
+
+.successCaseContent .topTitle .title2 {
+  font-size: 13px;
+  margin-top: 0.1rem;
+}
+
+.successCaseContent .studentData {
+  padding: 0 0.2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column wrap;
+          flex-flow: column wrap;
+  width: 100%;
+  max-height: 20rem;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.successCaseContent .studentData .singleStudent .img {
+  width: 3.17rem;
+  height: 3.54rem;
+}
+
+.successCaseContent .studentData .singleStudent .img img {
+  width: 100%;
+  height: 100%;
+}

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>文章列表页</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/alifont/iconfont.css"/>
+
+    <style>
+        .aui-list .aui-list-item-media {
+            width: 5rem;
+        }
+        .aui-list:before{
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+<div id="app" class="aui-content">
+
+    <!-- 新闻列表 -->
+    <ul class="aui-list aui-media-list aui-margin-t-5">
+        <li class="aui-list-item" tapmode v-on:click="open_article_content( i.id )"
+            v-for="i in article_list">
+            <div class="aui-media-list-item-inner">
+                <div class="aui-list-item-inner">
+                    <!-- 标题 -->
+                    <div class="aui-list-item-text">
+                        <div class="aui-list-item-title aui-font-size-16">
+                            {{i.title}}
+                        </div>
+                    </div>
+                    <!-- 作者 -->
+                    <div class="aui-info aui-padded-b-0">
+                        <div style="font-size: 12px">
+                            作者：<span>{{i.author}}</span>
+                        </div>
+                        <!-- 浏览 -->
+                        <div>
+                            <i class="iconfont icon-liulan3"></i>
+                            <span style="font-size: 10px;padding-top: 6px;padding-left: 5px">{{i.view_num}}</span>
+                        </div>
+                        <div class="aui-info-item" style="font-size: 10px;">{{i.publish_date}}</div>
+                    </div>
+                </div>
+                <!--图片-->
+                <div class="aui-list-item-media">
+                    <img :src="media + i.list_img" style="border-radius: 20px">
+                </div>
+            </div>
+        </li>
+    </ul>
+
+</div>
+</body>
+
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript">
+
+    // 启动执行事件
+    apiready = function () {
+        vm.school_id = api.pageParam.school_id;
+        vm.school_name = api.pageParam.school_name;
+        vm.init();
+        initRefresh();  // 下拉刷新
+
+        //下拉监听事件
+        api.addEventListener({
+            name : 'scrolltobottom',
+            extra : {
+                threshold : 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            //分页加10，和后台同步
+            vm.skip += 10;
+            vm.init(false);
+        });
+    };
+
+
+    // vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            school_id: '',
+            school_name: '',
+            media: media_url,
+            article_list:[],
+
+            is_more: true,    //加载更多,默认第一次
+            skip: 0,
+        },
+        methods: {
+            //初始化 ajax数据请求
+            init: function (more_) {
+                api.ajax({
+                    url: article_list + '?school_id=' + vm.school_id + '&skip=' + vm.skip,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        api.refreshHeaderLoadDone(); //方法恢复组件到默认状态
+                        if (ret.code === 200){
+                            if ( more_ ){
+                                vm.article_list = ret.article_data;
+                            } else {
+                                if (ret.article_data.length > 0){
+                                    //concat() 方法用于连接两个或多个数组。
+                                    vm.article_list = vm.article_list.concat(ret.article_data);
+                                }else {
+                                    api.toast({
+                                        msg: '没有更多了',
+                                        duration: 1000,
+                                        location: 'bottom'
+                                    });
+                                }
+                            }
+                        }
+
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+
+            // 打开 文章 内容
+            open_article_content: function (id_) {
+                api.openWin({
+                    name: 'home_article_content_win',
+                    url: './home_article_content_win.html',
+                    allowEdit: true,
+                    pageParam: {
+                        article_id: id_,
+                        school_id: vm.school_id,
+                    }
+                });
+            }
+        }
+    });
+
+
+    // 实现下拉刷新功能
+    function initRefresh() {
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/fresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '嘤嘤嘤 放开我...'
+        }, function (ret, err) {
+            // 在这里从服务器加载数据，加载完成后调用
+            vm.skip = 0;
+            vm.init(true);//初始化 ajax数据请求
+            api.toast({
+                msg: '已刷新',
+                duration: 1000,
+                location: 'bottom'
+            });
+        });
+    }
+
+
+
+</script>
+
+</html>

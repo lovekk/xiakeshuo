@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>评论推送</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/alifont/iconfont.css"/>
+    <style>
+        .hide-ov{
+            overflow:hidden;
+        }
+
+        .quan{
+            width:3rem;
+            color: #FFFFFF;
+            border: 2px #938F87 solid;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .aui-list-item.wechat-top {
+            background-color: #f3f3f7;
+        }
+        .aui-list .wechat-avatar {
+            width:3rem;
+        }
+        .wechat-avatar .aui-row-padded {
+            background-color: #dddee0;
+            padding: 0.1rem;
+            border-radius: 0.2rem;
+            margin-left: -0.05rem;
+            margin-right: -0.05rem;
+        }
+        .wechat-avatar .aui-row-padded [class*=aui-col-xs-] {
+            padding: 0.05rem;
+        }
+        .wechat-avatar,
+        .wechat-avatar > img {
+            border-radius:0.2rem;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app" class="aui-content">
+    <ul class="aui-list aui-media-list">
+
+        <li class="aui-list-item wechat-top">
+            <div class="aui-media-list-item-inner">
+                <div class="aui-list-item-inner" style="font-size: 14px">
+                    以下是关于您的所有留言评论回复：
+                </div>
+            </div>
+        </li>
+
+        <li class="aui-list-item" style="border-bottom: 1px solid #dddddd;"
+            v-for="item in my_push_list">
+            <div class="aui-card-list-header aui-card-list-user "
+                 style="padding: 10px 18px 5px 3px; border-bottom: none">
+                <div class="aui-card-list-user-avatar" >
+                    <img :src="qiniu + item.u_img + qiniu_small" class="aui-img-round"
+                         style="width: 40px; height: 40px; border-radius: 40px"/>
+                </div>
+                <div class="aui-card-list-user-name">
+                    <div>{{item.u_nick}}</div>
+                    <div v-if="item.push_type == 0" class="quan"
+                         style="background-color: rgba(65,105,225,0.5)">
+                        说说
+                    </div>
+                    <div v-else-if="item.push_type == 1" class="quan"
+                         style="background-color: rgba(	128,0,128,0.5)">
+                        help
+                    </div>
+                    <div v-else-if="item.push_type == 2" class="quan"
+                         style="background-color: rgba(	255,99,71,0.5) ">
+                        二手
+                    </div>
+                    <div v-else class="quan"
+                         style="background-color: rgba(60,179,113,0.5);">
+                        失物
+                    </div>
+                </div>
+                <div class="aui-card-list-user-info">{{item.comment_date}}</div>
+            </div>
+
+            <div class="aui-media-list-item-inner">
+                <div class="aui-list-item-inner">
+<!--需要顶头写，不然white-space:pre-wrap;会把前面的空格页当作空格显示出来-->
+<div class="aui-list-item-text" style="color:#333;font-size: 16px;white-space:pre-wrap;">{{item.push_content}}</div>
+
+                    <div class="aui-card-list-footer">
+                        <div></div>
+                        <div></div>
+                        <div class="aui-btn aui-btn-default"
+                            v-on:click="open_content(item.push_type, item.publish_id, item.u_id )" >查看详情</div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+
+<script type="text/javascript">
+
+    // 启动执行事件
+    apiready = function () {
+
+        vm.init(true);
+        initRefresh();  // 下拉刷新
+
+        //下拉监听事件
+        api.addEventListener({
+            name : 'scrolltobottom',
+            extra : {
+                threshold : 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            //分页加10，和后台同步
+            vm.skip += 10;
+            vm.init(false);
+        });
+
+    };
+
+
+    // vue实例
+    var vm = new Vue({
+        el: '#app',
+        data: {
+
+            media: media_url,
+            qiniu: qiniu_url,
+            qiniu_small: qiniu_small,
+
+            my_push_list: [],  //所有数据
+
+            is_more: true,    //加载更多,默认第一次
+            skip: 0,
+        },
+        methods: {
+
+            //初始化 ajax数据请求
+            init: function (more_) {
+                api.ajax({
+                    url: my_push + '?user_id=' + $api.getStorage('uid') + '&skip=' + vm.skip,
+                    method: 'get',
+                    cache: 'true',
+                    timeout: 30,
+                    dataType: 'json',
+                    returnAll: false,
+                }, function (ret, err) {
+                    if (ret) {
+                        api.refreshHeaderLoadDone(); //方法恢复组件到默认状态
+                        if ( more_ ){
+                            vm.my_push_list = ret.push_data;
+                        } else {
+                            if (ret.push_data.length > 0){
+                                //concat() 方法用于连接两个或多个数组。
+                                vm.my_push_list = vm.my_push_list.concat(ret.push_data);
+                            }else {
+                                api.toast({
+                                    msg: '没有更多了',
+                                    duration: 1000,
+                                    location: 'bottom'
+                                });
+                            }
+                        }
+                    } else {
+                        my_toast();
+                    }
+                });
+            },
+
+            // 跳转到相应的 详情页
+            open_content: function (type_, id_ , uid_) {
+                if (type_ === 0){
+                    api.openWin({
+                        name: 'find_content_win',
+                        url: './find_content_win.html',
+                        pageParam: {
+                            moment_id: id_,
+                            his_id: uid_
+                        }
+                    });
+                } else if (type_ === 1){
+                    api.openWin({
+                        name: 'help_content_win',
+                        url: './help_content_win.html',
+                        pageParam: {
+                            h_id: id_,
+                            u_id: uid_
+                        }
+                    });
+                }  else if (type_ === 2){
+                    api.openWin({
+                        name: 'home_two_content_win',
+                        url: './home_two_content_win.html',
+                        pageParam: {
+                            s_id: id_,
+                            u_id: uid_
+                        }
+                    });
+                }  else if (type_ === 3){
+                    api.openWin({
+                        name: 'home_lose_content_win',
+                        url: './home_lose_content_win.html',
+                        pageParam: {
+                            l_id: id_,
+                            u_id: uid_
+                        }
+                    });
+                }
+            }
+        }
+
+    });
+
+
+    // 实现下拉刷新功能
+    function initRefresh() {
+        api.setRefreshHeaderInfo({
+            loadingImg: 'widget://image/fresh.png',
+            bgColor: '#ccc',
+            textColor: '#fff',
+            textDown: '下拉刷新...',
+            textUp: '嘤嘤嘤 放开我...'
+        }, function (ret, err) {
+            vm.skip = 0;
+            vm.init(true);//初始化 ajax数据请求
+            api.toast({
+                msg: '已刷新',
+                duration: 1000,
+                location: 'bottom'
+            });
+        });
+    }
+
+
+</script>
+
+</html>

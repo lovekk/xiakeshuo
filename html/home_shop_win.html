@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>校园团购</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+</head>
+<body>
+    <header class="aui-bar aui-bar-nav my-bgc">
+        <a class="aui-pull-left aui-btn" onclick="close_win()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">校园团购</div>
+    </header>
+    <div class="aui-tab" id="tab">
+        <div class="aui-tab-item aui-active">零食</div>
+        <div class="aui-tab-item">水果</div>
+        <div class="aui-tab-item">学习</div>
+        <div class="aui-tab-item">生活</div>
+    </div>
+</body>
+</html>
+
+<script src="../script/api.js"></script>
+<script src="../script/common.js"></script>
+<script src="../script/vue.js"></script>
+<script>
+
+    var item = document.getElementsByClassName("aui-tab-item")[0];
+    var item_height = window.getComputedStyle(item).height;
+
+    //关闭 校园小店 窗口
+    function close_win() {
+        api.closeWin({
+            name: 'home_shop_win'
+        });
+    }
+
+    apiready = function () {
+        $api.fixIos7Bar($api.dom("header"));
+
+        // api.openFrame({
+        //     name: 'page2',
+        //     url: './page2.html',
+        //     rect: {
+        //         x: 0,
+        //         y: $api.dom('header').offsetHeight,
+        //         w: 'auto',
+        //         h: api.winHeight - $api.dom('header').offsetHeight
+        //     },
+        //     pageParam: {
+        //         name: 'test'
+        //     },
+        //     bounces: true,
+        //     bgColor: 'rgba(0,0,0,0)', //背景色
+        //     vScrollBarEnabled: true,
+        //     hScrollBarEnabled: true
+        // });
+
+    };
+</script>
