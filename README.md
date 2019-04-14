@@ -32,10 +32,12 @@ aui+vue+apicloud，混合APP开发
   官方以文章形式发布学校的公告。用户可以评论留言参与活动。
   
 9.九点读书  
-  官方以文章形式发布学生投稿或者官方原创的文章，用户可以留言评论。
+  官方以文章形式发布学生投稿或者官方原创的文章，用户可以留言评论。  
+  
+
+效果： 
   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/z*pnqTvgG9nfwvzC3SCK6gXd*waD*7iGf*aKTJUBmkA!/b/dLYAAAAAAAAA&bo=OASABwAAAAARB4s!&rf=viewer_4" width="200"/>
-效果：  
- ![](http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/z*pnqTvgG9nfwvzC3SCK6gXd*waD*7iGf*aKTJUBmkA!/b/dLYAAAAAAAAA&bo=OASABwAAAAARB4s!&rf=viewer_4 =200x350)
- ![](http://a4.qpic.cn/psb?/V14QvJYi1Zp3gm/RczcrbkYEKUGBUTjfMp5F8FConpnxh8lQ79vhkPHhH4!/m/dL8AAAAAAAAAnull&bo=OASABwAAAAARB4s!&rf=photolist&t=5 =200x350)
-  ![](http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/e09anXwYsrna0eZaOt*c0HQbd9tWcJqTU1oT8naMNW0!/b/dL4AAAAAAAAA&bo=OASABwAAAAARF5s!&rf=viewer_4 =200x350)
-  ![](http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/yeWax4qVFdZvEJyoXBCrdJOdwgbTgBDMi27Owur4nLY!/b/dL4AAAAAAAAA&bo=OASABwAAAAARF5s!&rf=viewer_4 =200x350)
+  <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/z*pnqTvgG9nfwvzC3SCK6gXd*waD*7iGf*aKTJUBmkA!/b/dLYAAAAAAAAA&bo=OASABwAAAAARB4s!&rf=viewer_4" width="200"/>  
+  <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/e09anXwYsrna0eZaOt*c0HQbd9tWcJqTU1oT8naMNW0!/b/dL4AAAAAAAAA&bo=OASABwAAAAARF5s!&rf=viewer_4" width="200"/>
+  <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/yeWax4qVFdZvEJyoXBCrdJOdwgbTgBDMi27Owur4nLY!/b/dL4AAAAAAAAA&bo=OASABwAAAAARF5s!&rf=viewer_4" width="200"/>
+
