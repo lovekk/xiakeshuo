@@ -105,6 +105,6 @@ dialogBox、photoBrowser、UIMediaScanner
   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/*1lGHdY1fMCQx1VmZFxjm0L.s0A3VkJY.n*KAzQcVtA!/b/dD4BAAAAAAAA&bo=OASABwAAAAADJ7k!&rf=viewer_4" width="200"/> 
   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/Iu07Hy2hf9P5bMgPtu3gsLWQla*ZGh3YUucqUqvK5As!/b/dDQBAAAAAAAA&bo=OASABwAAAAADF4k!&rf=viewer_4" width="200"/>
     <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/hR3wcgAdjy36S3vQ0z7kRLNu3yB*6I6buhoh.N4z9aQ!/b/dDIBAAAAAAAA&bo=OASABwAAAAADV8k!&rf=viewer_4" width="200"/>
+    <img src="http://b31.photo.store.qq.com/psb?/V14QvJYi3FEVYc/.xnejXA8OwqRhT5JYoDC8ErOpVpYl48fm4D2WyNVV2I!/b/dB8AAAAAAAAA&bo=OAToCAAAAAARB.w!&rf=viewer_4" width="200"/>
   
-  
-#### *大半年的心血，真的不舍，百感交集~ 有缘再见！
+#### *大半年的心血，真的不舍，百感交集~ 哎，有缘再见！
