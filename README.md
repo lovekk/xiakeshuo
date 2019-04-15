@@ -2,17 +2,19 @@
 《下课说》APP端
 ## 技术架构
 aui+vue+apicloud，混合APP开发  
-### APICloud模块
+### 一、APICloud模块
 ipAddress、mp3Recorder、imageBrowser、UIPullRefreshFlash、  
 inputField、UIListCard、UIInput、moviePlayer、UIAlbumBrowser、  
 smsVerify、shareAction、meiQia、UIChatBox、rongCloud2、FNScanner、  
 dialogBox、photoBrowser、UIMediaScanner  
 
-### 第三方服务
+### 二、第三方服务
 七牛音视图云存储服务、美洽客服服务、融云即时通讯服务、极光推送服务、Mob短信验证服务  
 
 
-
+  
+    
+    
 ## 功能文档
 ### 一、首页
 0.选择学校   
@@ -50,4 +52,20 @@ dialogBox、photoBrowser、UIMediaScanner
   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/z*pnqTvgG9nfwvzC3SCK6gXd*waD*7iGf*aKTJUBmkA!/b/dLYAAAAAAAAA&bo=OASABwAAAAARB4s!&rf=viewer_4" width="200"/> 
   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/e09anXwYsrna0eZaOt*c0HQbd9tWcJqTU1oT8naMNW0!/b/dL4AAAAAAAAA&bo=OASABwAAAAARF5s!&rf=viewer_4" width="200"/>
   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/yeWax4qVFdZvEJyoXBCrdJOdwgbTgBDMi27Owur4nLY!/b/dL4AAAAAAAAA&bo=OASABwAAAAARF5s!&rf=viewer_4" width="200"/>
+    
+### 二、说说
+1.最新、热门、关注的分类  
+2.说说，用户可以发表文字、图片（最多9张）、音频（最多5分钟）、视频（最大30M）  
+3.关注、取消关注  
+4.举报  
+5.屏蔽此条动态 、屏蔽此人所有动态  
+6.评论，可以发表文字、图片（最多9张）、音频（最多5分钟）、视频（最大30M）  
+7.说说点赞、评论点赞  
+8.评论回复、多级回复，只能回复文字  
+9.搜索用户和内容  
 
+效果：   
+  <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/LOwGoTLFE8IaArt5iHqVkrSzhHzlPkzSUdzM5dlmJMI!/b/dDcBAAAAAAAA&bo=OASABwAAAAADR9k!&rf=viewer_4" width="200"/> 
+  <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/b1U8Ver3R4fXyXfj2kn505YUFP8872fnF05ET3mFhXY!/b/dDQBAAAAAAAA&bo=OASABwAAAAADB5k!&rf=viewer_4" width="200"/>
+  <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/vL328B7oO*7PQ8zrsRR2XGIxmP29w0E9nL9IidtY27Q!/b/dL8AAAAAAAAA&bo=OASABwAAAAADR9k!&rf=viewer_4" width="200"/>
+  <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/2kzfzVaCkRKXfBbD9VCf1dPFQep0fdjA2cg0AUNdwek!/b/dDQBAAAAAAAA&bo=OASABwAAAAADJ7k!&rf=viewer_4" width="200"/>
