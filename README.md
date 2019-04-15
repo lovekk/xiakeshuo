@@ -68,37 +68,37 @@ dialogBox、photoBrowser、UIMediaScanner
   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/2kzfzVaCkRKXfBbD9VCf1dPFQep0fdjA2cg0AUNdwek!/b/dDQBAAAAAAAA&bo=OASABwAAAAADJ7k!&rf=viewer_4" width="200"/>   
   
 
-### HELP（校园帮助）
-1.用户发布需求，（时间、地点、事件、费用、线上/线下等）
-2.用户可以点击help去帮助，自主交易，没有涉及到支付
-3.动态，评论，回复只能文字和图片
-4.点击头像，可以进入主页进行私聊
+### 三、HELP（校园帮助）  
+1.用户发布需求，（时间、地点、事件、费用、线上/线下等）  
+2.用户可以点击help去帮助，自主交易，没有涉及到支付  
+3.动态，评论，回复只能文字和图片  
+4.点击头像，可以进入主页进行私聊  
 
-\*安卓和苹果显示效果不一样，苹果不允许显示关于金钱的字样  
-效果：   
+\*安卓和苹果显示效果不一样，苹果不允许显示关于金钱的字样    
+部分示意图：   
   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/3EEaUFgcOp0Hg5W79LTpMD*5yZ6oiu87Q7U6lIsYvE4!/b/dLYAAAAAAAAA&bo=OASABwAAAAADN6k!&rf=viewer_4" width="200"/> 
   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/PmsbuislWiiZj4uB5VsCwxAteo4WHfKc*lU5bcImARE!/b/dL8AAAAAAAAA&bo=OASABwAAAAADJ7k!&rf=viewer_4" width="200"/>
   
     
-### 消息
-1.新增粉丝
-2.评论留言查看
-3.私信聊天，即时通讯列表
+### 四、消息  
+1.新增粉丝  
+2.评论留言查看  
+3.私信聊天，即时通讯列表  
   
  部分示意图：   
   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/s4n8hjnk9rUhESnNxr*5Vuer*MlyJudWwRzQkAa*b.A!/b/dL4AAAAAAAAA&bo=OASABwAAAAADJ7k!&rf=viewer_4" width="200"/> 
   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/3CuaKWPeTW0kG78woo4hCNJrw.0IPOj2IFJEH*YPjbo!/b/dEkBAAAAAAAA&bo=OASABwAAAAADN6k!&rf=viewer_4" width="200"/>
   
     
-### 我的
-1.展示本用户头像、用户名、学校、个性签名、粉丝数、关注数、积分
-2.查看我的主页，可删除发布的说说
-3.查看我的help，可删除发布的help
-4.个人信息修改，头像、用户名、学校、个性签名
-5.设置，修改密码、清楚缓存、查看已屏蔽用户
-6.查看关于我们，可文字留言
-7.在线客服联系
-8.退出账号进入登录注册页
+### 五、我的  
+1.展示本用户头像、用户名、学校、个性签名、粉丝数、关注数、积分  
+2.查看我的主页，可删除发布的说说  
+3.查看我的help，可删除发布的help  
+4.个人信息修改，头像、用户名、学校、个性签名  
+5.设置，修改密码、清楚缓存、查看已屏蔽用户  
+6.查看关于我们，可文字留言  
+7.在线客服联系  
+8.退出账号进入登录注册页  
  
  部分示意图：   
   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/*1lGHdY1fMCQx1VmZFxjm0L.s0A3VkJY.n*KAzQcVtA!/b/dD4BAAAAAAAA&bo=OASABwAAAAADJ7k!&rf=viewer_4" width="200"/> 
