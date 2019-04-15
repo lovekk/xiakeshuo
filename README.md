@@ -1,7 +1,18 @@
 # xiakeshuo
 《下课说》APP端
 ## 技术架构
-aui+vue+apicloud，混合APP开发
+aui+vue+apicloud，混合APP开发  
+### APICloud模块
+ipAddress、mp3Recorder、imageBrowser、UIPullRefreshFlash、  
+inputField、UIListCard、UIInput、moviePlayer、UIAlbumBrowser、  
+smsVerify、shareAction、meiQia、UIChatBox、rongCloud2、FNScanner、  
+dialogBox、photoBrowser、UIMediaScanner  
+
+### 第三方服务
+七牛音视图云存储服务、美洽客服服务、融云即时通讯服务、极光推送服务、Mob短信验证服务  
+
+
+
 ## 功能文档
 ### 一、首页
 0.选择学校   
