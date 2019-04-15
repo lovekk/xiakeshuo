@@ -48,7 +48,8 @@ dialogBox、photoBrowser、UIMediaScanner
   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/z*pnqTvgG9nfwvzC3SCK6gXd*waD*7iGf*aKTJUBmkA!/b/dLYAAAAAAAAA&bo=OASABwAAAAARB4s!&rf=viewer_4" width="200"/> 
   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/e09anXwYsrna0eZaOt*c0HQbd9tWcJqTU1oT8naMNW0!/b/dL4AAAAAAAAA&bo=OASABwAAAAARF5s!&rf=viewer_4" width="200"/>
   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/yeWax4qVFdZvEJyoXBCrdJOdwgbTgBDMi27Owur4nLY!/b/dL4AAAAAAAAA&bo=OASABwAAAAARF5s!&rf=viewer_4" width="200"/>
-    
+   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/RczcrbkYEKUGBUTjfMp5F8FConpnxh8lQ79vhkPHhH4!/b/dL8AAAAAAAAA&bo=OASABwAAAAARF5s!&rf=viewer_4" width="200"/>   
+     
 ### 二、说说
 1.最新、热门、关注的分类  
 2.说说，用户可以发表文字、图片（最多9张）、音频（最多5分钟）、视频（最大30M）  
@@ -104,3 +105,6 @@ dialogBox、photoBrowser、UIMediaScanner
   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/*1lGHdY1fMCQx1VmZFxjm0L.s0A3VkJY.n*KAzQcVtA!/b/dD4BAAAAAAAA&bo=OASABwAAAAADJ7k!&rf=viewer_4" width="200"/> 
   <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/Iu07Hy2hf9P5bMgPtu3gsLWQla*ZGh3YUucqUqvK5As!/b/dDQBAAAAAAAA&bo=OASABwAAAAADF4k!&rf=viewer_4" width="200"/>
     <img src="http://m.qpic.cn/psb?/V14QvJYi1Zp3gm/hR3wcgAdjy36S3vQ0z7kRLNu3yB*6I6buhoh.N4z9aQ!/b/dDIBAAAAAAAA&bo=OASABwAAAAADV8k!&rf=viewer_4" width="200"/>
+  
+  
+#### *大半年的心血，真的不舍，百感交集~ 有缘再见！
